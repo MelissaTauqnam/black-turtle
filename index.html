@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEKAVERSE</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-inner">
+            <div class="loader-line"></div>
+            <span class="loader-text">LOADING</span>
+        </div>
+    </div>
+
+    <!-- Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursor-follower"></div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-logo">MEKA<span class="accent">VERSE</span></div>
+        <div class="nav-links">
+            <a href="#about" class="nav-link">About</a>
+            <a href="#factions" class="nav-link">Factions</a>
+            <a href="#gallery" class="nav-link">Gallery</a>
+            <a href="#roadmap" class="nav-link">Roadmap</a>
+        </div>
+        <div class="nav-actions">
+            <a href="#" class="btn-connect">Connect Wallet</a>
+        </div>
+        <div class="nav-burger" id="nav-burger">
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#factions" class="mobile-link">Factions</a>
+        <a href="#gallery" class="mobile-link">Gallery</a>
+        <a href="#roadmap" class="mobile-link">Roadmap</a>
+        <a href="#" class="btn-connect mobile-connect">Connect Wallet</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="hero-grid"></div>
+            <div class="hero-glow"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-subtitle" data-animate>THE FUTURE IS NOW</div>
+            <h1 class="hero-title" data-animate>
+                <span class="title-line">MEKA</span>
+                <span class="title-line outline">VERSE</span>
+            </h1>
+            <p class="hero-desc" data-animate>8,888 unique generative Mekas inspired by the Japanese Mecha universe. Each piece is original, with its own color palette.</p>
+            <div class="hero-actions" data-animate>
+                <a href="#gallery" class="btn-primary">Explore Collection</a>
+                <a href="#about" class="btn-secondary">Learn More</a>
+            </div>
+        </div>
+        <div class="hero-meka">
+            <div class="meka-silhouette">
+                <svg viewBox="0 0 400 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Stylized Meka Robot Silhouette -->
+                    <path d="M200 50 L260 120 L280 120 L300 160 L290 200 L310 240 L320 320 L340 360 L330 440 L300 480 L310 560 L280 580 L260 520 L240 560 L220 560 L200 520 L180 560 L160 560 L140 520 L120 580 L90 560 L100 480 L70 440 L60 360 L80 320 L90 240 L110 200 L100 160 L120 120 L140 120 Z" fill="url(#mekaGrad)" opacity="0.15"/>
+                    <!-- Head detail -->
+                    <path d="M170 80 L200 50 L230 80 L240 110 L160 110 Z" fill="url(#mekaGrad)" opacity="0.3"/>
+                    <!-- Visor -->
+                    <path d="M170 90 L230 90 L225 105 L175 105 Z" fill="url(#visorGrad)" opacity="0.6"/>
+                    <!-- Chest core -->
+                    <ellipse cx="200" cy="200" rx="30" ry="25" fill="url(#coreGrad)" opacity="0.4"/>
+                    <ellipse cx="200" cy="200" rx="15" ry="12" fill="url(#coreGrad)" opacity="0.7"/>
+                    <!-- Shoulder pads -->
+                    <path d="M120 130 L90 160 L100 200 L140 180 Z" fill="url(#mekaGrad)" opacity="0.2"/>
+                    <path d="M280 130 L310 160 L300 200 L260 180 Z" fill="url(#mekaGrad)" opacity="0.2"/>
+                    <!-- Arm lines -->
+                    <line x1="100" y1="200" x2="80" y2="320" stroke="url(#lineGrad)" stroke-width="2" opacity="0.3"/>
+                    <line x1="300" y1="200" x2="320" y2="320" stroke="url(#lineGrad)" stroke-width="2" opacity="0.3"/>
+                    <!-- Leg lines -->
+                    <line x1="160" y1="480" x2="140" y2="570" stroke="url(#lineGrad)" stroke-width="2" opacity="0.3"/>
+                    <line x1="240" y1="480" x2="260" y2="570" stroke="url(#lineGrad)" stroke-width="2" opacity="0.3"/>
+                    <defs>
+                        <linearGradient id="mekaGrad" x1="200" y1="50" x2="200" y2="580" gradientUnits="userSpaceOnUse">
+                            <stop offset="0" stop-color="#7DD3FC"/>
+                            <stop offset="1" stop-color="#0EA5E9"/>
+                        </linearGradient>
+                        <linearGradient id="visorGrad" x1="170" y1="90" x2="230" y2="105" gradientUnits="userSpaceOnUse">
+                            <stop offset="0" stop-color="#7DD3FC"/>
+                            <stop offset="1" stop-color="#38BDF8"/>
+                        </linearGradient>
+                        <radialGradient id="coreGrad" cx="200" cy="200" r="30" gradientUnits="userSpaceOnUse">
+                            <stop offset="0" stop-color="#7DD3FC"/>
+                            <stop offset="1" stop-color="#0284C7" stop-opacity="0"/>
+                        </radialGradient>
+                        <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#7DD3FC"/>
+                            <stop offset="1" stop-color="#7DD3FC" stop-opacity="0"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <div class="scroll-line"></div>
+            <span>Scroll</span>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="stats-bar">
+        <div class="stat" data-animate>
+            <span class="stat-number" data-count="8888">0</span>
+            <span class="stat-label">Unique Mekas</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat" data-animate>
+            <span class="stat-number" data-count="4">0</span>
+            <span class="stat-label">Factions</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat" data-animate>
+            <span class="stat-number" data-count="100">0</span>
+            <span class="stat-label">+ Elements</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat" data-animate>
+            <span class="stat-number" data-count="660">0</span>
+            <span class="stat-label">K Visitors</span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="section-container">
+            <div class="about-grid">
+                <div class="about-visual">
+                    <div class="about-image-wrapper">
+                        <div class="about-shape"></div>
+                        <div class="about-frame">
+                            <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="50" y="50" width="400" height="400" rx="20" stroke="#7DD3FC" stroke-width="1" opacity="0.3"/>
+                                <rect x="80" y="80" width="340" height="340" rx="10" stroke="#7DD3FC" stroke-width="0.5" opacity="0.15"/>
+                                <!-- Abstract Meka face -->
+                                <circle cx="200" cy="230" r="20" fill="#7DD3FC" opacity="0.1"/>
+                                <circle cx="300" cy="230" r="20" fill="#7DD3FC" opacity="0.1"/>
+                                <path d="M180 230 L220 230" stroke="#7DD3FC" stroke-width="3" opacity="0.6"/>
+                                <path d="M280 230 L320 230" stroke="#7DD3FC" stroke-width="3" opacity="0.6"/>
+                                <path d="M200 280 L250 300 L300 280" stroke="#7DD3FC" stroke-width="1" opacity="0.3"/>
+                                <path d="M150 180 L250 140 L350 180" stroke="#7DD3FC" stroke-width="2" opacity="0.4"/>
+                                <!-- Decorative lines -->
+                                <line x1="100" y1="400" x2="400" y2="400" stroke="#7DD3FC" stroke-width="0.5" opacity="0.2"/>
+                                <line x1="100" y1="380" x2="300" y2="380" stroke="#7DD3FC" stroke-width="0.5" opacity="0.1"/>
+                                <text x="100" y="430" fill="#7DD3FC" opacity="0.3" font-size="12" font-family="monospace">MEKA_UNIT_001</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-content">
+                    <span class="section-tag" data-animate>[ ABOUT ]</span>
+                    <h2 class="section-title" data-animate>The Meka<br><span class="accent">Universe</span></h2>
+                    <p class="about-text" data-animate>In the distant future, drivers fight in a world divided into 4 Factions. The MekaVerse is a series of 8,888 generative Mekas with more than a hundred elements inspired from the Japanese Mecha universe.</p>
+                    <p class="about-text" data-animate>Each piece is unique and has its own color palette and design research. The objective was to create each Meka in an original way, to prioritize quality above quantity.</p>
+                    <div class="about-features" data-animate>
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7DD3FC" stroke-width="1.5">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                                </svg>
+                            </div>
+                            <span>Generative Art</span>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7DD3FC" stroke-width="1.5">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                            </div>
+                            <span>Unique Traits</span>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7DD3FC" stroke-width="1.5">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                </svg>
+                            </div>
+                            <span>World Building</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee -->
+    <div class="marquee">
+        <div class="marquee-track">
+            <span>ORIGINALS MEKA &bull; MIRAGE &bull; F9 &bull; GADIANS &bull; ORIGINALS MEKA &bull; MIRAGE &bull; F9 &bull; GADIANS &bull; ORIGINALS MEKA &bull; MIRAGE &bull; F9 &bull; GADIANS &bull; ORIGINALS MEKA &bull; MIRAGE &bull; F9 &bull; GADIANS &bull;</span>
+        </div>
+    </div>
+
+    <!-- Factions Section -->
+    <section class="factions" id="factions">
+        <div class="section-container">
+            <span class="section-tag" data-animate>[ FACTIONS ]</span>
+            <h2 class="section-title center" data-animate>Choose Your<br><span class="accent">Faction</span></h2>
+            <p class="section-subtitle" data-animate>Four factions rule this world. Each with unique traits and abilities.</p>
+
+            <div class="factions-grid">
+                <div class="faction-card" data-animate>
+                    <div class="faction-number">01</div>
+                    <div class="faction-visual">
+                        <div class="faction-icon">
+                            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="25" y="20" width="50" height="60" rx="5" stroke="#7DD3FC" stroke-width="1.5" opacity="0.6"/>
+                                <rect x="35" y="35" width="12" height="6" fill="#7DD3FC" opacity="0.8"/>
+                                <rect x="53" y="35" width="12" height="6" fill="#7DD3FC" opacity="0.8"/>
+                                <path d="M35 55 L50 62 L65 55" stroke="#7DD3FC" stroke-width="1" opacity="0.4"/>
+                                <path d="M30 20 L50 8 L70 20" stroke="#7DD3FC" stroke-width="1.5" opacity="0.6"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="faction-name">Originals<br>Meka</h3>
+                    <p class="faction-desc">Heavily armored equipment and stoic features define the OG faction.</p>
+                    <div class="faction-line"></div>
+                </div>
+
+                <div class="faction-card" data-animate>
+                    <div class="faction-number">02</div>
+                    <div class="faction-visual">
+                        <div class="faction-icon">
+                            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M50 15 L80 40 L70 85 L30 85 L20 40 Z" stroke="#7DD3FC" stroke-width="1.5" opacity="0.6"/>
+                                <path d="M35 42 L50 38 L65 42" stroke="#7DD3FC" stroke-width="1" opacity="0.4"/>
+                                <rect x="38" y="45" width="8" height="4" fill="#7DD3FC" opacity="0.8"/>
+                                <rect x="54" y="45" width="8" height="4" fill="#7DD3FC" opacity="0.8"/>
+                                <line x1="50" y1="55" x2="50" y2="70" stroke="#7DD3FC" stroke-width="0.5" opacity="0.3"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="faction-name">Mirage</h3>
+                    <p class="faction-desc">Sleek and aerodynamic features for speed and stealth operations.</p>
+                    <div class="faction-line"></div>
+                </div>
+
+                <div class="faction-card" data-animate>
+                    <div class="faction-number">03</div>
+                    <div class="faction-visual">
+                        <div class="faction-icon">
+                            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M50 10 L85 50 L50 90 L15 50 Z" stroke="#7DD3FC" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="40" cy="48" r="5" fill="#7DD3FC" opacity="0.8"/>
+                                <circle cx="60" cy="48" r="5" fill="#7DD3FC" opacity="0.8"/>
+                                <path d="M30 35 L50 25 L70 35" stroke="#7DD3FC" stroke-width="1" opacity="0.4"/>
+                                <line x1="50" y1="60" x2="50" y2="75" stroke="#7DD3FC" stroke-width="0.5" opacity="0.3"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="faction-name">Gadians</h3>
+                    <p class="faction-desc">Streamlined appearance with large conical helmets and precision gear.</p>
+                    <div class="faction-line"></div>
+                </div>
+
+                <div class="faction-card" data-animate>
+                    <div class="faction-number">04</div>
+                    <div class="faction-visual">
+                        <div class="faction-icon">
+                            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="35" r="25" stroke="#7DD3FC" stroke-width="1.5" opacity="0.6"/>
+                                <rect x="30" y="60" width="40" height="30" rx="3" stroke="#7DD3FC" stroke-width="1.5" opacity="0.6"/>
+                                <rect x="38" y="30" width="8" height="4" fill="#7DD3FC" opacity="0.8"/>
+                                <rect x="54" y="30" width="8" height="4" fill="#7DD3FC" opacity="0.8"/>
+                                <path d="M42 40 L50 44 L58 40" stroke="#7DD3FC" stroke-width="1" opacity="0.4"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="faction-name">F9</h3>
+                    <p class="faction-desc">The rarest faction. Round helmets and detailed body armor set them apart.</p>
+                    <div class="faction-line"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <div class="section-container">
+            <span class="section-tag" data-animate>[ GALLERY ]</span>
+            <h2 class="section-title center" data-animate>The<br><span class="accent">Collection</span></h2>
+            <p class="section-subtitle" data-animate>Each Meka is generated with unique attributes and color palettes.</p>
+
+            <div class="gallery-grid">
+                <div class="gallery-item" data-animate>
+                    <div class="gallery-card">
+                        <div class="gallery-visual" style="--hue: 199">
+                            <svg viewBox="0 0 300 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="300" height="400" fill="#0a0a0a"/>
+                                <rect x="100" y="60" width="100" height="120" rx="10" stroke="#7DD3FC" stroke-width="2" opacity="0.5"/>
+                                <rect x="115" y="90" width="25" height="10" fill="#7DD3FC" opacity="0.7"/>
+                                <rect x="160" y="90" width="25" height="10" fill="#7DD3FC" opacity="0.7"/>
+                                <path d="M110 60 L150 30 L190 60" stroke="#7DD3FC" stroke-width="2" opacity="0.6"/>
+                                <rect x="80" y="180" width="140" height="120" rx="5" stroke="#7DD3FC" stroke-width="1" opacity="0.3"/>
+                                <circle cx="150" cy="230" r="15" fill="#7DD3FC" opacity="0.15"/>
+                                <circle cx="150" cy="230" r="8" fill="#7DD3FC" opacity="0.3"/>
+                                <rect x="110" y="310" width="30" height="70" rx="3" stroke="#7DD3FC" stroke-width="1" opacity="0.3"/>
+                                <rect x="160" y="310" width="30" height="70" rx="3" stroke="#7DD3FC" stroke-width="1" opacity="0.3"/>
+                            </svg>
+                        </div>
+                        <div class="gallery-info">
+                            <span class="gallery-id">#0001</span>
+                            <span class="gallery-faction">Originals</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-animate>
+                    <div class="gallery-card">
+                        <div class="gallery-visual" style="--hue: 210">
+                            <svg viewBox="0 0 300 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="300" height="400" fill="#0a0a0a"/>
+                                <path d="M150 40 L200 80 L190 180 L110 180 L100 80 Z" stroke="#38BDF8" stroke-width="2" opacity="0.5"/>
+                                <rect x="120" y="95" width="20" height="8" fill="#38BDF8" opacity="0.7"/>
+                                <rect x="160" y="95" width="20" height="8" fill="#38BDF8" opacity="0.7"/>
+                                <rect x="100" y="190" width="100" height="100" rx="8" stroke="#38BDF8" stroke-width="1" opacity="0.3"/>
+                                <path d="M130 240 L150 250 L170 240" stroke="#38BDF8" stroke-width="1" opacity="0.4"/>
+                                <rect x="115" y="300" width="25" height="80" rx="3" stroke="#38BDF8" stroke-width="1" opacity="0.3"/>
+                                <rect x="160" y="300" width="25" height="80" rx="3" stroke="#38BDF8" stroke-width="1" opacity="0.3"/>
+                            </svg>
+                        </div>
+                        <div class="gallery-info">
+                            <span class="gallery-id">#0247</span>
+                            <span class="gallery-faction">Mirage</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-animate>
+                    <div class="gallery-card">
+                        <div class="gallery-visual" style="--hue: 190">
+                            <svg viewBox="0 0 300 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="300" height="400" fill="#0a0a0a"/>
+                                <path d="M150 30 L210 90 L150 150 L90 90 Z" stroke="#0EA5E9" stroke-width="2" opacity="0.5"/>
+                                <circle cx="130" cy="88" r="8" fill="#0EA5E9" opacity="0.7"/>
+                                <circle cx="170" cy="88" r="8" fill="#0EA5E9" opacity="0.7"/>
+                                <rect x="90" y="160" width="120" height="110" rx="10" stroke="#0EA5E9" stroke-width="1" opacity="0.3"/>
+                                <ellipse cx="150" cy="210" rx="20" ry="15" fill="#0EA5E9" opacity="0.1"/>
+                                <ellipse cx="150" cy="210" rx="10" ry="7" fill="#0EA5E9" opacity="0.25"/>
+                                <rect x="110" y="280" width="30" height="90" rx="3" stroke="#0EA5E9" stroke-width="1" opacity="0.3"/>
+                                <rect x="160" y="280" width="30" height="90" rx="3" stroke="#0EA5E9" stroke-width="1" opacity="0.3"/>
+                            </svg>
+                        </div>
+                        <div class="gallery-info">
+                            <span class="gallery-id">#1337</span>
+                            <span class="gallery-faction">Gadians</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-animate>
+                    <div class="gallery-card">
+                        <div class="gallery-visual" style="--hue: 195">
+                            <svg viewBox="0 0 300 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="300" height="400" fill="#0a0a0a"/>
+                                <circle cx="150" cy="80" r="45" stroke="#BAE6FD" stroke-width="2" opacity="0.5"/>
+                                <rect x="130" y="72" width="15" height="6" fill="#BAE6FD" opacity="0.7"/>
+                                <rect x="155" y="72" width="15" height="6" fill="#BAE6FD" opacity="0.7"/>
+                                <path d="M138 92 L150 98 L162 92" stroke="#BAE6FD" stroke-width="1" opacity="0.4"/>
+                                <rect x="100" y="130" width="100" height="130" rx="5" stroke="#BAE6FD" stroke-width="1" opacity="0.3"/>
+                                <circle cx="150" cy="190" r="12" fill="#BAE6FD" opacity="0.15"/>
+                                <rect x="115" y="270" width="25" height="100" rx="3" stroke="#BAE6FD" stroke-width="1" opacity="0.3"/>
+                                <rect x="160" y="270" width="25" height="100" rx="3" stroke="#BAE6FD" stroke-width="1" opacity="0.3"/>
+                            </svg>
+                        </div>
+                        <div class="gallery-info">
+                            <span class="gallery-id">#4242</span>
+                            <span class="gallery-faction">F9</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section class="roadmap" id="roadmap">
+        <div class="section-container">
+            <span class="section-tag" data-animate>[ ROADMAP ]</span>
+            <h2 class="section-title center" data-animate>The<br><span class="accent">Journey</span></h2>
+
+            <div class="roadmap-timeline">
+                <div class="timeline-line"></div>
+
+                <div class="roadmap-item" data-animate>
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-card">
+                        <span class="roadmap-phase">Phase 01</span>
+                        <h3>Genesis</h3>
+                        <p>Launch of the initial 8,888 Mekas collection. Community building and establishing the MekaVerse identity.</p>
+                    </div>
+                </div>
+
+                <div class="roadmap-item" data-animate>
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-card">
+                        <span class="roadmap-phase">Phase 02</span>
+                        <h3>Expansion</h3>
+                        <p>World map exploration, staking mechanisms, and new collections expanding the MekaVerse lore.</p>
+                    </div>
+                </div>
+
+                <div class="roadmap-item" data-animate>
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-card">
+                        <span class="roadmap-phase">Phase 03</span>
+                        <h3>Evolution</h3>
+                        <p>E-commerce integration, physical merchandise, and cross-platform experiences for holders.</p>
+                    </div>
+                </div>
+
+                <div class="roadmap-item" data-animate>
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-card">
+                        <span class="roadmap-phase">Phase 04</span>
+                        <h3>Dimension</h3>
+                        <p>New Meka dimensions, interoperability with other universes, and the next chapter of the MekaVerse.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="cta-bg">
+            <div class="cta-grid"></div>
+        </div>
+        <div class="section-container">
+            <h2 class="cta-title" data-animate>Ready to join<br>the <span class="accent">MekaVerse</span>?</h2>
+            <p class="cta-text" data-animate>Connect your wallet and become a driver in the Meka universe.</p>
+            <div class="cta-actions" data-animate>
+                <a href="#" class="btn-primary btn-large">Connect Wallet</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="section-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">MEKA<span class="accent">VERSE</span></div>
+                    <p class="footer-tagline">8,888 unique Mekas who need Drivers.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Explore</h4>
+                        <a href="#about">About</a>
+                        <a href="#factions">Factions</a>
+                        <a href="#gallery">Gallery</a>
+                        <a href="#roadmap">Roadmap</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Community</h4>
+                        <a href="#">Discord</a>
+                        <a href="#">Twitter</a>
+                        <a href="#">Instagram</a>
+                        <a href="#">OpenSea</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 MekaVerse. All rights reserved.</span>
+                <span class="footer-credits">Designed with precision.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
