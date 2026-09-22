@@ -1,5 +1,5 @@
 /* =========================================================
-   AutomWatch — mock data
+   Poste de Veille — mock data
    In production, CLIENTS/SCENARIOS would come from the n8n
    API (per-client instance) and AI_REPORTS from a nightly job
    that re-analyzes each workflow's JSON against:
@@ -22,77 +22,77 @@ const CLIENTS = [
 const SCENARIOS = [
   {
     id: 's1', clientId: 'c1', name: 'Synchro commandes Shopify → Facturation',
-    status: 'error', lastRun: '2026-09-22T05:58:00', lastRunOk: false,
+    status: 'error', lastRun: '2026-09-22T05:58:00',
     errors7d: 14,
     apps: [ { name: 'Shopify', connected: true }, { name: 'QuickBooks', connected: false }, { name: 'Slack', connected: true } ],
     nodes: [ { name: 'HTTP Request', version: '4.2', latest: '4.2', outdated: false }, { name: 'QuickBooks Online', version: '1.0', latest: '1.3', outdated: true } ],
   },
   {
     id: 's2', clientId: 'c1', name: 'Relance paniers abandonnés',
-    status: 'ok', lastRun: '2026-09-22T06:00:00', lastRunOk: true,
+    status: 'ok', lastRun: '2026-09-22T06:00:00',
     errors7d: 0,
     apps: [ { name: 'Shopify', connected: true }, { name: 'Mailchimp', connected: true } ],
     nodes: [ { name: 'Mailchimp', version: '2.1', latest: '2.1', outdated: false } ],
   },
   {
     id: 's3', clientId: 'c2', name: 'Suivi colis transporteurs → Notion',
-    status: 'warning', lastRun: '2026-09-22T05:30:00', lastRunOk: true,
+    status: 'warning', lastRun: '2026-09-22T05:30:00',
     errors7d: 3,
     apps: [ { name: 'DHL API', connected: true }, { name: 'Notion', connected: true }, { name: 'Twilio', connected: true } ],
     nodes: [ { name: 'Notion', version: '2.2', latest: '2.4', outdated: true }, { name: 'Twilio', version: '1.1', latest: '1.1', outdated: false } ],
   },
   {
     id: 's4', clientId: 'c2', name: 'Alerte rupture de stock entrepôt',
-    status: 'ok', lastRun: '2026-09-22T06:05:00', lastRunOk: true,
+    status: 'ok', lastRun: '2026-09-22T06:05:00',
     errors7d: 0,
     apps: [ { name: 'Airtable', connected: true }, { name: 'Slack', connected: true } ],
     nodes: [ { name: 'Airtable', version: '2.1', latest: '2.1', outdated: false } ],
   },
   {
     id: 's5', clientId: 'c3', name: 'Génération contrats depuis formulaire',
-    status: 'error', lastRun: '2026-09-22T04:12:00', lastRunOk: false,
+    status: 'error', lastRun: '2026-09-22T04:12:00',
     errors7d: 22,
     apps: [ { name: 'Typeform', connected: true }, { name: 'DocuSign', connected: false }, { name: 'Google Drive', connected: true } ],
     nodes: [ { name: 'DocuSign', version: '1.0', latest: '1.2', outdated: true } ],
   },
   {
     id: 's6', clientId: 'c3', name: 'Archivage e-mails clients',
-    status: 'ok', lastRun: '2026-09-22T05:45:00', lastRunOk: true,
+    status: 'ok', lastRun: '2026-09-22T05:45:00',
     errors7d: 1,
     apps: [ { name: 'Gmail', connected: true }, { name: 'Google Drive', connected: true } ],
     nodes: [ { name: 'Gmail', version: '2.1', latest: '2.1', outdated: false } ],
   },
   {
     id: 's7', clientId: 'c4', name: 'Publication produits multi-marketplace',
-    status: 'warning', lastRun: '2026-09-22T05:20:00', lastRunOk: true,
+    status: 'warning', lastRun: '2026-09-22T05:20:00',
     errors7d: 5,
     apps: [ { name: 'Shopify', connected: true }, { name: 'Amazon SP-API', connected: true }, { name: 'Google Sheets', connected: true } ],
     nodes: [ { name: 'Amazon SP-API (Community)', version: '0.9', latest: '1.1', outdated: true }, { name: 'Google Sheets', version: '4.5', latest: '4.5', outdated: false } ],
   },
   {
     id: 's8', clientId: 'c4', name: 'Reporting ventes hebdo',
-    status: 'ok', lastRun: '2026-09-21T22:00:00', lastRunOk: true,
+    status: 'ok', lastRun: '2026-09-21T22:00:00',
     errors7d: 0,
     apps: [ { name: 'Shopify', connected: true }, { name: 'Google Sheets', connected: true }, { name: 'Slack', connected: true } ],
     nodes: [ { name: 'Shopify', version: '4.0', latest: '4.0', outdated: false } ],
   },
   {
     id: 's9', clientId: 'c5', name: 'Onboarding clients (Stripe → CRM)',
-    status: 'warning', lastRun: '2026-09-22T06:02:00', lastRunOk: true,
+    status: 'warning', lastRun: '2026-09-22T06:02:00',
     errors7d: 2,
     apps: [ { name: 'Stripe', connected: true }, { name: 'HubSpot', connected: true } ],
     nodes: [ { name: 'Stripe', version: '1.4', latest: '1.6', outdated: true } ],
   },
   {
     id: 's10', clientId: 'c6', name: 'Import factures fournisseurs (OCR)',
-    status: 'error', lastRun: '2026-09-22T03:40:00', lastRunOk: false,
+    status: 'error', lastRun: '2026-09-22T03:40:00',
     errors7d: 9,
     apps: [ { name: 'Google Drive', connected: true }, { name: 'OpenAI', connected: true }, { name: 'Pennylane', connected: false } ],
     nodes: [ { name: 'Pennylane (Community)', version: '0.4', latest: '0.6', outdated: true } ],
   },
   {
     id: 's11', clientId: 'c6', name: 'Relance devis en attente',
-    status: 'ok', lastRun: '2026-09-22T06:00:00', lastRunOk: true,
+    status: 'ok', lastRun: '2026-09-22T06:00:00',
     errors7d: 0,
     apps: [ { name: 'Pennylane', connected: false }, { name: 'Gmail', connected: true } ],
     nodes: [ { name: 'Gmail', version: '2.1', latest: '2.1', outdated: false } ],
@@ -214,38 +214,35 @@ const ALERTS = [
 ];
 
 const ACTIVITY = [
-  { time: '06:14', text: 'Analyse IA quotidienne terminée — <b>11 scénarios</b> analysés, <b>6 recommandations</b> générées.' },
-  { time: '05:58', text: 'Erreur détectée sur <b>Synchro commandes Shopify → Facturation</b> (Atelier Rivoli).' },
-  { time: '04:12', text: 'Erreur détectée sur <b>Génération contrats depuis formulaire</b> (Cabinet Ferrand & Associés).' },
+  { time: '06:14', text: 'Analyse quotidienne terminée — <b>11 scénarios</b> analysés, <b>6 recommandations</b> générées.' },
+  { time: '05:58', text: 'Erreur détectée sur <b>Synchro commandes Shopify → Facturation</b>.' },
+  { time: '04:12', text: 'Erreur détectée sur <b>Génération contrats depuis formulaire</b>.' },
   { time: '00:00', text: 'Sauvegarde nocturne de <b>11 workflows</b> effectuée sur toutes les instances clients.' },
-  { time: 'Hier', text: 'Mise à jour manuelle du nœud <b>Airtable</b> sur le scénario de NordSea Logistics.' },
+  { time: 'Hier', text: 'Mise à jour manuelle du nœud <b>Airtable</b> effectuée.' },
 ];
 
 /* ============================= State ============================= */
 const state = { search: '', filterClient: '', filterStatus: '', filterUpdatesOnly: false };
 
-const STATUS_LABEL = { ok: 'OK', warning: 'Avertissement', error: 'Erreur' };
+const STATUS_LABEL = { ok: 'OK', warning: 'Alerte', error: 'Erreur' };
 const RISK_LABEL = { low: 'Risque faible', medium: 'Risque moyen', high: 'Risque élevé' };
 const FINDING_ICON = {
-  connection: '&#128268;', api_change: '&#128196;', node_update: '&#8635;', ai_news: '&#129504;',
+  connection: '<svg viewBox="0 0 24 24"><path d="M12 2a1 1 0 011 1v3.06A6 6 0 0117.9 11H21a1 1 0 010 2h-3.1A6 6 0 0113 17.94V21a1 1 0 01-2 0v-3.06A6 6 0 016.1 13H3a1 1 0 010-2h3.1A6 6 0 0111 6.06V3a1 1 0 011-1zm0 5a4 4 0 100 8 4 4 0 000-8z"/></svg>',
+  api_change: '<svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v13a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2zm8 1.5V8h4.5L14 3.5zM8 13h8v1.5H8V13zm0 3.5h8V18H8v-1.5zM8 9.5h4V11H8V9.5z"/></svg>',
+  node_update: '<svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6a6 6 0 11-6 6H4a8 8 0 108-8zm0 4a2 2 0 100 4 2 2 0 000-4z"/></svg>',
+  ai_news: '<svg viewBox="0 0 24 24"><path d="M12 2l1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8l4.5-1.5L12 2zM5 14l.8 2.2L8 17l-2.2.8L5 20l-.8-2.2L2 17l2.2-.8L5 14zm14-1l1 2.8 2.8 1-2.8 1-1 2.8-1-2.8-2.8-1 2.8-1 1-2.8z"/></svg>',
 };
 
 function clientById(id) { return CLIENTS.find(c => c.id === id); }
 function scenarioById(id) { return SCENARIOS.find(s => s.id === id); }
 
-function relativeTime(iso) {
-  const diffMin = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
-  if (diffMin < 1) return 'à l\'instant';
-  if (diffMin < 60) return `il y a ${diffMin} min`;
-  const h = Math.round(diffMin / 60);
-  if (h < 24) return `il y a ${h} h`;
-  return `il y a ${Math.round(h / 24)} j`;
-}
-
 function fmtTime(iso) {
   const d = new Date(iso);
   return d.toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
 }
+
+function clientNameHtml(c) { return `<span class="anon">${c.name}</span>`; }
+function contactHtml(c) { return `<span class="anon">${c.contact}</span>`; }
 
 /* ============================= Rendering ============================= */
 
@@ -270,48 +267,53 @@ function computeStats() {
 
 function renderKpis() {
   const s = computeStats();
-  const grid = document.getElementById('kpi-grid');
-  grid.innerHTML = `
-    <div class="kpi-card">
-      <div class="kpi-card__label">Clients suivis</div>
-      <div class="kpi-card__value">${s.clients}</div>
-      <div class="kpi-card__sub">${s.scenarios} scénarios actifs</div>
+  const strip = document.getElementById('kpi-strip');
+  strip.innerHTML = `
+    <div class="strip-cell">
+      <div class="strip-cell__label">Clients suivis</div>
+      <div class="strip-cell__value">${s.clients}</div>
+      <div class="strip-cell__sub">${s.scenarios} scénarios actifs</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-card__label">Scénarios en erreur</div>
-      <div class="kpi-card__value ${s.errorScenarios ? 'tone-err' : 'tone-ok'}">${s.errorScenarios}</div>
-      <div class="kpi-card__sub">${s.warningScenarios} en avertissement</div>
+    <div class="strip-cell">
+      <div class="strip-cell__label">Scénarios en erreur</div>
+      <div class="strip-cell__value ${s.errorScenarios ? 'tone-err' : 'tone-ok'}">${s.errorScenarios}</div>
+      <div class="strip-cell__sub">${s.warningScenarios} en alerte</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-card__label">Apps déconnectées</div>
-      <div class="kpi-card__value ${s.disconnectedApps ? 'tone-err' : 'tone-ok'}">${s.disconnectedApps}</div>
-      <div class="kpi-card__sub">Ré-authentification requise</div>
+    <div class="strip-cell">
+      <div class="strip-cell__label">Apps déconnectées</div>
+      <div class="strip-cell__value ${s.disconnectedApps ? 'tone-err' : 'tone-ok'}">${s.disconnectedApps}</div>
+      <div class="strip-cell__sub">Ré-authentification requise</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-card__label">Nœuds à mettre à jour</div>
-      <div class="kpi-card__value ${s.outdatedNodes ? 'tone-warn' : 'tone-ok'}">${s.outdatedNodes}</div>
-      <div class="kpi-card__sub">Versions en retard détectées</div>
+    <div class="strip-cell">
+      <div class="strip-cell__label">Nœuds à mettre à jour</div>
+      <div class="strip-cell__value ${s.outdatedNodes ? 'tone-warn' : 'tone-ok'}">${s.outdatedNodes}</div>
+      <div class="strip-cell__sub">Versions en retard détectées</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-card__label">Recommandations IA</div>
-      <div class="kpi-card__value tone-accent">${s.aiFindings}</div>
-      <div class="kpi-card__sub">Générées ce matin</div>
+    <div class="strip-cell">
+      <div class="strip-cell__label">Recommandations</div>
+      <div class="strip-cell__value tone-brand">${s.aiFindings}</div>
+      <div class="strip-cell__sub">Générées ce matin</div>
     </div>
   `;
 
-  const navAlert = document.getElementById('nav-alert-count');
-  navAlert.textContent = s.errorScenarios + s.warningScenarios;
-  const navAi = document.getElementById('nav-ai-count');
-  navAi.textContent = s.aiFindings;
+  document.getElementById('nav-alert-count').textContent = s.errorScenarios + s.warningScenarios;
+  document.getElementById('nav-ai-count').textContent = s.aiFindings;
 
   const pill = document.getElementById('health-pill');
   if (s.errorScenarios > 0) {
     pill.innerHTML = `<span class="dot dot--error"></span> ${s.errorScenarios} scénario(s) en erreur`;
   } else if (s.warningScenarios > 0) {
-    pill.innerHTML = `<span class="dot dot--warning"></span> ${s.warningScenarios} avertissement(s)`;
+    pill.innerHTML = `<span class="dot dot--warning"></span> ${s.warningScenarios} alerte(s)`;
   } else {
     pill.innerHTML = `<span class="dot dot--ok"></span> Parc en bonne santé`;
   }
+}
+
+function renderPulse() {
+  const row = document.getElementById('pulse-row');
+  const heights = [40, 55, 45, 60, 50, 70, 65, 80, 60, 90, 75, 100];
+  const states = ['is-ok','is-ok','is-ok','is-ok','is-ok','is-warn','is-ok','is-warn','is-err','is-warn','is-err','is-err'];
+  row.innerHTML = heights.map((h, i) => `<div class="pulse-bar ${states[i]}" style="height:${h}%"></div>`).join('');
 }
 
 function renderPriorityList() {
@@ -319,23 +321,24 @@ function renderPriorityList() {
   SCENARIOS.filter(s => s.status !== 'ok').forEach(s => {
     const client = clientById(s.clientId);
     items.push({
-      severity: s.status, title: s.name, meta: `${client.name} · ${s.errors7d} erreur(s) sur 7 jours`,
+      severity: s.status, title: s.name,
+      metaHtml: `${clientNameHtml(client)} · ${s.errors7d} erreur(s) sur 7 jours`,
       onClick: () => openScenarioDrawer(s.id),
     });
   });
-  const list = document.getElementById('priority-list');
   const order = { error: 0, warning: 1 };
   items.sort((a, b) => order[a.severity] - order[b.severity]);
+  const list = document.getElementById('priority-list');
   if (!items.length) {
-    list.innerHTML = `<div class="cell-sub">Aucune priorité — tous les scénarios sont sains.</div>`;
+    list.innerHTML = `<div class="text-dim">Aucune priorité — tous les scénarios sont sains.</div>`;
     return;
   }
-  list.innerHTML = items.map(it => `
-    <div class="priority-item" data-action="priority-${items.indexOf(it)}">
-      <span class="priority-item__badge badge badge--${it.severity}">${STATUS_LABEL[it.severity]}</span>
+  list.innerHTML = items.map((it, i) => `
+    <div class="priority-item is-${it.severity}" data-idx="${i}">
+      <span class="priority-item__tag tag tag--${it.severity}"><span class="tag__dot"></span>${STATUS_LABEL[it.severity]}</span>
       <div class="priority-item__body">
         <div class="priority-item__title">${it.title}</div>
-        <div class="priority-item__meta">${it.meta}</div>
+        <div class="priority-item__meta">${it.metaHtml}</div>
       </div>
     </div>
   `).join('');
@@ -354,9 +357,9 @@ function renderClientHealth() {
   }).sort((a, b) => a.score - b.score);
   list.innerHTML = rows.map(r => `
     <div class="client-health-row">
-      <div class="client-health-row__name">${r.name}</div>
-      <div class="client-health-row__bar"><div class="client-health-row__fill" style="width:${r.score}%;background:${r.color}"></div></div>
-      <div class="client-health-row__score">${r.score}%</div>
+      <div class="client-health-row__name anon">${r.name}</div>
+      <div class="client-health-row__gauge"><div class="client-health-row__fill" style="width:${r.score}%;background:${r.color}"></div></div>
+      <div class="client-health-row__score mono">${r.score}%</div>
     </div>
   `).join('');
 }
@@ -387,7 +390,7 @@ function renderScenariosTable() {
   const tbody = document.getElementById('scenarios-tbody');
   const rows = SCENARIOS.filter(matchesFilters);
   if (!rows.length) {
-    tbody.innerHTML = `<tr><td colspan="8" class="text-dim" style="padding:24px 16px;">Aucun scénario ne correspond à ces filtres.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" class="text-dim" style="padding:22px 14px;">Aucun scénario ne correspond à ces filtres.</td></tr>`;
     return;
   }
   tbody.innerHTML = rows.map(s => {
@@ -395,19 +398,17 @@ function renderScenariosTable() {
     const outdated = s.nodes.filter(n => n.outdated).length;
     return `
     <tr data-id="${s.id}">
-      <td><span class="badge badge--${s.status}">${STATUS_LABEL[s.status]}</span></td>
-      <td>
-        <div class="cell-primary">${s.name}</div>
-      </td>
-      <td>${client.name}</td>
+      <td><span class="tag tag--${s.status}"><span class="tag__dot"></span>${STATUS_LABEL[s.status]}</span></td>
+      <td><div class="cell-primary">${s.name}</div></td>
+      <td class="anon">${client.name}</td>
       <td>
         <div class="app-dots">
           ${s.apps.map(a => `<span class="app-dot app-dot--${a.connected ? 'connected' : 'disconnected'}" title="${a.name} — ${a.connected ? 'connectée' : 'déconnectée'}"></span>`).join('')}
         </div>
       </td>
-      <td>${outdated ? `<span class="text-warn">${outdated}</span>` : `<span class="text-dim">0</span>`}</td>
+      <td>${outdated ? `<span class="text-warn mono">${outdated}</span>` : `<span class="text-dim mono">0</span>`}</td>
       <td class="mono text-dim">${fmtTime(s.lastRun)}</td>
-      <td>${s.errors7d ? `<span class="text-err">${s.errors7d}</span>` : `<span class="text-dim">0</span>`}</td>
+      <td>${s.errors7d ? `<span class="text-err mono">${s.errors7d}</span>` : `<span class="text-dim mono">0</span>`}</td>
       <td class="chevron">›</td>
     </tr>
   `;
@@ -420,7 +421,7 @@ function renderScenariosTable() {
 function populateClientFilter() {
   const sel = document.getElementById('filter-client');
   sel.innerHTML = `<option value="">Tous les clients</option>` +
-    CLIENTS.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+    CLIENTS.map((c, i) => `<option value="${c.id}">Client ${String.fromCharCode(65 + i)}</option>`).join('');
 }
 
 function renderClientsGrid() {
@@ -433,15 +434,15 @@ function renderClientsGrid() {
     <div class="client-card" data-id="${c.id}">
       <div class="client-card__head">
         <div>
-          <div class="client-card__name">${c.name}</div>
+          <div class="client-card__name anon">${c.name}</div>
           <div class="client-card__plan">${c.plan}</div>
         </div>
-        ${errors ? `<span class="badge badge--error">${errors} erreur(s)</span>` : warnings ? `<span class="badge badge--warning">${warnings} alerte(s)</span>` : `<span class="badge badge--ok">Sain</span>`}
+        ${errors ? `<span class="tag tag--error"><span class="tag__dot"></span>${errors}</span>` : warnings ? `<span class="tag tag--warning"><span class="tag__dot"></span>${warnings}</span>` : `<span class="tag tag--ok"><span class="tag__dot"></span>OK</span>`}
       </div>
       <div class="client-card__stats">
-        <div><div class="client-card__stat-value">${scs.length}</div><div class="client-card__stat-label">Scénarios</div></div>
-        <div><div class="client-card__stat-value">${scs.reduce((n, s) => n + s.errors7d, 0)}</div><div class="client-card__stat-label">Erreurs / 7j</div></div>
-        <div><div class="client-card__stat-value">${scs.reduce((n, s) => n + s.nodes.filter(x => x.outdated).length, 0)}</div><div class="client-card__stat-label">MAJ nœuds</div></div>
+        <div class="client-card__stat"><div class="client-card__stat-value mono">${scs.length}</div><div class="client-card__stat-label">Scénarios</div></div>
+        <div class="client-card__stat"><div class="client-card__stat-value mono">${scs.reduce((n, s) => n + s.errors7d, 0)}</div><div class="client-card__stat-label">Erreurs / 7j</div></div>
+        <div class="client-card__stat"><div class="client-card__stat-value mono">${scs.reduce((n, s) => n + s.nodes.filter(x => x.outdated).length, 0)}</div><div class="client-card__stat-label">MAJ nœuds</div></div>
       </div>
     </div>
   `;
@@ -457,16 +458,14 @@ function renderAlerts() {
     const s = scenarioById(a.scenarioId);
     const client = clientById(s.clientId);
     const cls = a.severity === 'resolved' ? 'is-resolved' : a.severity === 'warning' ? 'is-warning' : '';
-    const icon = a.severity === 'resolved' ? '&#10003;' : a.severity === 'warning' ? '&#9888;' : '&#10071;';
     return `
     <div class="timeline-item ${cls}" data-scenario="${a.scenarioId}">
-      <div class="timeline-item__icon">${icon}</div>
       <div class="timeline-item__body">
         <div class="timeline-item__top">
           <span class="timeline-item__title">${a.title}</span>
-          <span class="timeline-item__time">${fmtTime(a.time)}</span>
+          <span class="timeline-item__time mono">${fmtTime(a.time)}</span>
         </div>
-        <div class="timeline-item__desc">${client.name} · ${s.name} — ${a.desc}</div>
+        <div class="timeline-item__desc"><span class="anon">${client.name}</span> · ${s.name} — ${a.desc}</div>
       </div>
     </div>
   `;
@@ -480,24 +479,15 @@ function renderAiSummary() {
   const byRisk = { high: 0, medium: 0, low: 0 };
   AI_REPORTS.forEach(r => byRisk[r.risk]++);
   const totalFindings = AI_REPORTS.reduce((n, r) => n + r.findings.length, 0);
-  const bar = document.getElementById('ai-summary-bar');
-  bar.innerHTML = `
-    <div class="ai-summary-card">
-      <div class="ai-summary-card__icon badge--error" style="background:var(--err-soft);color:var(--err)">&#9888;</div>
-      <div><div class="ai-summary-card__value">${byRisk.high}</div><div class="ai-summary-card__label">Scénarios à risque élevé</div></div>
-    </div>
-    <div class="ai-summary-card">
-      <div class="ai-summary-card__icon" style="background:var(--warn-soft);color:var(--warn)">&#9888;</div>
-      <div><div class="ai-summary-card__value">${byRisk.medium}</div><div class="ai-summary-card__label">Risque moyen</div></div>
-    </div>
-    <div class="ai-summary-card">
-      <div class="ai-summary-card__icon" style="background:var(--ok-soft);color:var(--ok)">&#9679;</div>
-      <div><div class="ai-summary-card__value">${byRisk.low}</div><div class="ai-summary-card__label">Risque faible</div></div>
-    </div>
-    <div class="ai-summary-card">
-      <div class="ai-summary-card__icon" style="background:var(--accent-soft);color:var(--accent)">&#128269;</div>
-      <div><div class="ai-summary-card__value">${totalFindings}</div><div class="ai-summary-card__label">Recommandations totales</div></div>
-    </div>
+  document.getElementById('ai-summary-bar').innerHTML = `
+    <div class="ai-summary-cell"><span class="ai-summary-cell__dot" style="background:var(--err)"></span>
+      <div><div class="ai-summary-cell__value">${byRisk.high}</div><div class="ai-summary-cell__label">Risque élevé</div></div></div>
+    <div class="ai-summary-cell"><span class="ai-summary-cell__dot" style="background:var(--warn)"></span>
+      <div><div class="ai-summary-cell__value">${byRisk.medium}</div><div class="ai-summary-cell__label">Risque moyen</div></div></div>
+    <div class="ai-summary-cell"><span class="ai-summary-cell__dot" style="background:var(--ok)"></span>
+      <div><div class="ai-summary-cell__value">${byRisk.low}</div><div class="ai-summary-cell__label">Risque faible</div></div></div>
+    <div class="ai-summary-cell"><span class="ai-summary-cell__dot" style="background:var(--brand)"></span>
+      <div><div class="ai-summary-cell__value">${totalFindings}</div><div class="ai-summary-cell__label">Recommandations</div></div></div>
   `;
 }
 
@@ -509,23 +499,23 @@ function renderAiReports() {
     const s = scenarioById(r.scenarioId);
     const client = clientById(s.clientId);
     return `
-    <div class="ai-card">
+    <div class="ai-card risk-${r.risk}">
       <div class="ai-card__head">
         <div>
           <div class="ai-card__scenario">${s.name}</div>
-          <div class="ai-card__client">${client.name}</div>
+          <div class="ai-card__client anon">${client.name}</div>
         </div>
-        <span class="ai-card__risk badge badge--${r.risk === 'high' ? 'error' : r.risk === 'medium' ? 'warning' : 'ok'}">${RISK_LABEL[r.risk]}</span>
+        <span class="ai-card__risk tag tag--${r.risk === 'high' ? 'error' : r.risk === 'medium' ? 'warning' : 'ok'}"><span class="tag__dot"></span>${RISK_LABEL[r.risk]}</span>
       </div>
       <div class="ai-card__body">
         ${r.findings.map(f => `
           <div class="ai-finding">
-            <div class="ai-finding__icon" style="background:var(--accent-soft)">${FINDING_ICON[f.type] || '&#8226;'}</div>
+            <div class="ai-finding__icon">${FINDING_ICON[f.type] || ''}</div>
             <div style="flex:1;min-width:0;">
               <div class="ai-finding__title">${f.title}</div>
               <div class="ai-finding__detail">${f.detail}</div>
               <div class="ai-finding__meta"><span class="ai-finding__source">${f.source}</span></div>
-              <div class="ai-finding__action"><b>Action suggérée —</b> ${f.action}</div>
+              <div class="ai-finding__action"><b>Action —</b> ${f.action}</div>
             </div>
           </div>
         `).join('')}
@@ -541,15 +531,14 @@ function renderAiReports() {
   [...list.querySelectorAll('[data-treated]')].forEach(btn => {
     btn.addEventListener('click', (e) => {
       const card = e.target.closest('.ai-card');
-      card.style.opacity = '.45';
+      card.style.opacity = '.4';
       card.style.pointerEvents = 'none';
       showToast('Recommandation marquée comme traitée.');
     });
   });
   [...list.querySelectorAll('[data-ignore]')].forEach(btn => {
     btn.addEventListener('click', (e) => {
-      const card = e.target.closest('.ai-card');
-      card.remove();
+      e.target.closest('.ai-card').remove();
       showToast('Recommandation ignorée.');
     });
   });
@@ -564,14 +553,14 @@ function openScenarioDrawer(id) {
   document.getElementById('drawer-body').innerHTML = `
     <div class="drawer-section">
       <h4>Résumé</h4>
-      <div class="drawer-row"><span>Client</span><span>${client.name}</span></div>
-      <div class="drawer-row"><span>Statut</span><span class="badge badge--${s.status}">${STATUS_LABEL[s.status]}</span></div>
+      <div class="drawer-row"><span>Client</span><span class="anon">${client.name}</span></div>
+      <div class="drawer-row"><span>Statut</span><span class="tag tag--${s.status}"><span class="tag__dot"></span>${STATUS_LABEL[s.status]}</span></div>
       <div class="drawer-row"><span>Dernière exécution</span><span class="mono">${fmtTime(s.lastRun)}</span></div>
-      <div class="drawer-row"><span>Erreurs (7 jours)</span><span>${s.errors7d}</span></div>
+      <div class="drawer-row"><span>Erreurs (7 jours)</span><span class="mono">${s.errors7d}</span></div>
     </div>
     <div class="drawer-section">
       <h4>Apps connectées</h4>
-      ${s.apps.map(a => `<div class="drawer-row"><span>${a.name}</span><span class="badge ${a.connected ? 'badge--ok' : 'badge--error'}">${a.connected ? 'Connectée' : 'Déconnectée'}</span></div>`).join('')}
+      ${s.apps.map(a => `<div class="drawer-row"><span>${a.name}</span><span class="tag tag--${a.connected ? 'ok' : 'error'}"><span class="tag__dot"></span>${a.connected ? 'Connectée' : 'Déconnectée'}</span></div>`).join('')}
     </div>
     <div class="drawer-section">
       <h4>Nœuds</h4>
@@ -579,7 +568,7 @@ function openScenarioDrawer(id) {
     </div>
     ${AI_REPORTS.some(r => r.scenarioId === id) ? `
     <div class="drawer-section">
-      <h4>Recommandations IA</h4>
+      <h4>Recommandations</h4>
       ${AI_REPORTS.find(r => r.scenarioId === id).findings.map(f => `<div class="ai-finding__action" style="margin-bottom:8px;"><b>${f.title} —</b> ${f.action}</div>`).join('')}
     </div>` : ''}
   `;
@@ -589,17 +578,17 @@ function openScenarioDrawer(id) {
 function openClientDrawer(id) {
   const c = clientById(id);
   const scs = SCENARIOS.filter(s => s.clientId === id);
-  document.getElementById('drawer-title').textContent = c.name;
+  document.getElementById('drawer-title').innerHTML = `<span class="anon">${c.name}</span>`;
   document.getElementById('drawer-body').innerHTML = `
     <div class="drawer-section">
       <h4>Informations</h4>
       <div class="drawer-row"><span>Contrat</span><span>${c.plan}</span></div>
-      <div class="drawer-row"><span>Contact</span><span>${c.contact}</span></div>
-      <div class="drawer-row"><span>Scénarios suivis</span><span>${scs.length}</span></div>
+      <div class="drawer-row"><span>Contact</span><span class="anon">${c.contact}</span></div>
+      <div class="drawer-row"><span>Scénarios suivis</span><span class="mono">${scs.length}</span></div>
     </div>
     <div class="drawer-section">
       <h4>Scénarios</h4>
-      ${scs.map(s => `<div class="drawer-row" style="cursor:pointer" data-open="${s.id}"><span>${s.name}</span><span class="badge badge--${s.status}">${STATUS_LABEL[s.status]}</span></div>`).join('')}
+      ${scs.map(s => `<div class="drawer-row" style="cursor:pointer" data-open="${s.id}"><span>${s.name}</span><span class="tag tag--${s.status}"><span class="tag__dot"></span>${STATUS_LABEL[s.status]}</span></div>`).join('')}
     </div>
   `;
   [...document.querySelectorAll('[data-open]')].forEach(el => {
@@ -633,9 +622,25 @@ function switchView(view) {
   [...document.querySelectorAll('.view')].forEach(v => v.classList.toggle('is-active', v.id === `view-${view}`));
 }
 
+/* ============================= Anonymisation ============================= */
+function safeGet(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+function safeSet(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
+
+function setAnon(on) {
+  document.querySelector('.app').dataset.anon = on ? 'on' : 'off';
+  const btn = document.getElementById('anon-toggle');
+  btn.classList.toggle('is-on', on);
+  btn.querySelector('.icon-toggle__label').textContent = on ? 'Clients anonymisés' : 'Clients visibles';
+  btn.querySelector('.icon-toggle__icon').innerHTML = on
+    ? '<svg viewBox="0 0 24 24"><path d="M12 6c-5 0-9.27 3.11-11 7.5C2.73 17.89 7 21 12 21s9.27-3.11 11-7.5C21.27 9.11 17 6 12 6zm0 12.5a5 5 0 110-10 5 5 0 010 10zM12 10.5a3 3 0 100 6 3 3 0 000-6z"/></svg>'
+    : '<svg viewBox="0 0 24 24"><path d="M2 4.27l2.28 2.28.46.46A11.8 11.8 0 001 13.5C2.73 17.89 7 21 12 21c1.99 0 3.86-.5 5.49-1.38l.42.42L20.73 22 22 20.73 3.27 3 2 4.27zM12 18.5a5 5 0 01-4.9-6.03l1.55 1.55a3 3 0 003.38 3.38l1.55 1.55A5 5 0 0112 18.5zm.08-9L15 12.42V12a3 3 0 00-3-3l.08-1.5zM12 6c5 0 9.27 3.11 11 7.5a12.02 12.02 0 01-3.15 4.5l-1.42-1.42A9.98 9.98 0 0021 13.5 9.97 9.97 0 0012 8c-.6 0-1.19.05-1.76.14L8.8 6.7A12.4 12.4 0 0112 6z"/></svg>';
+  safeSet('pv-anon', on ? '1' : '0');
+}
+
 /* ============================= Init ============================= */
 function renderAll() {
   renderKpis();
+  renderPulse();
   renderPriorityList();
   renderClientHealth();
   renderActivity();
@@ -650,12 +655,20 @@ function init() {
   populateClientFilter();
   renderAll();
 
+  const storedAnon = safeGet('pv-anon');
+  setAnon(storedAnon === null ? true : storedAnon === '1');
+
   [...document.querySelectorAll('.nav-item')].forEach(btn => {
     btn.addEventListener('click', () => switchView(btn.dataset.view));
   });
 
   document.getElementById('overlay').addEventListener('click', closeDrawer);
   document.getElementById('drawer-close').addEventListener('click', closeDrawer);
+
+  document.getElementById('anon-toggle').addEventListener('click', () => {
+    const isOn = document.querySelector('.app').dataset.anon === 'on';
+    setAnon(!isOn);
+  });
 
   document.getElementById('global-search').addEventListener('input', (e) => {
     state.search = e.target.value.trim();
@@ -682,8 +695,8 @@ function init() {
         `Aujourd'hui à ${now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}`;
       btn.disabled = false;
       btn.textContent = 'Lancer une analyse';
-      showToast('Analyse IA terminée — aucun nouveau risque critique détecté.');
-    }, 1600);
+      showToast('Analyse terminée — aucun nouveau risque critique détecté.');
+    }, 1400);
   });
 }
 
