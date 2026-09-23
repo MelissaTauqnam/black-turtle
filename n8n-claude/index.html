@@ -1,5 +1,5 @@
 <title>Atelier n8n + Claude Code</title>
-<meta name="description" content="Comprendre les automatisations n8n et développer avec Claude Code des interfaces connectées en back à des scénarios n8n.">
+<meta name="description" content="Guide pédagogique pour débutants : comprendre les automatisations n8n et créer avec Claude Code des interfaces reliées à des workflows n8n.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -243,7 +243,7 @@
   .status.run i { background: var(--amber); box-shadow: 0 0 0 4px rgba(245, 184, 61, .15); }
   .status.ok i { background: var(--green); }
   .log { padding: 14px 16px; font: 12.5px/1.7 var(--mono); color: #CFC6E2; overflow: auto; flex: 1; margin: 0; white-space: pre-wrap; word-break: break-word; }
-  .log .t { color: var(--faint); }
+  .log .ts { color: var(--faint); }
   .log .req { color: #FFB38A; }
   .log .n8n { color: #FF9EB5; }
   .log .ok { color: var(--green); }
@@ -316,6 +316,91 @@
   .cta h2 { max-width: 20ch; }
   footer { padding-block: 40px 56px; color: var(--faint); font-size: 14px; }
   footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid var(--line-soft); padding-top: 28px; }
+
+  /* ---------- Pedagogy additions ---------- */
+  .t {
+    border-bottom: 1.5px dotted #C98AA0; cursor: help; text-decoration: none; color: inherit;
+    transition: color .15s, border-color .15s;
+  }
+  .t:hover, .t:focus-visible, .t.open { color: var(--orange); border-bottom-color: var(--orange); outline: none; }
+  #pop {
+    position: fixed; z-index: 100; max-width: min(320px, calc(100vw - 24px)); padding: 14px 16px; border-radius: 12px;
+    background: #2A2040; border: 1px solid #4A3E63; box-shadow: 0 18px 50px -10px rgba(0,0,0,.6);
+    font-size: 14px; line-height: 1.5; color: var(--text); pointer-events: none;
+  }
+  #pop b { display: block; font-size: 15px; margin-bottom: 4px; }
+  #pop .cat { display: block; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--orange); font-weight: 700; margin-bottom: 4px; }
+  #pop .ex { display: block; margin-top: 8px; color: var(--muted); font-size: 13px; }
+
+  .path { margin-top: 36px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  @media (max-width: 760px) { .path { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .path a { text-decoration: none; border: 1px solid var(--line); background: rgba(27, 20, 41, .7); border-radius: 12px; padding: 14px 16px; display: grid; gap: 2px; transition: border-color .2s; }
+  .path a:hover { border-color: var(--pink); }
+  .path .n { font: 600 12px var(--mono); color: var(--orange); }
+  .path strong { font-size: 15px; }
+  .path span.d { color: var(--muted); font-size: 13px; line-height: 1.4; }
+  .level { color: var(--faint); font-size: 14px; }
+
+  .analogy { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  @media (max-width: 900px) { .analogy { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 540px) { .analogy { grid-template-columns: 1fr; } }
+  .ana { border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-2); padding: 22px; display: grid; gap: 10px; align-content: start; }
+  .ana .big { font-size: 30px; line-height: 1; }
+  .ana .role { font: 600 12px var(--mono); color: var(--orange); letter-spacing: .02em; }
+  .ana p { color: var(--muted); font-size: 15px; }
+  .ana .real { border-top: 1px dashed var(--line); padding-top: 10px; font-size: 14px; color: var(--text); }
+  .ana .real b { color: var(--pink); font-weight: 700; }
+
+  .callout { margin-top: 28px; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; background: var(--surface); display: grid; grid-template-columns: 40px 1fr; gap: 16px; align-items: start; }
+  .callout .ic { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: rgba(255, 155, 61, .12); color: var(--orange); font-weight: 800; font-size: 18px; }
+  .callout h3 { font-size: 17px; margin-bottom: 6px; }
+  .callout p { color: var(--muted); font-size: 15px; }
+  .callout p + p { margin-top: 8px; }
+
+  .fb { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; margin-top: 16px; }
+  @media (max-width: 700px) { .fb { grid-template-columns: 1fr; } }
+  .fb > div { border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; background: var(--bg-2); display: grid; gap: 8px; align-content: start; }
+  .fb .k { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+  .fb p { color: var(--muted); font-size: 15px; }
+
+  .enclair { font-size: 14px; color: var(--text); background: rgba(60, 203, 140, .07); border: 1px solid rgba(60, 203, 140, .22); border-radius: 9px; padding: 9px 12px; }
+  .enclair b { color: var(--green); font-weight: 700; }
+
+  .anat { border: 1px solid var(--line); border-radius: var(--radius); background: #0A0612; overflow: hidden; }
+  .anat pre { margin: 0; padding: 18px 20px; font-size: 14px; line-height: 1.8; overflow-x: auto; color: #D8D0EA; }
+  .anat .mk { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--pink); color: #fff; font: 700 11px var(--display); margin-left: 8px; vertical-align: 1px; }
+  .anat ol { margin: 0; padding: 16px 20px 18px 20px; list-style: none; display: grid; gap: 10px; border-top: 1px solid var(--line); background: var(--surface); counter-reset: a; }
+  .anat li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; font-size: 14px; color: var(--muted); }
+  .anat li::before { counter-increment: a; content: counter(a); display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--pink); color: #fff; font: 700 11px var(--display); margin-top: 2px; }
+  .anat li b { color: var(--text); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; padding: 10px 16px; border-bottom: 1px solid var(--line-soft); font-size: 12px; color: var(--muted); }
+  .legend span::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; vertical-align: 1px; background: currentColor; }
+  .legend .l1 { color: #FFB38A; } .legend .l2 { color: #FF9EB5; } .legend .l3 { color: var(--green); }
+  .legend span { color: var(--muted); }
+  .legend .l1::before { background: #FFB38A; } .legend .l2::before { background: #FF9EB5; } .legend .l3::before { background: var(--green); }
+
+  .explain { border-top: 1px solid var(--line); background: var(--surface); padding: 16px 18px; display: grid; gap: 6px; }
+  .explain .k { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--green); }
+  .explain p { color: var(--text); font-size: 15px; line-height: 1.55; }
+  .term pre { min-height: 300px; }
+
+  .gloss-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 24px; }
+  .gloss-tools input { flex: 1 1 260px; background: var(--bg-2); color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; font: 400 15px var(--display); }
+  .gloss-tools input:focus { outline: none; border-color: var(--orange); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips button { background: transparent; border: 1px solid var(--line); color: var(--muted); border-radius: 999px; padding: 7px 12px; font: 600 13px var(--display); cursor: pointer; }
+  .chips button[aria-pressed="true"] { background: var(--pink); color: #fff; border-color: var(--pink); }
+  .gloss { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; }
+  @media (max-width: 760px) { .gloss { grid-template-columns: 1fr; } }
+  .g-item { padding: 16px 0; border-bottom: 1px solid var(--line-soft); display: grid; gap: 4px; align-content: start; scroll-margin-top: 90px; }
+  .g-item dt { font-weight: 700; font-size: 16px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .g-item dt small { font: 500 11px var(--mono); color: var(--faint); text-transform: uppercase; letter-spacing: .06em; }
+  .g-item dd { margin: 0; color: var(--muted); font-size: 15px; }
+  .g-item dd .ex { display: block; margin-top: 4px; font-size: 14px; color: #CFC6E2; }
+  .g-item.flash { background: linear-gradient(90deg, rgba(234,75,113,.12), transparent); }
+  .g-empty { color: var(--faint); padding: 20px 0; }
+  .code pre .cm { color: #8E84A6; }
 </style>
 
 <!-- ============ NAV ============ -->
@@ -332,13 +417,13 @@
       Atelier <small>n8n + Claude Code</small>
     </a>
     <div class="nav-links">
-      <a href="#n8n">Comment marche n8n</a>
-      <a href="#architecture">Architecture</a>
-      <a href="#claude-code">Dev avec Claude Code</a>
-      <a href="#code">Code</a>
-      <a href="#faq">FAQ</a>
+      <a href="#bases">L'idée</a>
+      <a href="#n8n">n8n</a>
+      <a href="#architecture">Relier les deux</a>
+      <a href="#claude-code">Claude Code</a>
+      <a href="#glossaire">Glossaire</a>
     </div>
-    <a class="btn btn-primary" href="#architecture">Voir la démo</a>
+    <a class="btn btn-primary" href="#glossaire">Glossaire</a>
   </div>
 </nav>
 
@@ -346,30 +431,36 @@
 <header class="hero" id="top">
   <div class="wrap">
     <div class="hero-copy">
-      <span class="pill"><b>Guide</b> Automatisations + interfaces sur mesure</span>
-      <h1>Des automatisations <span class="grad-text">n8n</span> pilotées par des interfaces codées avec Claude Code</h1>
-      <p class="lede">n8n orchestre la logique métier en back : déclencheurs, IA, APIs, bases de données. Claude Code génère le front qui l'appelle. Voici comment les deux s'emboîtent, du premier nœud jusqu'à la mise en production.</p>
+      <span class="pill"><b>Guide</b> Débutant → intermédiaire · 20 min de lecture</span>
+      <h1>Automatisez avec <span class="grad-text">n8n</span>, créez l'interface avec Claude Code</h1>
+      <p class="lede"><span class="t" data-t="n8n">n8n</span> fait le travail en coulisses : il enchaîne des tâches automatiquement. <span class="t" data-t="claude-code">Claude Code</span> vous aide à construire l'écran que vos utilisateurs voient. Ce guide explique pas à pas, avec des mots simples, comment les relier.</p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="#n8n">Comprendre n8n →</a>
-        <a class="btn btn-ghost" href="#claude-code">Le workflow Claude Code</a>
+        <a class="btn btn-primary" href="#bases">Commencer par l'idée générale →</a>
+        <a class="btn btn-ghost" href="#glossaire">Voir le glossaire</a>
       </div>
-      <div class="hero-meta"><span>Webhooks comme API</span><span>Agents IA</span><span>+400 intégrations</span><span>Auto-hébergeable</span></div>
+      <p class="level">Astuce : les mots <span class="t" data-t="souligne">soulignés en pointillés</span> affichent leur définition au survol (ou au toucher sur mobile).</p>
     </div>
+
+    <nav class="path" aria-label="Parcours du guide">
+      <a href="#bases"><span class="n">Étape 1</span><strong>Comprendre l'idée</strong><span class="d">Front, back : une analogie simple</span></a>
+      <a href="#n8n"><span class="n">Étape 2</span><strong>Découvrir n8n</strong><span class="d">Workflows, nœuds et données</span></a>
+      <a href="#architecture"><span class="n">Étape 3</span><strong>Relier une interface</strong><span class="d">Le webhook et une démo à tester</span></a>
+      <a href="#claude-code"><span class="n">Étape 4</span><strong>Construire avec Claude Code</strong><span class="d">De la consigne à la mise en ligne</span></a>
+    </nav>
 
     <!-- Workflow editor mock -->
     <div class="editor" role="region" aria-label="Exemple de workflow n8n interactif">
       <div class="editor-bar">
         <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
-        <div class="editor-title">Qualification de leads <span>/ Personnel</span></div>
+        <div class="editor-title">Exemple : qualifier un prospect <span>/ éditeur n8n (reproduction)</span></div>
         <div class="editor-right">
           <span class="toggle"><i aria-hidden="true"></i>Actif</span>
-          <button class="run-btn" id="heroRun" type="button">▶ Exécuter le workflow</button>
+          <button class="run-btn" id="heroRun" type="button">▶ Lancer le workflow</button>
         </div>
       </div>
       <div class="editor-body">
         <div class="canvas">
           <svg id="flow" viewBox="0 0 860 360" role="group" aria-label="Nœuds du workflow">
-            <!-- edges -->
             <path id="e1" class="edge" d="M112 170 L190 170"/>
             <path id="e2" class="edge" d="M262 170 L340 170"/>
             <path id="e3" class="edge" d="M490 170 L570 170"/>
@@ -378,16 +469,14 @@
             <path class="edge-sub" d="M370 206 L370 262"/>
             <path class="edge-sub" d="M415 206 L415 262"/>
             <path class="edge-sub" d="M460 206 L460 262"/>
-            <text class="edge-tag" x="676" y="118">true</text>
-            <text class="edge-tag" x="676" y="232">false</text>
-            <!-- ports -->
+            <text class="edge-tag" x="676" y="118">oui</text>
+            <text class="edge-tag" x="676" y="232">non</text>
             <g aria-hidden="true">
               <circle class="port" cx="112" cy="170" r="4"/><circle class="port" cx="190" cy="170" r="4"/>
               <circle class="port" cx="262" cy="170" r="4"/><circle class="port" cx="340" cy="170" r="4"/>
               <circle class="port" cx="490" cy="170" r="4"/><circle class="port" cx="570" cy="170" r="4"/>
               <circle class="port" cx="642" cy="170" r="4"/><circle class="port" cx="740" cy="100" r="4"/><circle class="port" cx="740" cy="240" r="4"/>
             </g>
-            <!-- pulses -->
             <g id="pulses" aria-hidden="true">
               <circle class="pulse" r="4"><animateMotion dur="3.2s" repeatCount="indefinite" begin="0s"><mpath href="#e1"/></animateMotion></circle>
               <circle class="pulse" r="4"><animateMotion dur="3.2s" repeatCount="indefinite" begin="0.5s"><mpath href="#e2"/></animateMotion></circle>
@@ -396,58 +485,51 @@
               <circle class="pulse" r="4"><animateMotion dur="3.2s" repeatCount="indefinite" begin="1.9s"><mpath href="#e5"/></animateMotion></circle>
             </g>
 
-            <!-- Webhook (trigger) -->
             <g class="node" data-node="webhook" tabindex="0" role="button" aria-label="Nœud Webhook">
               <path class="n-box" d="M76 134 H100 a12 12 0 0 1 12 12 V194 a12 12 0 0 1 -12 12 H76 a36 36 0 0 1 -36 -36 a36 36 0 0 1 36 -36 Z"/>
               <path class="n-glyph" stroke="#EA4B71" d="M82 156 l-8 16 h10 l-6 14"/>
               <text class="n-label" x="76" y="230">Webhook</text>
-              <text class="n-sub" x="76" y="246">POST /lead</text>
+              <text class="n-sub" x="76" y="246">déclencheur</text>
               <circle class="check" cx="104" cy="142" r="7" fill="#3CCB8C"/>
             </g>
-            <!-- Set / validate -->
-            <g class="node" data-node="set" tabindex="0" role="button" aria-label="Nœud Valider les données">
+            <g class="node" data-node="set" tabindex="0" role="button" aria-label="Nœud Nettoyer les données">
               <rect class="n-box" x="190" y="134" width="72" height="72" rx="12"/>
               <path class="n-glyph" stroke="#8B6CFF" d="M212 158 h28 M212 170 h20 M212 182 h24"/>
-              <text class="n-label" x="226" y="230">Valider</text>
+              <text class="n-label" x="226" y="230">Nettoyer</text>
               <text class="n-sub" x="226" y="246">Edit Fields</text>
               <circle class="check" cx="254" cy="142" r="7" fill="#3CCB8C"/>
             </g>
-            <!-- AI Agent -->
             <g class="node" data-node="agent" tabindex="0" role="button" aria-label="Nœud AI Agent">
               <rect class="n-box" x="340" y="134" width="150" height="72" rx="12"/>
               <path class="n-glyph" stroke="#FF9B3D" d="M366 158 v24 M354 170 h24 M358 162 l16 16 M374 162 l-16 16"/>
               <text x="392" y="166" fill="#F4F0FB" font-family="Figtree, system-ui, sans-serif" font-weight="700" font-size="14">AI Agent</text>
-              <text x="392" y="184" fill="#6F6588" font-family="Figtree, system-ui, sans-serif" font-size="11">Tools Agent</text>
+              <text x="392" y="184" fill="#6F6588" font-family="Figtree, system-ui, sans-serif" font-size="11">l'IA analyse</text>
               <circle class="check" cx="482" cy="142" r="7" fill="#3CCB8C"/>
             </g>
-            <!-- sub nodes -->
             <g aria-hidden="true">
               <circle cx="370" cy="286" r="22" fill="#231A35" stroke="#4A3E63" stroke-width="1.5"/>
-              <text x="370" y="291" text-anchor="middle" fill="#FF9B3D" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600">A\</text>
+              <text x="370" y="291" text-anchor="middle" fill="#FF9B3D" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600">IA</text>
               <text class="n-sub" x="370" y="328">Claude</text>
               <circle cx="415" cy="286" r="22" fill="#231A35" stroke="#4A3E63" stroke-width="1.5"/>
               <path class="n-glyph" stroke="#8B6CFF" d="M406 280 h18 M406 286 h18 M406 292 h18" stroke-width="1.8"/>
-              <text class="n-sub" x="415" y="328">Mémoire</text>
+              <text class="n-sub" x="415" y="344">Mémoire</text>
               <circle cx="460" cy="286" r="22" fill="#231A35" stroke="#4A3E63" stroke-width="1.5"/>
               <text x="460" y="291" text-anchor="middle" fill="#3CCB8C" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">{ }</text>
-              <text class="n-sub" x="460" y="344">Outil CRM</text>
+              <text class="n-sub" x="460" y="328">Outil CRM</text>
             </g>
-            <!-- IF -->
-            <g class="node" data-node="if" tabindex="0" role="button" aria-label="Nœud If">
+            <g class="node" data-node="if" tabindex="0" role="button" aria-label="Nœud If (condition)">
               <rect class="n-box" x="570" y="134" width="72" height="72" rx="12"/>
               <path class="n-glyph" stroke="#3CCB8C" d="M590 170 h12 l10 -12 h10 M602 170 l10 12 h10"/>
               <text class="n-label" x="606" y="230">If</text>
-              <text class="n-sub" x="606" y="246">score ≥ 70</text>
+              <text class="n-sub" x="606" y="246">score ≥ 70 ?</text>
               <circle class="check" cx="634" cy="142" r="7" fill="#3CCB8C"/>
             </g>
-            <!-- Slack -->
             <g class="node" data-node="slack" tabindex="0" role="button" aria-label="Nœud Slack">
               <rect class="n-box" x="740" y="64" width="72" height="72" rx="12"/>
               <text x="776" y="109" text-anchor="middle" fill="#F5B83D" font-family="JetBrains Mono, monospace" font-size="28" font-weight="600">#</text>
               <text class="n-label" x="776" y="158">Slack</text>
               <circle class="check" cx="804" cy="72" r="7" fill="#3CCB8C"/>
             </g>
-            <!-- Sheets -->
             <g class="node" data-node="sheets" tabindex="0" role="button" aria-label="Nœud Google Sheets">
               <rect class="n-box" x="740" y="204" width="72" height="72" rx="12"/>
               <path class="n-glyph" stroke="#3CCB8C" stroke-width="1.8" d="M762 226 h28 v28 h-28 Z M762 235 h28 M762 245 h28 M774 226 v28"/>
@@ -455,7 +537,7 @@
               <circle class="check" cx="804" cy="212" r="7" fill="#3CCB8C"/>
             </g>
           </svg>
-          <div class="canvas-hint">Cliquez sur un nœud pour inspecter ses données</div>
+          <div class="canvas-hint">Cliquez sur un bloc pour voir les données qui y entrent et en sortent</div>
         </div>
         <aside class="inspector" aria-live="polite">
           <div class="insp-head">
@@ -464,8 +546,8 @@
             <p id="inspDesc">—</p>
           </div>
           <div class="insp-tabs" role="tablist" aria-label="Données du nœud">
-            <button type="button" role="tab" id="tabIn" aria-selected="false" data-io="input">Input</button>
-            <button type="button" role="tab" id="tabOut" aria-selected="true" data-io="output">Output</button>
+            <button type="button" role="tab" id="tabIn" aria-selected="false" data-io="input">Ce qui entre</button>
+            <button type="button" role="tab" id="tabOut" aria-selected="true" data-io="output">Ce qui sort</button>
           </div>
           <pre class="insp-json" id="inspJson"></pre>
         </aside>
@@ -476,79 +558,171 @@
 
 <div class="strip">
   <div class="wrap">
-    <span class="lbl">Un scénario n8n parle à tout ce qui a une API</span>
-    <span>Gmail</span><span>Slack</span><span>HubSpot</span><span>Notion</span><span>Postgres</span><span>Stripe</span><span>Airtable</span><span>Claude</span><span>HTTP Request</span>
+    <span class="lbl">n8n peut se connecter à des centaines d'applications, par exemple :</span>
+    <span>Gmail</span><span>Slack</span><span>HubSpot</span><span>Notion</span><span>Google Sheets</span><span>Stripe</span><span>Airtable</span><span>Claude</span><span>+ toute API</span>
   </div>
 </div>
 
-<!-- ============ HOW N8N WORKS ============ -->
-<section id="n8n">
+<!-- ============ L'IDÉE ============ -->
+<section id="bases">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Les bases de n8n</span>
-      <h2>Un workflow = un déclencheur, des nœuds, et des données JSON qui circulent</h2>
-      <p class="lede">n8n est un outil d'automatisation « low-code » : on assemble visuellement des nœuds, et on descend dans le code (JavaScript, Python, expressions) seulement quand c'est utile.</p>
+      <span class="eyebrow">Étape 1 · L'idée générale</span>
+      <h2>Une application, c'est un restaurant</h2>
+      <p class="lede">Avant de parler technique, une image. Une application web a une partie que l'on voit (la salle) et une partie qui travaille en coulisses (la cuisine). Dans ce guide, <b>Claude Code aide à construire la salle</b> et <b>n8n tient la cuisine</b>.</p>
+    </div>
+
+    <div class="analogy">
+      <article class="ana">
+        <div class="big" aria-hidden="true">🪑</div>
+        <span class="role">La salle</span>
+        <h3>Le client passe commande</h3>
+        <p>Il voit un menu, choisit, remplit sa commande. Il ne voit jamais la cuisine.</p>
+        <p class="real">En vrai : l'<b><span class="t" data-t="frontend">interface</span></b>, par exemple un formulaire sur une page web. C'est ce que Claude Code vous aide à coder.</p>
+      </article>
+      <article class="ana">
+        <div class="big" aria-hidden="true">🧾</div>
+        <span class="role">Le bon de commande</span>
+        <h3>La commande part en cuisine</h3>
+        <p>Le serveur transmet un bon, toujours au même format, par le même passe-plat.</p>
+        <p class="real">En vrai : une <b><span class="t" data-t="requete">requête</span></b> envoyée au <b><span class="t" data-t="webhook">webhook</span></b>, avec les données au format <span class="t" data-t="json">JSON</span>.</p>
+      </article>
+      <article class="ana">
+        <div class="big" aria-hidden="true">👩‍🍳</div>
+        <span class="role">La cuisine</span>
+        <h3>La recette est exécutée</h3>
+        <p>Les cuisiniers suivent une recette, étape par étape, et font appel aux fournisseurs si besoin.</p>
+        <p class="real">En vrai : le <b><span class="t" data-t="workflow">workflow</span> n8n</b>. Chaque étape est un <span class="t" data-t="noeud">nœud</span> ; les fournisseurs sont Gmail, Slack, une IA…</p>
+      </article>
+      <article class="ana">
+        <div class="big" aria-hidden="true">🍽️</div>
+        <span class="role">Le plat servi</span>
+        <h3>Le client reçoit le résultat</h3>
+        <p>Le plat revient en salle, et le client voit que sa commande est prête.</p>
+        <p class="real">En vrai : la <b><span class="t" data-t="reponse">réponse</span></b> de n8n, que l'interface affiche (« Merci, on vous rappelle ! »).</p>
+      </article>
+    </div>
+
+    <div class="fb">
+      <div>
+        <span class="k" style="color:#FFB38A">Le « front » (front-end)</span>
+        <h3>Ce que l'utilisateur voit</h3>
+        <p>Pages, boutons, formulaires, affichés dans le navigateur. On l'écrit en HTML (la structure), CSS (l'apparence) et JavaScript (les interactions). <b style="color:var(--text)">C'est ce que vous construisez avec Claude Code.</b></p>
+      </div>
+      <div>
+        <span class="k" style="color:#FF9EB5">Le « back » (back-end)</span>
+        <h3>Ce qui travaille en coulisses</h3>
+        <p>Recevoir les données, les vérifier, appeler d'autres services, enregistrer, prévenir. D'habitude, cela demande beaucoup de code. <b style="color:var(--text)">Ici, c'est n8n qui joue ce rôle, sous forme visuelle.</b></p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="ic" aria-hidden="true">?</div>
+      <div>
+        <h3>Pourquoi séparer les deux ?</h3>
+        <p>Parce que chaque outil fait ce qu'il fait le mieux. Claude Code produit rapidement une interface propre et sur mesure. n8n rend la logique métier visible : on voit chaque étape, on la modifie sans toucher au site, et on garde l'historique de ce qui s'est passé.</p>
+        <p>Autre avantage : les mots de passe et accès à vos outils (Gmail, CRM…) restent rangés dans n8n. Ils n'apparaissent jamais dans la page web, que n'importe qui peut inspecter.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW N8N WORKS ============ -->
+<section id="n8n" class="arch-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Étape 2 · Les bases de n8n</span>
+      <h2>n8n en six notions</h2>
+      <p class="lede">n8n est un outil d'<span class="t" data-t="automatisation">automatisation</span> : on y dessine un <span class="t" data-t="workflow">workflow</span> en reliant des blocs, et n8n l'exécute tout seul. Pas besoin de savoir coder pour commencer ; on peut ajouter du code plus tard si nécessaire.</p>
     </div>
 
     <div class="concepts">
       <article class="concept">
         <div class="c-ico"><svg viewBox="0 0 20 20"><path d="M11 2 L5 11 h5 l-1 7 6-9 h-5 z" fill="none" stroke="#EA4B71" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
-        <h3>Trigger</h3>
-        <p>Chaque workflow démarre par un déclencheur : <code>Webhook</code>, <code>Schedule</code> (cron), un événement d'app (nouvel email, nouvelle ligne…), un formulaire ou un chat.</p>
+        <h3>1. Le déclencheur</h3>
+        <p>C'est le premier bloc, celui qui <b>démarre</b> le workflow. Il répond à la question « quand ? » : tous les lundis à 9 h, à chaque nouvel email, quand quelqu'un envoie un formulaire…</p>
+        <p class="enclair"><b>En clair :</b> c'est le « top départ ». Sans déclencheur, rien ne se passe.</p>
       </article>
       <article class="concept">
         <div class="c-ico"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="6" height="6" rx="1.5" fill="none" stroke="#8B6CFF" stroke-width="1.8"/><rect x="11" y="11" width="6" height="6" rx="1.5" fill="none" stroke="#8B6CFF" stroke-width="1.8"/><path d="M9 6 h3 a2 2 0 0 1 2 2 v3" fill="none" stroke="#8B6CFF" stroke-width="1.8"/></svg></div>
-        <h3>Nœuds</h3>
-        <p>Chaque nœud fait une chose : appeler une API, transformer des données (<code>Edit Fields</code>, <code>Code</code>), router (<code>If</code>, <code>Switch</code>), fusionner (<code>Merge</code>), boucler.</p>
+        <h3>2. Les nœuds</h3>
+        <p>Chaque bloc (appelé <span class="t" data-t="noeud">nœud</span>) fait <b>une seule chose</b> : envoyer un message Slack, lire un tableur, poser une question à une IA, trier des données…</p>
+        <p class="enclair"><b>En clair :</b> ce sont les étapes de la recette, reliées par des flèches.</p>
       </article>
       <article class="concept">
         <div class="c-ico"><svg viewBox="0 0 20 20"><path d="M6 4 C3 4 4 10 2 10 C4 10 3 16 6 16 M14 4 C17 4 16 10 18 10 C16 10 17 16 14 16" fill="none" stroke="#FF9B3D" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <h3>Items JSON</h3>
-        <p>Entre deux nœuds circule une liste d'<em>items</em>. Chaque item est un objet <code>json</code>. Un nœud s'exécute une fois par item — 10 leads en entrée, 10 appels en sortie.</p>
+        <h3>3. Les données (items)</h3>
+        <p>Le long des flèches circulent des données au format <span class="t" data-t="json">JSON</span>. Chaque « paquet » de données est un <span class="t" data-t="item">item</span>. Si 10 personnes remplissent le formulaire, 10 items passent.</p>
+        <p class="enclair"><b>En clair :</b> chaque nœud reçoit des données, les traite, et passe le résultat au suivant.</p>
       </article>
       <article class="concept">
         <div class="c-ico"><svg viewBox="0 0 20 20"><path d="M4 6 l-2 4 2 4 M16 6 l2 4 -2 4 M12 4 l-4 12" fill="none" stroke="#3CCB8C" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <h3>Expressions</h3>
-        <p>Tout paramètre peut être dynamique : <code>{{ $json.email }}</code> lit l'item courant, <code>{{ $('Webhook').item.json.body }}</code> lit un nœud précédent.</p>
+        <h3>4. Les expressions</h3>
+        <p>Dans un champ, on peut écrire <code>{{ $json.email }}</code> au lieu d'un texte fixe. n8n remplace alors la formule par l'email de la personne en cours.</p>
+        <p class="enclair"><b>En clair :</b> c'est comme un publipostage : « Bonjour {{ prénom }} ».</p>
       </article>
       <article class="concept">
         <div class="c-ico"><svg viewBox="0 0 20 20"><circle cx="10" cy="7" r="3.2" fill="none" stroke="#F5B83D" stroke-width="1.8"/><path d="M4 17 c0-3.5 3-5 6-5 s6 1.5 6 5" fill="none" stroke="#F5B83D" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <h3>Agents IA</h3>
-        <p>Le nœud <code>AI Agent</code> branche un modèle (Claude, etc.), une mémoire et des outils. L'agent décide lui-même quels outils appeler pour accomplir la tâche.</p>
+        <h3>5. Les agents IA</h3>
+        <p>Le nœud <code>AI Agent</code> confie une tâche à une IA (un <span class="t" data-t="llm">modèle de langage</span> comme Claude). On peut lui donner des outils : chercher dans le <span class="t" data-t="crm">CRM</span>, envoyer un email…</p>
+        <p class="enclair"><b>En clair :</b> un assistant qui lit, résume, classe ou rédige à votre place, au milieu du workflow.</p>
       </article>
       <article class="concept">
         <div class="c-ico"><svg viewBox="0 0 20 20"><path d="M3 15 V5 M3 15 h14 M6 12 l3-4 3 2 4-5" fill="none" stroke="#FF9EB5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>Exécutions</h3>
-        <p>Chaque run est journalisé avec les données de chaque nœud. On rejoue, on débogue, on « épingle » des données de test. Un workflow d'erreur prévient en cas d'échec.</p>
+        <h3>6. Les exécutions</h3>
+        <p>Chaque fois que le workflow tourne, n8n enregistre une <span class="t" data-t="execution">exécution</span> : ce qui est entré et sorti de chaque nœud, et où ça a bloqué en cas d'erreur.</p>
+        <p class="enclair"><b>En clair :</b> le journal de bord, indispensable pour comprendre un problème.</p>
       </article>
     </div>
 
     <div class="split" style="margin-top: 72px;">
       <div>
-        <span class="eyebrow">Le point clé pour le dev d'interfaces</span>
-        <h2 style="margin-top: 14px; font-size: clamp(26px, 3.4vw, 38px);">Un nœud Webhook transforme n'importe quel workflow en endpoint d'API</h2>
+        <span class="eyebrow">Lire une donnée JSON</span>
+        <h2 style="margin-top: 14px; font-size: clamp(26px, 3.4vw, 38px);">Le JSON, c'est juste une fiche avec des étiquettes</h2>
+        <p class="lede" style="margin-top: 16px; font-size: 17px;">Vous en verrez partout : dans n8n, dans les réponses d'API, dans le code généré par Claude Code. Pas besoin de l'écrire à la main, mais il faut savoir le lire. Quatre règles suffisent.</p>
+      </div>
+      <div class="anat">
+<pre><span class="tok-b">{</span><span class="mk">1</span>
+  <span class="tok-k">"entreprise"</span>: <span class="tok-s">"Boulangerie Martin"</span>,<span class="mk">2</span>
+  <span class="tok-k">"salaries"</span>: <span class="tok-n">24</span>,<span class="mk">3</span>
+  <span class="tok-k">"client"</span>: <span class="tok-b">false</span>,
+  <span class="tok-k">"besoins"</span>: [<span class="tok-s">"commandes"</span>, <span class="tok-s">"factures"</span>]<span class="mk">4</span>
+<span class="tok-b">}</span></pre>
+        <ol>
+          <li><span><b>Les accolades { }</b> entourent une fiche (un « objet »).</span></li>
+          <li><span><b>"étiquette": valeur</b>, séparées par des virgules. Le texte est toujours entre guillemets.</span></li>
+          <li><span><b>Les nombres</b> et <b>true / false</b> (vrai / faux) s'écrivent sans guillemets.</span></li>
+          <li><span><b>Les crochets [ ]</b> contiennent une liste de valeurs.</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="split" style="margin-top: 72px;">
+      <div>
+        <span class="eyebrow">Le point clé pour relier une interface</span>
+        <h2 style="margin-top: 14px; font-size: clamp(26px, 3.4vw, 38px);">Le nœud Webhook : la sonnette de votre workflow</h2>
+        <p class="lede" style="margin-top: 16px; font-size: 17px;">Quand vous ajoutez un déclencheur <span class="t" data-t="webhook">Webhook</span>, n8n vous donne une adresse web (une <span class="t" data-t="endpoint">URL</span>). Chaque fois qu'un programme envoie des données à cette adresse, le workflow démarre avec ces données.</p>
         <ul class="checks">
-          <li><span><b>Une URL par workflow.</b> <code class="mono" style="font-size:13px">/webhook-test/…</code> pendant que vous testez dans l'éditeur, <code class="mono" style="font-size:13px">/webhook/…</code> une fois le workflow activé.</span></li>
-          <li><span><b>Vous choisissez la réponse.</b> Répondre tout de suite, à la fin du dernier nœud, ou via un nœud <code class="mono" style="font-size:13px">Respond to Webhook</code> qui renvoie exactement le JSON attendu par le front.</span></li>
-          <li><span><b>Sécurisable.</b> Authentification Header / Basic / JWT, origines CORS autorisées, méthode HTTP imposée.</span></li>
+          <li><span><b>Une adresse pour tester, une pour de vrai.</b> L'<span class="t" data-t="url-test">URL de test</span> sert pendant la construction ; l'URL de production marche en permanence une fois le workflow activé.</span></li>
+          <li><span><b>Vous décidez de ce qui est renvoyé.</b> Le nœud <code class="mono" style="font-size:13px">Respond to Webhook</code> (« répondre au webhook ») renvoie à l'interface exactement le message que vous voulez.</span></li>
+          <li><span><b>La sonnette peut être protégée.</b> On peut exiger une <span class="t" data-t="cle-api">clé secrète</span> pour que seuls vos programmes puissent déclencher le workflow.</span></li>
         </ul>
       </div>
       <div class="expr-card" aria-label="Exemple d'expressions n8n">
-        <header><span>Paramètres du nœud « Slack »</span><span class="mono">Expression</span></header>
+        <header><span>Exemple : réglages d'un nœud « Slack »</span><span class="mono">formule → résultat</span></header>
         <div class="expr-row">
-          <span class="f">Canal</span>
-          <code>#sales-<span class="b">{{ $json.region.toLowerCase() }}</span></code>
-          <span class="out">→ #sales-idf</span>
+          <span class="f">Canal où poster</span>
+          <code>#ventes-<span class="b">{{ $json.region }}</span></code>
+          <span class="out">→ #ventes-idf</span>
         </div>
         <div class="expr-row">
           <span class="f">Message</span>
-          <code>🔥 <span class="b">{{ $('Webhook').item.json.body.company }}</span> — score <span class="b">{{ $json.score }}</span>/100</code>
-          <span class="out">→ 🔥 Boulangerie Martin — score 86/100</span>
+          <code>Nouveau prospect : <span class="b">{{ $json.entreprise }}</span>, score <span class="b">{{ $json.score }}</span>/100</code>
+          <span class="out">→ Nouveau prospect : Boulangerie Martin, score 86/100</span>
         </div>
         <div class="expr-row">
-          <span class="f">Relance prévue</span>
-          <code><span class="b">{{ $now.plus({ days: 2 }).toFormat('dd/MM') }}</span></code>
-          <span class="out">→ 25/09</span>
+          <span class="f">Comment lire la formule</span>
+          <code><span class="b">{{ }}</span> = « calcule ceci » · <span class="b">$json</span> = « les données du bloc précédent » · <span class="b">.region</span> = « l'étiquette region »</code>
         </div>
       </div>
     </div>
@@ -556,53 +730,61 @@
 </section>
 
 <!-- ============ ARCHITECTURE + DEMO ============ -->
-<section id="architecture" class="arch-sec">
+<section id="architecture">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Architecture</span>
-      <h2>Le front parle HTTP, n8n fait le travail</h2>
-      <p class="lede">L'interface générée par Claude Code ne contient aucune logique métier sensible ni clé d'API tierce. Elle envoie une requête au webhook, le scénario n8n orchestre les services, puis renvoie un JSON propre.</p>
+      <span class="eyebrow">Étape 3 · Relier l'interface à n8n</span>
+      <h2>Le trajet d'un formulaire, du clic à la réponse</h2>
+      <p class="lede">Voici le chemin complet, de gauche à droite. Puis remplissez le formulaire de démonstration pour voir chaque étape s'allumer.</p>
     </div>
 
     <div class="arch" id="arch">
       <div class="lane">
-        <span class="lane-head">Interface</span>
+        <span class="lane-head">1 · L'interface</span>
         <div class="blk claude" data-step="0">
-          <span class="tag">généré par Claude Code</span>
-          <h3>Formulaire / App web</h3>
-          <p>HTML, React, Next.js… Valide la saisie, affiche le chargement et le résultat.</p>
+          <span class="tag">codée avec Claude Code</span>
+          <h3>Le formulaire</h3>
+          <p>L'utilisateur remplit et clique sur « Envoyer ». La page vérifie que les champs sont remplis, puis affiche « Envoi en cours… ».</p>
         </div>
       </div>
       <div class="lane">
-        <span class="lane-head">Transport</span>
+        <span class="lane-head">2 · L'envoi</span>
         <div class="blk" data-step="1">
-          <span class="tag">HTTPS · JSON</span>
-          <h3>POST /webhook/lead</h3>
-          <p>En-tête <span class="mono" style="font-size:12px">X-API-Key</span>, corps JSON. Idéalement via une route serveur (proxy) pour ne pas exposer la clé.</p>
+          <span class="tag">requête HTTP</span>
+          <h3>Direction le webhook</h3>
+          <p>Les données partent en <span class="t" data-t="json">JSON</span> vers l'URL du <span class="t" data-t="webhook">webhook</span>, avec une <span class="t" data-t="cle-api">clé</span> qui prouve que l'envoi est autorisé.</p>
         </div>
       </div>
       <div class="lane">
-        <span class="lane-head">Orchestration</span>
+        <span class="lane-head">3 · Le traitement</span>
         <div class="blk n8n" data-step="2">
           <span class="tag">workflow n8n</span>
-          <h3>Scénario</h3>
-          <p>Validation → Agent IA → Condition → Actions. Journalisé à chaque exécution.</p>
+          <h3>La recette s'exécute</h3>
+          <p>Nettoyer les données → l'IA donne un score → si le score est bon, prévenir l'équipe, sinon enregistrer dans un tableur.</p>
         </div>
       </div>
       <div class="lane">
-        <span class="lane-head">Services</span>
+        <span class="lane-head">4 · Les outils</span>
         <div class="blk" data-step="3">
-          <span class="tag">APIs tierces</span>
-          <h3>CRM, IA, Slack, BDD</h3>
-          <p>Les identifiants restent dans le coffre de n8n (Credentials), jamais dans le front.</p>
+          <span class="tag">services externes</span>
+          <h3>Slack, IA, tableur…</h3>
+          <p>n8n s'y connecte avec des accès (<span class="t" data-t="credential">credentials</span>) rangés en sécurité dans n8n, jamais dans la page web.</p>
         </div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 36px;">
+      <div class="ic" aria-hidden="true">↩</div>
+      <div>
+        <h3>Et le retour ?</h3>
+        <p>À la fin, n8n renvoie une <span class="t" data-t="reponse">réponse</span> à l'interface par le même chemin, en sens inverse. Elle contient un <span class="t" data-t="statut">code de statut</span> (200 = tout va bien) et un petit message JSON. L'interface lit ce message et affiche « Merci ! » ou une erreur compréhensible.</p>
       </div>
     </div>
 
     <div class="demo">
       <form class="panel" id="demoForm" novalidate>
-        <h3>Essayez le circuit complet</h3>
-        <p class="sub">Un exemple de formulaire tel que Claude Code pourrait le générer.</p>
+        <h3>À vous d'essayer</h3>
+        <p class="sub">Un formulaire comme Claude Code pourrait en générer. Modifiez la taille de l'entreprise pour voir le workflow prendre l'autre branche.</p>
         <div class="field">
           <label for="f-company">Entreprise</label>
           <input id="f-company" name="company" value="Boulangerie Martin" required>
@@ -622,63 +804,68 @@
         </div>
         <div class="field">
           <label for="f-need">Besoin</label>
-          <textarea id="f-need" name="need">Automatiser la prise de commandes B2B et les relances de factures.</textarea>
+          <textarea id="f-need" name="need">Automatiser la prise de commandes des entreprises clientes et les relances de factures.</textarea>
         </div>
-        <button class="btn btn-primary" id="demoBtn" type="submit">Envoyer au webhook</button>
+        <button class="btn btn-primary" id="demoBtn" type="submit">Envoyer</button>
       </form>
 
       <div class="console">
         <header>
-          <span class="mono">Réseau &amp; exécution</span>
+          <span class="mono">Ce qui se passe en coulisses</span>
           <span class="status" id="demoStatus"><i></i><span>en attente</span></span>
         </header>
-        <pre class="log" id="demoLog"><span class="dim">// Soumettez le formulaire pour voir la requête partir,
-// le scénario n8n s'exécuter nœud par nœud,
-// puis la réponse JSON revenir vers l'interface.</span></pre>
-        <div class="sim-note">Simulation locale : aucune donnée n'est envoyée. En production, <span class="mono">fetch()</span> appelle l'URL de votre webhook n8n.</div>
+        <div class="legend"><span class="l1">l'interface envoie</span><span class="l2">n8n travaille</span><span class="l3">la réponse revient</span></div>
+        <pre class="log" id="demoLog"><span class="dim">Cliquez sur « Envoyer » : vous verrez ici, dans l'ordre,
+les données partir, chaque bloc n8n s'exécuter,
+puis la réponse revenir vers l'interface.</span></pre>
+        <div class="sim-note">Démonstration simulée : rien n'est réellement envoyé. Dans un vrai projet, l'interface appelle l'URL de votre webhook n8n.</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============ CLAUDE CODE WORKFLOW ============ -->
-<section id="claude-code">
+<section id="claude-code" class="arch-sec">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Développer avec Claude Code</span>
-      <h2>Du contrat d'API à l'interface en production, en cinq étapes</h2>
-      <p class="lede">Claude Code travaille dans votre terminal et votre dépôt. Donnez-lui le contrat du webhook, il écrit le front, le client HTTP, les états d'erreur — et peut même créer le workflow n8n via le serveur MCP de n8n.</p>
+      <span class="eyebrow">Étape 4 · Construire avec Claude Code</span>
+      <h2>Vous décrivez, Claude Code écrit le code</h2>
+      <p class="lede"><span class="t" data-t="claude-code">Claude Code</span> est un assistant de programmation qui travaille directement dans le dossier de votre projet. Vous lui écrivez en français ce que vous voulez (un <span class="t" data-t="prompt">prompt</span>) ; il crée les fichiers, lance les vérifications et vous montre ce qu'il a fait. Relié à n8n par <span class="t" data-t="mcp">MCP</span>, il peut même construire le workflow.</p>
     </div>
 
     <div class="steps">
       <ol class="step-list" role="tablist" aria-label="Étapes" id="stepList">
-        <li><button type="button" role="tab" aria-selected="true" data-step="0"><span class="step-num">1</span><span><strong>Construire le scénario n8n</strong><span class="d">Webhook → logique → Respond to Webhook. À la main dans l'éditeur, ou demandé à Claude Code via MCP.</span></span></button></li>
-        <li><button type="button" role="tab" aria-selected="false" data-step="1"><span class="step-num">2</span><span><strong>Figer le contrat d'API</strong><span class="d">Champs attendus, format de réponse, codes d'erreur. Écrit dans le dépôt, c'est la source de vérité.</span></span></button></li>
-        <li><button type="button" role="tab" aria-selected="false" data-step="2"><span class="step-num">3</span><span><strong>Générer l'interface</strong><span class="d">Un prompt précis : stack, design, états de chargement et d'erreur, accessibilité.</span></span></button></li>
-        <li><button type="button" role="tab" aria-selected="false" data-step="3"><span class="step-num">4</span><span><strong>Brancher et tester</strong><span class="d">URL de test, exécution dans n8n, lecture des logs d'exécution, corrections.</span></span></button></li>
-        <li><button type="button" role="tab" aria-selected="false" data-step="4"><span class="step-num">5</span><span><strong>Sécuriser et déployer</strong><span class="d">Proxy serveur, secrets en variables d'environnement, workflow activé, URL de production.</span></span></button></li>
+        <li><button type="button" role="tab" aria-selected="true" data-step="0"><span class="step-num">1</span><span><strong>Construire le workflow n8n</strong><span class="d">À la main dans l'éditeur n8n, ou en le demandant à Claude Code.</span></span></button></li>
+        <li><button type="button" role="tab" aria-selected="false" data-step="1"><span class="step-num">2</span><span><strong>Écrire le « contrat »</strong><span class="d">Noter ce que l'interface envoie et ce que n8n répond. Tout le monde s'y réfère.</span></span></button></li>
+        <li><button type="button" role="tab" aria-selected="false" data-step="2"><span class="step-num">3</span><span><strong>Faire générer l'interface</strong><span class="d">Une consigne précise : quoi afficher, quoi envoyer, que faire en cas d'erreur.</span></span></button></li>
+        <li><button type="button" role="tab" aria-selected="false" data-step="3"><span class="step-num">4</span><span><strong>Tester ensemble</strong><span class="d">Envoyer de vraies données de test, lire le journal n8n, corriger.</span></span></button></li>
+        <li><button type="button" role="tab" aria-selected="false" data-step="4"><span class="step-num">5</span><span><strong>Sécuriser et mettre en ligne</strong><span class="d">Cacher les clés, activer le workflow, publier le site.</span></span></button></li>
       </ol>
       <div class="term" aria-live="polite">
-        <header><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div><span class="mono">~/projets/leads-app — claude</span></header>
+        <header><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div><span class="mono">Session Claude Code (exemple)</span></header>
         <pre id="termOut"></pre>
+        <div class="explain">
+          <span class="k">Ce qui se passe, en clair</span>
+          <p id="termExplain"></p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============ CODE ============ -->
-<section id="code" class="arch-sec">
+<section id="code">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Sous le capot</span>
-      <h2>Les fichiers qui relient l'interface au scénario</h2>
-      <p class="lede">Quatre pièces suffisent : le client HTTP côté front, la route proxy côté serveur, la configuration du webhook dans n8n et un <span class="mono" style="font-size:15px">CLAUDE.md</span> qui fixe les règles pour Claude Code.</p>
+      <span class="eyebrow">Pour les curieux · Sous le capot</span>
+      <h2>À quoi ressemble le code produit</h2>
+      <p class="lede">Vous n'avez pas besoin de l'écrire : Claude Code s'en charge. Mais savoir le lire aide à vérifier son travail. Chaque ligne importante est commentée en français (les lignes grisées qui commencent par <span class="mono" style="font-size:15px">//</span> ou <span class="mono" style="font-size:15px">#</span>).</p>
     </div>
     <div class="code">
       <div class="code-tabs" role="tablist" aria-label="Fichiers d'exemple" id="codeTabs">
-        <button type="button" role="tab" aria-selected="true" data-file="client">lib/leads.ts</button>
-        <button type="button" role="tab" aria-selected="false" data-file="proxy">app/api/lead/route.ts</button>
-        <button type="button" role="tab" aria-selected="false" data-file="webhook">n8n · Webhook</button>
+        <button type="button" role="tab" aria-selected="true" data-file="client">formulaire.js</button>
+        <button type="button" role="tab" aria-selected="false" data-file="proxy">api/lead.js</button>
+        <button type="button" role="tab" aria-selected="false" data-file="webhook">Réglages du Webhook n8n</button>
         <button type="button" role="tab" aria-selected="false" data-file="claudemd">CLAUDE.md</button>
         <button type="button" class="copy" id="copyBtn">Copier</button>
       </div>
@@ -689,20 +876,38 @@
 </section>
 
 <!-- ============ PRACTICES ============ -->
-<section id="practices">
+<section id="practices" class="arch-sec">
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Bonnes pratiques</span>
-      <h2>Ce qui sépare une démo d'un outil en production</h2>
+      <h2>Six réflexes pour passer de la démo à un vrai outil</h2>
+      <p class="lede">Les trois premiers sont indispensables dès qu'un vrai public utilise votre interface.</p>
     </div>
     <div class="practices">
-      <article class="practice"><span class="lvl must">Indispensable</span><h3>Authentifier le webhook</h3><p>Activez <code>Header Auth</code> sur le nœud Webhook. Sans ça, n'importe qui connaissant l'URL peut déclencher le scénario.</p></article>
-      <article class="practice"><span class="lvl must">Indispensable</span><h3>Garder les secrets côté serveur</h3><p>Le navigateur appelle votre route <code>/api/lead</code>, qui ajoute la clé et appelle n8n. La clé n'apparaît jamais dans le JavaScript public.</p></article>
-      <article class="practice"><span class="lvl must">Indispensable</span><h3>Valider deux fois</h3><p>Côté front pour l'expérience, côté n8n (<code>If</code> ou <code>Code</code>) pour la sécurité. Répondez <code>400</code> avec un message clair si l'entrée est invalide.</p></article>
-      <article class="practice"><span class="lvl should">Recommandé</span><h3>Un format de réponse unique</h3><p>Toujours <code>{ ok, data, error }</code> via <code>Respond to Webhook</code>. Le front n'a qu'un seul cas à gérer.</p></article>
-      <article class="practice"><span class="lvl should">Recommandé</span><h3>Traitements longs en asynchrone</h3><p>Au-delà de quelques secondes, répondez <code>202</code> avec un identifiant, puis laissez le front interroger un second webhook de statut.</p></article>
-      <article class="practice"><span class="lvl should">Recommandé</span><h3>Workflow d'erreur</h3><p>Branchez un <code>Error Trigger</code> qui notifie Slack ou email : vous savez qu'un scénario a échoué avant l'utilisateur.</p></article>
+      <article class="practice"><span class="lvl must">Indispensable</span><h3>Protéger la sonnette</h3><p>Activez l'authentification sur le nœud Webhook (une <span class="t" data-t="cle-api">clé secrète</span> dans un <span class="t" data-t="header">en-tête</span>). <b style="color:var(--text)">Pourquoi ?</b> Sans elle, toute personne qui trouve l'URL peut lancer votre workflow.</p></article>
+      <article class="practice"><span class="lvl must">Indispensable</span><h3>Ne jamais mettre la clé dans la page</h3><p>Le code d'une page web est lisible par n'importe quel visiteur. On passe donc par un petit <span class="t" data-t="proxy">intermédiaire côté serveur</span> qui ajoute la clé. <b style="color:var(--text)">Pourquoi ?</b> Une clé visible, c'est une clé volée.</p></article>
+      <article class="practice"><span class="lvl must">Indispensable</span><h3>Vérifier les données deux fois</h3><p>Dans l'interface, pour aider l'utilisateur (« email invalide »). Et dans n8n, avec un nœud <code>If</code>. <b style="color:var(--text)">Pourquoi ?</b> Quelqu'un peut contourner la page et envoyer n'importe quoi au webhook.</p></article>
+      <article class="practice"><span class="lvl should">Recommandé</span><h3>Toujours répondre pareil</h3><p>Choisissez un seul format de réponse, par exemple <code>{ ok, data, error }</code>, pour tous les cas. <b style="color:var(--text)">Pourquoi ?</b> L'interface n'a qu'une façon de lire la réponse : moins de bugs.</p></article>
+      <article class="practice"><span class="lvl should">Recommandé</span><h3>Ne pas faire attendre</h3><p>Si le workflow prend plus de quelques secondes, répondez tout de suite « bien reçu » et traitez en arrière-plan (<span class="t" data-t="async">asynchrone</span>). <b style="color:var(--text)">Pourquoi ?</b> Au-delà de 10 s, l'utilisateur pense que c'est cassé.</p></article>
+      <article class="practice"><span class="lvl should">Recommandé</span><h3>Être prévenu des pannes</h3><p>Créez un workflow qui commence par le déclencheur <code>Error Trigger</code> et vous envoie un message. <b style="color:var(--text)">Pourquoi ?</b> Vous apprenez le problème avant vos utilisateurs.</p></article>
     </div>
+  </div>
+</section>
+
+<!-- ============ GLOSSAIRE ============ -->
+<section id="glossaire">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Glossaire</span>
+      <h2>Tous les mots du guide, expliqués simplement</h2>
+      <p class="lede">Chaque terme souligné dans la page renvoie ici. Filtrez par thème ou tapez un mot.</p>
+    </div>
+    <div class="gloss-tools">
+      <label for="g-search" class="mono" style="position:absolute;left:-9999px">Rechercher un terme</label>
+      <input id="g-search" type="search" placeholder="Rechercher un mot : webhook, JSON, API…" autocomplete="off">
+      <div class="chips" id="g-chips" role="group" aria-label="Filtrer par thème"></div>
+    </div>
+    <dl class="gloss" id="g-list"></dl>
   </div>
 </section>
 
@@ -711,28 +916,32 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">FAQ</span>
-      <h2>Questions fréquentes</h2>
+      <h2>Les questions qu'on se pose au début</h2>
     </div>
     <div class="faq">
       <details open>
-        <summary>Pourquoi mettre la logique dans n8n plutôt que dans le code du front ?</summary>
-        <p>Parce que la logique métier change souvent et implique beaucoup d'intégrations. Dans n8n, elle est visible, modifiable sans redéployer l'interface, et chaque exécution est tracée. Le front reste simple : il envoie et affiche.</p>
+        <summary>Faut-il savoir coder pour suivre ce guide ?</summary>
+        <p>Non pour n8n : on construit les workflows en reliant des blocs à la souris. Pour l'interface, Claude Code écrit le code à votre place ; il suffit de savoir décrire précisément ce que vous voulez et de tester le résultat. Comprendre les mots du glossaire (webhook, JSON, requête…) vous rendra beaucoup plus efficace.</p>
       </details>
       <details>
-        <summary>Claude Code peut-il créer le workflow n8n lui-même ?</summary>
-        <p>Oui, si vous connectez le serveur MCP de votre instance n8n à Claude Code. Il peut alors rechercher des nœuds, créer et valider un workflow, l'exécuter en test et lire le résultat — puis écrire l'interface qui l'appelle, dans la même session.</p>
+        <summary>Quelle différence entre n8n, Zapier et Make ?</summary>
+        <p>Les trois servent à automatiser des tâches en reliant des applications. n8n se distingue par la possibilité de l'installer sur son propre serveur, d'ajouter du code quand on veut, et par ses nœuds d'IA avancés. Les notions de ce guide (déclencheur, webhook, données JSON) sont les mêmes partout.</p>
       </details>
       <details>
-        <summary>Quelle différence entre l'URL de test et l'URL de production ?</summary>
-        <p><code>/webhook-test/…</code> ne répond que lorsque vous cliquez sur « Listen for test event » dans l'éditeur, et affiche les données en direct. <code>/webhook/…</code> fonctionne en continu, une fois le workflow activé (publié).</p>
+        <summary>Pourquoi mettre la logique dans n8n plutôt que dans le code du site ?</summary>
+        <p>Parce que la logique change souvent (« prévenir aussi le service compta », « changer le seuil du score »). Dans n8n, on la modifie en quelques clics sans republier le site, et chaque exécution est enregistrée. Le site reste simple : il envoie et il affiche.</p>
       </details>
       <details>
-        <summary>Et si le scénario prend 30 secondes ou plus ?</summary>
-        <p>Ne faites pas attendre le navigateur. Répondez immédiatement avec un identifiant de tâche, stockez l'état (Data Table n8n, base de données), et exposez un second webhook <code>GET /status?id=…</code> que l'interface interroge.</p>
+        <summary>Claude Code peut-il vraiment créer le workflow n8n lui-même ?</summary>
+        <p>Oui, si vous le connectez au serveur <span class="t" data-t="mcp">MCP</span> de votre instance n8n. Claude Code peut alors chercher les bons nœuds, construire et vérifier le workflow, le lancer en test et lire le résultat. Vous gardez la main : relisez toujours le workflow dans l'éditeur n8n avant de l'activer.</p>
       </details>
       <details>
-        <summary>n8n cloud ou auto-hébergé ?</summary>
-        <p>Les deux fonctionnent de la même façon pour les webhooks. L'auto-hébergement (Docker) donne le contrôle total des données ; le cloud évite la maintenance. Seule l'URL de base change dans vos variables d'environnement.</p>
+        <summary>Mon webhook ne répond pas, que vérifier ?</summary>
+        <p>Trois causes fréquentes : 1) vous utilisez l'URL de test <code>/webhook-test/</code> sans avoir cliqué sur « Listen for test event » dans n8n ; 2) vous utilisez l'URL de production <code>/webhook/</code> alors que le workflow n'est pas activé ; 3) la clé envoyée ne correspond pas à celle configurée (réponse <span class="t" data-t="statut">401</span>). Regardez aussi l'onglet « Executions » de n8n.</p>
+      </details>
+      <details>
+        <summary>n8n est-il gratuit ?</summary>
+        <p>n8n peut être installé gratuitement sur votre propre serveur (version communautaire). Il existe aussi une version hébergée par n8n (cloud), payante, qui évite toute installation. Pour ce guide, les deux fonctionnent de la même façon ; seule l'adresse de vos webhooks change.</p>
       </details>
     </div>
   </div>
@@ -741,12 +950,12 @@
 <section style="padding-top: 24px;">
   <div class="wrap">
     <div class="cta">
-      <span class="eyebrow">Prochaine étape</span>
-      <h2>Votre premier duo interface + scénario en une après-midi</h2>
-      <p class="lede">Créez un workflow Webhook → Respond to Webhook, copiez son URL de test, et demandez à Claude Code : « construis un formulaire qui appelle ce webhook ».</p>
+      <span class="eyebrow">Votre premier exercice</span>
+      <h2>Un formulaire relié à n8n en une après-midi</h2>
+      <p class="lede">1. Dans n8n, créez un workflow : Webhook → Respond to Webhook. 2. Copiez l'URL de test. 3. Demandez à Claude Code : « Crée une page avec un formulaire nom + email qui envoie les données à cette URL et affiche la réponse ».</p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.webhook/" target="_blank" rel="noopener">Doc du nœud Webhook ↗</a>
-        <a class="btn btn-ghost" href="https://docs.claude.com/en/docs/claude-code/overview" target="_blank" rel="noopener">Doc Claude Code ↗</a>
+        <a class="btn btn-primary" href="https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.webhook/" target="_blank" rel="noopener">Documentation du nœud Webhook ↗</a>
+        <a class="btn btn-ghost" href="https://docs.claude.com/en/docs/claude-code/overview" target="_blank" rel="noopener">Documentation Claude Code ↗</a>
       </div>
     </div>
   </div>
@@ -754,49 +963,155 @@
 
 <footer>
   <div class="wrap">
-    <span>Atelier n8n + Claude Code — guide pédagogique.</span>
+    <span>Atelier n8n + Claude Code : guide pédagogique.</span>
     <span>Guide indépendant, non affilié à n8n GmbH. Design inspiré de n8n.io.</span>
   </div>
 </footer>
+
+<div id="pop" role="tooltip" hidden></div>
 
 <script>
 (function () {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) { const p = document.getElementById('pulses'); if (p) p.remove(); }
-  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const sleep = ms => new Promise(r => setTimeout(r, reduce ? Math.min(ms, 60) : ms));
+  const $ = id => document.getElementById(id);
+
+  /* ---------- Glossary (single source for tooltips + list) ---------- */
+  const CATS = { n8n: 'Automatisation & n8n', web: 'Web & API', claude: 'Claude Code & IA', secu: 'Sécurité & mise en ligne' };
+  const G = {
+    'automatisation': { c: 'n8n', w: 'Automatisation', d: "Confier à un logiciel une suite de tâches répétitives que l'on faisait à la main.", ex: "Ex. : à chaque formulaire rempli, ajouter une ligne dans un tableur et prévenir l'équipe." },
+    'n8n': { c: 'n8n', w: 'n8n', d: "Outil d'automatisation où l'on relie des applications en assemblant des blocs visuels. Utilisable en ligne (cloud) ou installé sur son propre serveur.", ex: "Le nom vient de « nodemation » : n + 8 lettres + n." },
+    'workflow': { c: 'n8n', w: 'Workflow (ou scénario)', d: "« Flux de travail » : l'enchaînement d'étapes que n8n exécute, du déclencheur jusqu'à la dernière action.", ex: "Le terme « scénario » est celui utilisé par l'outil Make ; c'est la même idée." },
+    'noeud': { c: 'n8n', w: 'Nœud (node)', d: "Un bloc du workflow qui fait une seule chose : lire un email, appeler une IA, tester une condition, écrire dans un tableur…", ex: "Les nœuds sont reliés par des flèches qui transportent les données." },
+    'declencheur': { c: 'n8n', w: 'Déclencheur (trigger)', d: "Le premier nœud, celui qui démarre le workflow : à une heure donnée, à la réception d'un email, quand une URL est appelée…" },
+    'item': { c: 'n8n', w: 'Item', d: "Un paquet de données qui circule dans le workflow, comme une ligne de tableur. Chaque nœud traite chaque item.", ex: "10 formulaires reçus = 10 items." },
+    'expression': { c: 'n8n', w: 'Expression', d: "Une formule écrite entre {{ }} dans un champ n8n, remplacée par une valeur qui change à chaque passage.", ex: "{{ $json.email }} = « l'email de la personne en cours »." },
+    'execution': { c: 'n8n', w: 'Exécution', d: "Un passage complet du workflow. n8n garde l'historique de chaque exécution avec les données de chaque nœud.", ex: "C'est là que l'on regarde en premier quand quelque chose ne marche pas." },
+    'credential': { c: 'n8n', w: 'Credentials (identifiants)', d: "Les accès (mot de passe, clé, connexion Google…) que n8n utilise pour agir sur vos applications. Stockés chiffrés dans n8n, à part des workflows." },
+    'if': { c: 'n8n', w: 'Condition (nœud If)', d: "Nœud qui pose une question oui/non et envoie les données par la sortie « true » (oui) ou « false » (non).", ex: "« Le score est-il supérieur ou égal à 70 ? »" },
+    'agent': { c: 'claude', w: 'Agent IA', d: "Une IA à qui l'on confie une tâche et des outils (chercher dans un CRM, envoyer un email…). Elle décide elle-même quels outils utiliser." },
+    'llm': { c: 'claude', w: 'Modèle de langage (LLM)', d: "L'IA qui comprend et produit du texte, par exemple Claude. Dans n8n, on la branche sous le nœud AI Agent." },
+    'crm': { c: 'n8n', w: 'CRM', d: "Logiciel qui centralise vos clients et prospects : coordonnées, échanges, ventes.", ex: "Ex. : HubSpot, Salesforce, Pipedrive." },
+    'frontend': { c: 'web', w: 'Interface (front-end)', d: "La partie visible d'une application : pages, boutons, formulaires affichés dans le navigateur. Écrite en HTML, CSS et JavaScript." },
+    'backend': { c: 'web', w: 'Back-end', d: "La partie invisible qui travaille en coulisses : recevoir, vérifier, traiter et enregistrer les données. Ici, c'est n8n." },
+    'api': { c: 'web', w: 'API', d: "« Interface de programmation » : une porte d'entrée qu'un logiciel ouvre pour que d'autres programmes puissent lui parler. On envoie une demande, il renvoie une réponse.", ex: "Un webhook n8n transforme votre workflow en petite API." },
+    'requete': { c: 'web', w: 'Requête HTTP', d: "Un message envoyé à une adresse web pour demander ou transmettre quelque chose. Votre navigateur en envoie une à chaque page ouverte." },
+    'methode': { c: 'web', w: 'Méthode (GET, POST)', d: "Le « verbe » d'une requête. GET = « donne-moi » (lire). POST = « voici des données » (envoyer). Un formulaire utilise en général POST." },
+    'endpoint': { c: 'web', w: 'URL / endpoint', d: "Une adresse web précise qui répond à des requêtes.", ex: "Ex. : https://n8n.exemple.fr/webhook/lead" },
+    'webhook': { c: 'web', w: 'Webhook', d: "Une adresse web qui déclenche un workflow dès qu'on lui envoie des données. C'est la « sonnette » du workflow : l'interface appuie, n8n se met au travail." },
+    'url-test': { c: 'n8n', w: 'URL de test / de production', d: "L'URL /webhook-test/ ne marche que lorsque vous écoutez dans l'éditeur n8n (bouton « Listen for test event »). L'URL /webhook/ marche en permanence une fois le workflow activé." },
+    'json': { c: 'web', w: 'JSON', d: "Format de texte très répandu pour échanger des données entre logiciels : des paires « étiquette : valeur » entre accolades.", ex: '{ "prenom": "Claire", "age": 34 }' },
+    'header': { c: 'web', w: 'En-tête (header)', d: "Informations ajoutées à une requête en plus des données : le format envoyé, une clé d'accès… Comme ce qu'on écrit sur une enveloppe." },
+    'body': { c: 'web', w: 'Corps (body)', d: "Le contenu principal d'une requête ou d'une réponse : ici, les données du formulaire en JSON. Comme la lettre dans l'enveloppe." },
+    'reponse': { c: 'web', w: 'Réponse', d: "Ce que le serveur renvoie après une requête : un code de statut et, souvent, des données JSON." },
+    'statut': { c: 'web', w: 'Code de statut', d: "Nombre à 3 chiffres qui résume le résultat d'une requête.", ex: "200 = OK · 400 = données invalides · 401 = accès refusé · 404 = adresse introuvable · 500 = erreur côté serveur." },
+    'fetch': { c: 'web', w: 'fetch', d: "Fonction JavaScript intégrée aux navigateurs qui sert à envoyer une requête HTTP depuis une page web." },
+    'serveur': { c: 'web', w: 'Serveur', d: "Ordinateur, souvent dans le cloud, qui tourne en permanence et répond aux requêtes." },
+    'claude-code': { c: 'claude', w: 'Claude Code', d: "Assistant de programmation d'Anthropic qui travaille dans le dossier de votre projet : il lit les fichiers, écrit du code, lance des commandes et explique ce qu'il fait. On lui parle en langage courant.", ex: "Utilisable dans le terminal, dans VS Code, dans l'application de bureau ou sur le web." },
+    'prompt': { c: 'claude', w: 'Prompt (consigne)', d: "Le message que vous écrivez à l'IA pour lui dire quoi faire. Plus il est précis (objectif, contraintes, exemples), meilleur est le résultat." },
+    'terminal': { c: 'claude', w: 'Terminal', d: "Fenêtre où l'on pilote l'ordinateur en tapant des commandes texte." },
+    'mcp': { c: 'claude', w: 'MCP (Model Context Protocol)', d: "Standard qui permet de brancher une IA sur des outils externes. En connectant le serveur MCP de n8n, Claude Code peut créer, tester et lire vos workflows." },
+    'claudemd': { c: 'claude', w: 'CLAUDE.md', d: "Fichier texte à la racine du projet que Claude Code lit automatiquement. On y écrit les règles du projet : technologies, conventions, commandes de vérification." },
+    'depot': { c: 'claude', w: 'Dépôt (repository)', d: "Le dossier du projet suivi par Git, un outil qui garde l'historique de toutes les modifications." },
+    'commit': { c: 'claude', w: 'Commit', d: "Un point de sauvegarde dans l'historique Git, accompagné d'un message qui décrit le changement." },
+    'cle-api': { c: 'secu', w: 'Clé d\'API (clé secrète)', d: "Longue chaîne de caractères secrète qui prouve qu'on a le droit d'appeler un service. À traiter comme un mot de passe." },
+    'proxy': { c: 'secu', w: 'Intermédiaire serveur (proxy)', d: "Petit programme côté serveur : le navigateur l'appelle, il ajoute la clé secrète et transmet à n8n. La clé n'est donc jamais visible dans la page." },
+    'env': { c: 'secu', w: 'Variable d\'environnement (.env)', d: "Réglage stocké en dehors du code (URL, clé…) et lu au démarrage. Permet de garder les secrets hors du code partagé." },
+    'cors': { c: 'secu', w: 'CORS', d: "Règle de sécurité des navigateurs : une page ne peut appeler une adresse d'un autre site que si ce site l'autorise. Dans n8n : option « Allowed Origins » du Webhook." },
+    'timeout': { c: 'secu', w: 'Délai d\'attente (timeout)', d: "Temps maximum pendant lequel on attend une réponse. Passé ce délai, on affiche une erreur plutôt que de laisser l'utilisateur attendre sans fin." },
+    'async': { c: 'secu', w: 'Traitement asynchrone', d: "On répond tout de suite « bien reçu », puis on fait le travail en arrière-plan. L'interface revient chercher le résultat plus tard." },
+    'deployer': { c: 'secu', w: 'Déployer', d: "Mettre une application en ligne pour que les utilisateurs puissent y accéder.", ex: "Ex. : sur Vercel, Netlify ou votre propre serveur." },
+    'souligne': { c: 'n8n', w: 'Comme ceci !', d: "Survolez ou touchez un mot souligné en pointillés pour afficher sa définition. Tous les termes sont aussi rassemblés dans le glossaire, en bas de page.", hide: true }
+  };
+
+  /* ---------- Tooltip ---------- */
+  const pop = $('pop');
+  let openEl = null;
+  function showPop(el) {
+    const g = G[el.dataset.t]; if (!g) return;
+    openEl && openEl.classList.remove('open');
+    openEl = el; el.classList.add('open');
+    pop.innerHTML = '<span class="cat">' + esc(CATS[g.c]) + '</span><b>' + esc(g.w) + '</b>' + esc(g.d) + (g.ex ? '<span class="ex">' + esc(g.ex) + '</span>' : '');
+    pop.hidden = false;
+    const r = el.getBoundingClientRect(), pw = pop.offsetWidth, ph = pop.offsetHeight;
+    let left = Math.min(Math.max(12, r.left + r.width / 2 - pw / 2), window.innerWidth - pw - 12);
+    let top = r.bottom + 10;
+    if (top + ph > window.innerHeight - 12) top = r.top - ph - 10;
+    pop.style.left = left + 'px'; pop.style.top = Math.max(12, top) + 'px';
+  }
+  function hidePop() { pop.hidden = true; openEl && openEl.classList.remove('open'); openEl = null; }
+  function wireTerms(root) {
+    root.querySelectorAll('.t').forEach(el => {
+      if (el.dataset.wired) return; el.dataset.wired = '1';
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('role', 'button');
+      el.setAttribute('aria-label', el.textContent + ' : afficher la définition');
+      el.addEventListener('mouseenter', () => showPop(el));
+      el.addEventListener('mouseleave', hidePop);
+      el.addEventListener('focus', () => showPop(el));
+      el.addEventListener('blur', hidePop);
+      el.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); openEl === el && !pop.hidden ? hidePop() : showPop(el); });
+    });
+  }
+  document.addEventListener('click', hidePop);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') hidePop(); });
+  window.addEventListener('scroll', hidePop, { passive: true });
+
+  /* ---------- Glossary list ---------- */
+  let gCat = 'all';
+  const chips = $('g-chips');
+  [['all', 'Tout']].concat(Object.entries(CATS)).forEach(([k, label]) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = label; b.dataset.cat = k; b.setAttribute('aria-pressed', k === 'all');
+    b.addEventListener('click', () => { gCat = k; chips.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); renderGloss(); });
+    chips.appendChild(b);
+  });
+  const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  function renderGloss() {
+    const q = norm($('g-search').value.trim());
+    const items = Object.entries(G).filter(([, g]) => !g.hide)
+      .filter(([, g]) => gCat === 'all' || g.c === gCat)
+      .filter(([, g]) => !q || norm(g.w + ' ' + g.d + ' ' + (g.ex || '')).includes(q))
+      .sort((a, b) => a[1].w.localeCompare(b[1].w, 'fr'));
+    $('g-list').innerHTML = items.length ? items.map(([k, g]) =>
+      '<div class="g-item" id="g-' + k + '"><dt>' + esc(g.w) + ' <small>' + esc(CATS[g.c]) + '</small></dt><dd>' + esc(g.d) + (g.ex ? '<span class="ex">' + esc(g.ex) + '</span>' : '') + '</dd></div>'
+    ).join('') : '<p class="g-empty">Aucun terme ne correspond. Essayez un autre mot.</p>';
+  }
+  $('g-search').addEventListener('input', renderGloss);
+  renderGloss();
 
   function highlightJSON(obj) {
     return esc(JSON.stringify(obj, null, 2))
-      .replace(/(&quot;|")([^"]*?)\1(\s*:)/g, '<span class="tok-k">"$2"</span>$3')
+      .replace(/"([^"]*?)"(\s*:)/g, '<span class="tok-k">"$1"</span>$2')
       .replace(/:\s"([^"]*)"/g, ': <span class="tok-s">"$1"</span>')
       .replace(/:\s(-?\d+\.?\d*)/g, ': <span class="tok-n">$1</span>')
       .replace(/:\s(true|false|null)/g, ': <span class="tok-b">$1</span>');
   }
 
   /* ---------- Node inspector ---------- */
-  const lead = { company: "Boulangerie Martin", email: "claire@boulangerie-martin.fr", size: "11-50", need: "Automatiser la prise de commandes B2B" };
+  const lead = { entreprise: "Boulangerie Martin", email: "claire@boulangerie-martin.fr", taille: "11-50", besoin: "Automatiser la prise de commandes" };
   const nodes = {
-    webhook: { type: "Déclencheur", name: "Webhook", desc: "Reçoit le POST envoyé par l'interface. Méthode POST, Header Auth, réponse via « Respond to Webhook ».",
-      input: { note: "Un trigger n'a pas d'entrée : il démarre l'exécution." },
+    webhook: { type: "Déclencheur", name: "Webhook", desc: "La « sonnette » : ce bloc démarre le workflow quand l'interface lui envoie les données du formulaire.",
+      input: { info: "Un déclencheur ne reçoit rien d'un autre bloc : c'est lui qui démarre tout." },
       output: [{ headers: { "content-type": "application/json", "x-api-key": "••••••" }, body: lead }] },
-    set: { type: "Transformation", name: "Valider (Edit Fields)", desc: "Normalise et ne garde que les champs utiles. Rejette l'item si l'email est vide.",
+    set: { type: "Transformation", name: "Nettoyer (Edit Fields)", desc: "Garde seulement les informations utiles, les remet en forme et ajoute la date de réception.",
       input: [{ body: lead }],
-      output: [{ company: lead.company, email: lead.email, size: lead.size, need: lead.need, receivedAt: "2026-09-23T09:14:02Z" }] },
-    agent: { type: "IA", name: "AI Agent", desc: "Claude analyse le besoin, interroge le CRM (outil) et renvoie un score structuré.",
-      input: [{ company: lead.company, size: lead.size, need: lead.need }],
-      output: [{ score: 86, segment: "PME", region: "IDF", summary: "Besoin clair d'automatisation B2B, taille compatible, forte intention.", nextAction: "Appel découverte" }] },
-    if: { type: "Logique", name: "If", desc: "Route l'item : score ≥ 70 vers Slack (branche true), sinon vers Google Sheets (branche false).",
+      output: [{ entreprise: lead.entreprise, email: lead.email, taille: lead.taille, besoin: lead.besoin, recuLe: "2026-09-23T09:14:02Z" }] },
+    agent: { type: "Intelligence artificielle", name: "AI Agent", desc: "Claude lit la demande, vérifie dans le CRM si l'entreprise est déjà cliente, et donne une note de 0 à 100.",
+      input: [{ entreprise: lead.entreprise, taille: lead.taille, besoin: lead.besoin }],
+      output: [{ score: 86, segment: "PME", region: "idf", resume: "Besoin clair, taille adaptée, forte motivation.", prochaineAction: "Appeler sous 24 h" }] },
+    if: { type: "Condition", name: "If (si… alors…)", desc: "Pose une question : « le score est-il ≥ 70 ? ». Si oui, les données partent en haut (Slack). Sinon, en bas (Google Sheets).",
       input: [{ score: 86, segment: "PME" }],
-      output: { "true": [{ score: 86, segment: "PME", region: "IDF" }], "false": [] } },
-    slack: { type: "Action", name: "Slack", desc: "Prévient l'équipe commerciale dans #sales-idf avec le résumé de l'agent.",
-      input: [{ score: 86, region: "IDF", summary: "Besoin clair…" }],
-      output: [{ ok: true, channel: "C05SALESIDF", ts: "1790155242.001200" }] },
-    sheets: { type: "Action", name: "Google Sheets", desc: "Branche false : ajoute le lead à la feuille « À nourrir » pour une séquence email.",
+      output: { "oui (true)": [{ score: 86, segment: "PME", region: "idf" }], "non (false)": [] } },
+    slack: { type: "Action", name: "Slack", desc: "Envoie un message à l'équipe commerciale avec le résumé écrit par l'IA.",
+      input: [{ score: 86, region: "idf", resume: "Besoin clair…" }],
+      output: [{ ok: true, canal: "#ventes-idf", envoye: true }] },
+    sheets: { type: "Action", name: "Google Sheets", desc: "Branche « non » : ajoute le prospect dans un tableur pour le recontacter plus tard.",
       input: [], output: [] }
   };
   let current = 'webhook', io = 'output';
-  const $ = id => document.getElementById(id);
   function renderInspector() {
     const n = nodes[current];
     $('inspType').textContent = n.type;
@@ -806,7 +1121,7 @@
     $('tabOut').setAttribute('aria-selected', io === 'output');
     const data = n[io];
     $('inspJson').innerHTML = (Array.isArray(data) && data.length === 0)
-      ? '<span class="tok-b">// Aucun item sur cette branche lors de cette exécution</span>'
+      ? '<span class="tok-b">Aucune donnée : dans cet exemple, le score est bon, donc rien ne passe par cette branche.</span>'
       : highlightJSON(data);
     document.querySelectorAll('.node').forEach(g => g.classList.toggle('is-selected', g.dataset.node === current));
   }
@@ -828,7 +1143,7 @@
     for (const k of order) {
       els[k].classList.add('is-running');
       current = k; io = 'output'; renderInspector();
-      await sleep(k === 'agent' ? 1100 : 550);
+      await sleep(k === 'agent' ? 1100 : 600);
       els[k].classList.remove('is-running'); els[k].classList.add('is-done');
     }
     heroBusy = false;
@@ -837,7 +1152,7 @@
   /* ---------- Architecture demo ---------- */
   const form = $('demoForm'), log = $('demoLog'), status = $('demoStatus');
   const blks = [...document.querySelectorAll('#arch .blk')];
-  const t0 = () => performance.now();
+  const now = () => performance.now();
   function setStatus(cls, txt) { status.className = 'status ' + cls; status.lastElementChild.textContent = txt; }
   function line(html) { log.innerHTML += (log.innerHTML ? '\n' : '') + html; log.scrollTop = log.scrollHeight; }
   function lightUp(i) { blks.forEach((b, j) => { b.classList.toggle('hot', j === i); if (j < i) b.classList.add('ok'); }); }
@@ -846,206 +1161,238 @@
     e.preventDefault();
     const fd = Object.fromEntries(new FormData(form).entries());
     if (!fd.company.trim() || !/^\S+@\S+\.\S+$/.test(fd.email)) {
-      setStatus('', 'erreur de saisie');
-      log.innerHTML = '<span class="req">✗ Validation front : renseignez une entreprise et un email valide avant l\'envoi.</span>';
+      setStatus('', 'à corriger');
+      log.innerHTML = '<span class="req">L\'interface a bloqué l\'envoi : renseignez un nom d\'entreprise et un email valide.\nC\'est la première vérification, faite dans la page avant tout envoi.</span>';
       return;
     }
-    const btn = $('demoBtn'); btn.disabled = true; btn.textContent = 'Envoi…';
+    const btn = $('demoBtn'); btn.disabled = true; btn.textContent = 'Envoi en cours…';
     blks.forEach(b => b.classList.remove('ok', 'hot'));
     log.innerHTML = '';
-    const start = t0();
-    const ts = () => '<span class="t">[' + String(Math.round(t0() - start)).padStart(4, ' ') + ' ms]</span> ';
-    setStatus('run', 'exécution');
+    const start = now();
+    const ts = () => '<span class="ts">' + (Math.round(now() - start) / 1000).toFixed(1).padStart(4, ' ') + ' s</span>  ';
+    setStatus('run', 'en cours');
 
     lightUp(0);
-    line(ts() + '<span class="dim">interface</span> validation OK, état → <b>loading</b>');
-    await sleep(500);
+    line(ts() + '<span class="req">Interface</span>  champs vérifiés, affiche « Envoi en cours… »');
+    await sleep(600);
     lightUp(1);
-    line(ts() + '<span class="req">POST https://n8n.exemple.fr/webhook/lead</span>');
-    line('<span class="dim">        X-API-Key: ••••••  Content-Type: application/json</span>');
-    line('<span class="dim">        ' + esc(JSON.stringify({ company: fd.company, email: fd.email, size: fd.size })) + '</span>');
-    await sleep(650);
+    line(ts() + '<span class="req">Envoi</span>      POST vers https://n8n.exemple.fr/webhook/lead');
+    line('<span class="dim">            données envoyées : ' + esc(JSON.stringify({ entreprise: fd.company, email: fd.email, taille: fd.size })) + '</span>');
+    await sleep(700);
     lightUp(2);
     const score = { '1-10': 58, '11-50': 86, '51-250': 91, '250+': 74 }[fd.size] || 70;
-    const steps = [['Webhook', 'reçu 1 item'], ['Valider', 'champs normalisés'], ['AI Agent', 'Claude → score ' + score + '/100'], ['If', score >= 70 ? 'branche true' : 'branche false'], [score >= 70 ? 'Slack' : 'Google Sheets', score >= 70 ? 'message posté #sales' : 'ligne ajoutée'], ['Respond to Webhook', '200 JSON']];
+    const good = score >= 70;
+    const steps = [
+      ['Webhook', 'la sonnette a sonné, 1 item reçu'],
+      ['Nettoyer', 'données remises en forme'],
+      ['AI Agent', 'Claude a analysé la demande : score ' + score + '/100'],
+      ['If', score + (good ? ' ≥ 70 ? oui, direction Slack' : ' ≥ 70 ? non, direction Google Sheets')],
+      [good ? 'Slack' : 'Google Sheets', good ? "message envoyé à l'équipe" : 'prospect ajouté au tableur'],
+      ['Respond', 'prépare la réponse pour l\'interface']
+    ];
     for (const [n, r] of steps) {
-      await sleep(n === 'AI Agent' ? 900 : 320);
-      line(ts() + '<span class="n8n">n8n ▸ ' + esc(n) + '</span> ' + esc(r));
+      if (n === 'Slack' || n === 'Google Sheets') lightUp(3);
+      await sleep(n === 'AI Agent' ? 1000 : 420);
+      line(ts() + '<span class="n8n">n8n · ' + esc(n.padEnd(13, ' ')) + '</span>' + esc(r));
     }
-    lightUp(3);
-    await sleep(500);
     lightUp(1);
-    await sleep(350);
+    await sleep(400);
     blks.forEach(b => { b.classList.remove('hot'); b.classList.add('ok'); });
-    const resp = { ok: true, data: { leadId: 'ld_' + Math.random().toString(36).slice(2, 8), score, route: score >= 70 ? 'commercial' : 'nurturing', message: score >= 70 ? 'Merci ! Un conseiller vous rappelle sous 24 h.' : 'Merci ! Vous recevrez notre guide par email.' } };
-    line(ts() + '<span class="ok">← 200 OK</span>');
+    const resp = { ok: true, data: { score, suite: good ? 'appel commercial' : 'email de suivi', message: good ? 'Merci ! Un conseiller vous rappelle sous 24 h.' : 'Merci ! Vous allez recevoir notre guide par email.' } };
+    line(ts() + '<span class="ok">Réponse    200 OK (tout s\'est bien passé), avec ce JSON :</span>');
     line(highlightJSON(resp));
-    line(ts() + '<span class="dim">interface</span> état → <b>success</b>, message affiché');
-    setStatus('ok', 'terminé en ' + Math.round(t0() - start) + ' ms');
-    btn.disabled = false; btn.textContent = 'Renvoyer au webhook';
+    line(ts() + '<span class="ok">Interface</span>  affiche : « ' + esc(resp.data.message) + ' »');
+    setStatus('ok', 'terminé en ' + ((now() - start) / 1000).toFixed(1) + ' s');
+    btn.disabled = false; btn.textContent = 'Envoyer à nouveau';
   });
 
   /* ---------- Claude Code terminal ---------- */
   const term = [
-`<span class="p">❯</span> <span class="u">Crée un workflow n8n « Qualification de leads » :
-  Webhook POST /lead (Header Auth) → Edit Fields → AI Agent (Claude)
-  → If score ≥ 70 → Slack, sinon Google Sheets → Respond to Webhook.</span>
+`<span class="p">❯</span> <span class="u">Crée un workflow n8n « Qualification de prospects » :
+  un Webhook reçoit le formulaire, une IA donne un score,
+  si le score est ≥ 70 on prévient Slack, sinon on ajoute
+  une ligne dans Google Sheets. Puis on répond au formulaire.</span>
 
-<span class="tool">● n8n.search_nodes</span>(["webhook", "ai agent", "slack", "google sheets"])
-  <span class="c">⎿ 6 nœuds trouvés</span>
-<span class="tool">● n8n.create_workflow_from_code</span>(qualification-leads)
-  <span class="c">⎿ Workflow créé · 7 nœuds · inactif</span>
-<span class="tool">● n8n.validate_workflow</span>
-  <span class="c">⎿</span> <span class="ok">✓ Aucune erreur</span>
+<span class="tool">● n8n · cherche les blocs</span> webhook, ai agent, slack, sheets
+  <span class="c">⎿ 6 blocs trouvés</span>
+<span class="tool">● n8n · crée le workflow</span>
+  <span class="c">⎿ 7 blocs créés, workflow encore désactivé</span>
+<span class="tool">● n8n · vérifie le workflow</span>
+  <span class="c">⎿</span> <span class="ok">✓ aucune erreur</span>
 
-Le workflow est prêt. Il reste à connecter les credentials Slack
-et Google Sheets dans n8n, puis à le tester.`,
+Le workflow est prêt. Il vous reste à connecter vos comptes
+Slack et Google dans n8n (menu Credentials).`,
 
-`<span class="p">❯</span> <span class="u">Documente le contrat du webhook dans docs/api-lead.md.</span>
+`<span class="p">❯</span> <span class="u">Écris dans docs/contrat.md ce que le formulaire envoie
+  et ce que n8n répond.</span>
 
-<span class="tool">● Write</span>(docs/api-lead.md)
-  <span class="c">⎿ 38 lignes</span>
+<span class="tool">● Write</span>(docs/contrat.md)
 
-<span class="c">## POST /webhook/lead</span>
-<span class="c">Requête</span>  { company: string, email: string,
-            size: "1-10"|"11-50"|"51-250"|"250+", need?: string }
-<span class="c">200</span>      { ok: true,  data: { leadId, score, route, message } }
-<span class="c">400</span>      { ok: false, error: { code: "INVALID_INPUT", field } }
-<span class="c">401</span>      clé X-API-Key absente ou invalide
+<span class="c">## Adresse : POST /webhook/lead</span>
+<span class="c">Le formulaire envoie :</span>
+  { entreprise, email, taille, besoin }
+<span class="c">Si tout va bien (200) :</span>
+  { ok: true, data: { score, suite, message } }
+<span class="c">Si une donnée manque (400) :</span>
+  { ok: false, error: { champ: "email" } }
+<span class="c">Si la clé est fausse (401) :</span> accès refusé
 
-<span class="ok">✓</span> Contrat ajouté. Je m'y référerai pour le front.`,
+<span class="ok">✓</span> Contrat écrit. Je m'y référerai pour construire la page.`,
 
-`<span class="p">❯</span> <span class="u">Construis le formulaire de contact en Next.js + Tailwind en
-  respectant docs/api-lead.md. États : idle, loading, success,
-  error. Accessible au clavier, messages d'erreur par champ.</span>
+`<span class="p">❯</span> <span class="u">Crée la page du formulaire en suivant docs/contrat.md.
+  Affiche « Envoi en cours… » pendant l'attente, le message
+  de n8n en cas de succès, et une erreur claire sinon.</span>
 
-<span class="tool">● Read</span>(docs/api-lead.md)
-<span class="tool">● Write</span>(lib/leads.ts)              <span class="c">client typé + timeout</span>
-<span class="tool">● Write</span>(app/api/lead/route.ts)     <span class="c">proxy serveur</span>
-<span class="tool">● Write</span>(components/LeadForm.tsx)  <span class="c">formulaire + états</span>
-<span class="tool">● Edit</span>(app/page.tsx)
-<span class="tool">● Bash</span>(npm run lint && npm run typecheck)
-  <span class="c">⎿</span> <span class="ok">✓ 0 erreur</span>`,
+<span class="tool">● Read</span>(docs/contrat.md)
+<span class="tool">● Write</span>(index.html)         <span class="c">la page et le formulaire</span>
+<span class="tool">● Write</span>(formulaire.js)     <span class="c">l'envoi des données</span>
+<span class="tool">● Write</span>(api/lead.js)       <span class="c">l'intermédiaire qui cache la clé</span>
+<span class="tool">● Bash</span>(npm run lint)
+  <span class="c">⎿</span> <span class="ok">✓ aucune erreur de code</span>`,
 
-`<span class="p">❯</span> <span class="u">Teste le formulaire contre l'URL de test et vérifie
-  l'exécution côté n8n.</span>
+`<span class="p">❯</span> <span class="u">Teste le formulaire avec l'URL de test, puis avec
+  un email vide pour voir ce qui se passe.</span>
 
-<span class="tool">● Bash</span>(curl -X POST $N8N_WEBHOOK_TEST_URL -H "X-API-Key: …" -d @fixtures/lead.json)
-  <span class="c">⎿</span> {"ok":true,"data":{"score":86,"route":"commercial",…}}
-<span class="tool">● n8n.search_workflow_executions</span>(qualification-leads, last: 1)
-  <span class="c">⎿ #4812 · success · 2,4 s</span>
-<span class="tool">● Bash</span>(curl … -d '{"company":""}')
-  <span class="c">⎿</span> 500 — <span class="p">le nœud If a planté sur un champ vide</span>
-<span class="tool">● n8n.update_workflow</span>  <span class="c">ajout d'une validation → 400 INVALID_INPUT</span>
-  <span class="c">⎿</span> <span class="ok">✓ 400 renvoyé proprement</span>`,
+<span class="tool">● Bash</span>(envoi d'un prospect de test)
+  <span class="c">⎿</span> <span class="ok">200</span> {"ok":true,"data":{"score":86,…}}
+<span class="tool">● n8n · lit la dernière exécution</span>
+  <span class="c">⎿ exécution n° 4812 : réussie en 2,4 s</span>
+<span class="tool">● Bash</span>(envoi avec un email vide)
+  <span class="c">⎿</span> <span class="p">500 : le workflow a planté</span>
+<span class="tool">● n8n · modifie le workflow</span>  <span class="c">ajoute une vérification</span>
+  <span class="c">⎿</span> <span class="ok">✓ renvoie maintenant 400 avec « email manquant »</span>`,
 
-`<span class="p">❯</span> <span class="u">Prépare la mise en production.</span>
+`<span class="p">❯</span> <span class="u">Prépare la mise en ligne.</span>
 
 <span class="tool">● Edit</span>(.env.example)
   <span class="c">+ N8N_WEBHOOK_URL=https://n8n.exemple.fr/webhook/lead</span>
-  <span class="c">+ N8N_API_KEY=</span>
-<span class="tool">● Grep</span>("N8N_API_KEY", "app/ components/")
-  <span class="c">⎿</span> <span class="ok">✓ uniquement dans app/api/lead/route.ts (serveur)</span>
-<span class="tool">● n8n.publish_workflow</span>(qualification-leads)
-  <span class="c">⎿</span> <span class="ok">✓ Actif · URL de production disponible</span>
-<span class="tool">● Bash</span>(git commit -m "feat: formulaire leads branché sur n8n")
+  <span class="c">+ N8N_API_KEY=   (à remplir chez l'hébergeur)</span>
+<span class="tool">● Grep</span>(recherche de la clé dans les fichiers de la page)
+  <span class="c">⎿</span> <span class="ok">✓ la clé n'apparaît que dans api/lead.js (serveur)</span>
+<span class="tool">● n8n · active le workflow</span>
+  <span class="c">⎿</span> <span class="ok">✓ actif, URL de production disponible</span>
+<span class="tool">● Bash</span>(git commit -m "Formulaire relié à n8n")
 
-Prêt. Pensez à renseigner N8N_API_KEY chez votre hébergeur.`
+C'est prêt. Déployez le site et renseignez la clé chez l'hébergeur.`
+  ];
+  const explain = [
+    "Vous décrivez le workflow en français. Grâce à la connexion MCP, Claude Code cherche les bons blocs dans n8n, les assemble et vérifie qu'il n'y a pas d'erreur. Vous pouvez ensuite ouvrir le workflow dans n8n pour le relire. Vous pouvez aussi le construire vous-même à la souris : les étapes suivantes restent identiques.",
+    "Le « contrat » est une simple note qui décrit ce qui est envoyé et ce qui est répondu, avec des exemples. C'est la référence commune : Claude Code s'en sert pour coder la page, et vous pour régler le workflow. Si le contrat change, on le met à jour en premier.",
+    "Claude Code lit le contrat et crée les fichiers de la page. « Write » veut dire qu'il écrit un fichier. Il lance ensuite une vérification automatique du code (« lint »). Plus votre consigne précise les états à afficher (attente, succès, erreur), plus le résultat est soigné.",
+    "On teste avec l'URL de test du webhook. Claude Code envoie des données, lit le journal des exécutions de n8n, et découvre un cas oublié : un email vide fait planter le workflow. Il ajoute une vérification pour que n8n réponde une erreur propre (code 400) au lieu de planter (code 500).",
+    "Avant la mise en ligne : la clé secrète est retirée du code et placée dans une variable d'environnement, qu'on remplit chez l'hébergeur. Claude Code vérifie qu'elle n'apparaît nulle part dans la page, active le workflow, puis enregistre le travail (commit)."
   ];
   const stepBtns = [...document.querySelectorAll('#stepList button')];
   function showStep(i) {
     stepBtns.forEach((b, j) => b.setAttribute('aria-selected', i === j));
     $('termOut').innerHTML = term[i];
+    $('termExplain').textContent = explain[i];
   }
   stepBtns.forEach((b, i) => b.addEventListener('click', () => showStep(i)));
   showStep(0);
 
   /* ---------- Code tabs ---------- */
   const files = {
-    client: { cap: "Client côté navigateur : il appelle votre propre route /api/lead, jamais n8n directement.", code:
-`<span class="kw">export type</span> <span class="pr">LeadInput</span> = { company: <span class="pr">string</span>; email: <span class="pr">string</span>; size: <span class="pr">string</span>; need?: <span class="pr">string</span> };
-<span class="kw">export type</span> <span class="pr">LeadResult</span> =
-  | { ok: <span class="kw">true</span>;  data: { leadId: <span class="pr">string</span>; score: <span class="pr">number</span>; route: <span class="pr">string</span>; message: <span class="pr">string</span> } }
-  | { ok: <span class="kw">false</span>; error: { code: <span class="pr">string</span>; field?: <span class="pr">string</span> } };
+    client: { cap: "Ce fichier tourne dans le navigateur. Il récupère ce qui a été saisi, l'envoie, puis affiche la réponse. Il n'appelle pas n8n directement : il passe par l'intermédiaire api/lead.js (onglet suivant).", code:
+`<span class="cm">// 1. On repère le formulaire et la zone où afficher le résultat</span>
+<span class="kw">const</span> formulaire = document.<span class="fn">querySelector</span>(<span class="st">"#formulaire"</span>);
+<span class="kw">const</span> message = document.<span class="fn">querySelector</span>(<span class="st">"#message"</span>);
 
-<span class="kw">export async function</span> <span class="fn">submitLead</span>(input: <span class="pr">LeadInput</span>): <span class="pr">Promise</span>&lt;<span class="pr">LeadResult</span>&gt; {
-  <span class="kw">const</span> ctrl = <span class="kw">new</span> <span class="fn">AbortController</span>();
-  <span class="kw">const</span> timer = <span class="fn">setTimeout</span>(() =&gt; ctrl.<span class="fn">abort</span>(), <span class="pr">15_000</span>);
+<span class="cm">// 2. Quand l'utilisateur clique sur « Envoyer »…</span>
+formulaire.<span class="fn">addEventListener</span>(<span class="st">"submit"</span>, <span class="kw">async</span> (evenement) =&gt; {
+  evenement.<span class="fn">preventDefault</span>();            <span class="cm">// on empêche la page de se recharger</span>
+  message.textContent = <span class="st">"Envoi en cours…"</span>;
+
+  <span class="cm">// 3. On rassemble les champs saisis dans un objet (qui deviendra du JSON)</span>
+  <span class="kw">const</span> donnees = <span class="pr">Object</span>.<span class="fn">fromEntries</span>(<span class="kw">new</span> <span class="fn">FormData</span>(formulaire));
+
   <span class="kw">try</span> {
-    <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="st">"/api/lead"</span>, {
+    <span class="cm">// 4. On envoie une requête POST à notre intermédiaire serveur</span>
+    <span class="kw">const</span> reponse = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="st">"/api/lead"</span>, {
       method: <span class="st">"POST"</span>,
-      headers: { <span class="st">"Content-Type"</span>: <span class="st">"application/json"</span> },
-      body: <span class="pr">JSON</span>.<span class="fn">stringify</span>(input),
-      signal: ctrl.signal,
+      headers: { <span class="st">"Content-Type"</span>: <span class="st">"application/json"</span> }, <span class="cm">// « j'envoie du JSON »</span>
+      body: <span class="pr">JSON</span>.<span class="fn">stringify</span>(donnees),                <span class="cm">// l'objet transformé en texte JSON</span>
     });
-    <span class="kw">return</span> (<span class="kw">await</span> res.<span class="fn">json</span>()) <span class="kw">as</span> <span class="pr">LeadResult</span>;
-  } <span class="kw">catch</span> {
-    <span class="kw">return</span> { ok: <span class="kw">false</span>, error: { code: <span class="st">"NETWORK"</span> } };
-  } <span class="kw">finally</span> {
-    <span class="fn">clearTimeout</span>(timer);
-  }
-}` },
-    proxy: { cap: "Route serveur : ajoute la clé secrète et relaie vers le webhook n8n. La clé ne quitte jamais le serveur.", code:
-`<span class="cm">// app/api/lead/route.ts — s'exécute côté serveur</span>
-<span class="kw">export async function</span> <span class="fn">POST</span>(req: <span class="pr">Request</span>) {
-  <span class="kw">const</span> body = <span class="kw">await</span> req.<span class="fn">json</span>();
 
-  <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(process.env.<span class="pr">N8N_WEBHOOK_URL</span>!, {
+    <span class="cm">// 5. On lit la réponse JSON renvoyée par n8n</span>
+    <span class="kw">const</span> resultat = <span class="kw">await</span> reponse.<span class="fn">json</span>();
+
+    <span class="cm">// 6. On affiche le message adapté</span>
+    message.textContent = resultat.ok
+      ? resultat.data.message                          <span class="cm">// ex. « Merci ! On vous rappelle. »</span>
+      : <span class="st">"Vérifiez le champ : "</span> + resultat.error.champ;
+  } <span class="kw">catch</span> {
+    <span class="cm">// Pas de réponse du tout (connexion coupée, serveur éteint…)</span>
+    message.textContent = <span class="st">"Impossible d'envoyer. Réessayez dans un instant."</span>;
+  }
+});` },
+    proxy: { cap: "Ce fichier tourne sur le serveur, pas dans le navigateur : personne ne peut lire son contenu. C'est lui qui ajoute la clé secrète avant de transmettre à n8n.", code:
+`<span class="cm">// api/lead.js : l'intermédiaire côté serveur</span>
+<span class="cm">// Le navigateur l'appelle ; lui seul connaît la clé secrète.</span>
+
+<span class="kw">export async function</span> <span class="fn">POST</span>(requete) {
+  <span class="cm">// 1. On récupère les données envoyées par le formulaire</span>
+  <span class="kw">const</span> donnees = <span class="kw">await</span> requete.<span class="fn">json</span>();
+
+  <span class="cm">// 2. On les transmet au webhook n8n, en ajoutant la clé</span>
+  <span class="kw">const</span> reponseN8n = <span class="kw">await</span> <span class="fn">fetch</span>(process.env.<span class="pr">N8N_WEBHOOK_URL</span>, { <span class="cm">// URL lue dans le .env</span>
     method: <span class="st">"POST"</span>,
     headers: {
       <span class="st">"Content-Type"</span>: <span class="st">"application/json"</span>,
-      <span class="st">"X-API-Key"</span>: process.env.<span class="pr">N8N_API_KEY</span>!,  <span class="cm">// Header Auth du nœud Webhook</span>
+      <span class="st">"X-API-Key"</span>: process.env.<span class="pr">N8N_API_KEY</span>,  <span class="cm">// la clé, lue dans le .env</span>
     },
-    body: <span class="pr">JSON</span>.<span class="fn">stringify</span>(body),
+    body: <span class="pr">JSON</span>.<span class="fn">stringify</span>(donnees),
   });
 
-  <span class="kw">return new</span> <span class="fn">Response</span>(<span class="kw">await</span> res.<span class="fn">text</span>(), {
-    status: res.status,
+  <span class="cm">// 3. On renvoie au navigateur exactement ce que n8n a répondu</span>
+  <span class="kw">return new</span> <span class="fn">Response</span>(<span class="kw">await</span> reponseN8n.<span class="fn">text</span>(), {
+    status: reponseN8n.status,
     headers: { <span class="st">"Content-Type"</span>: <span class="st">"application/json"</span> },
   });
 }` },
-    webhook: { cap: "Extrait des paramètres du nœud Webhook et du nœud Respond to Webhook, tels qu'exportés en JSON depuis n8n.", code:
-`{
-  <span class="st">"name"</span>: <span class="st">"Webhook"</span>,
-  <span class="st">"type"</span>: <span class="st">"n8n-nodes-base.webhook"</span>,
-  <span class="st">"parameters"</span>: {
-    <span class="st">"httpMethod"</span>: <span class="st">"POST"</span>,
-    <span class="st">"path"</span>: <span class="st">"lead"</span>,
-    <span class="st">"authentication"</span>: <span class="st">"headerAuth"</span>,      <span class="cm">// credential : X-API-Key</span>
-    <span class="st">"responseMode"</span>: <span class="st">"responseNode"</span>,      <span class="cm">// la réponse vient de « Respond to Webhook »</span>
-    <span class="st">"options"</span>: { <span class="st">"allowedOrigins"</span>: <span class="st">"https://app.exemple.fr"</span> }
-  }
-},
+    webhook: { cap: "Les réglages à faire dans n8n, côté workflow. Dans l'éditeur, ce sont de simples menus déroulants ; on les montre ici sous forme de texte simplifié et commenté.", code:
+`<span class="cm">// Nœud « Webhook » (le déclencheur)</span>
 {
-  <span class="st">"name"</span>: <span class="st">"Respond to Webhook"</span>,
-  <span class="st">"type"</span>: <span class="st">"n8n-nodes-base.respondToWebhook"</span>,
-  <span class="st">"parameters"</span>: {
-    <span class="st">"respondWith"</span>: <span class="st">"json"</span>,
-    <span class="st">"responseBody"</span>: <span class="st">"={{ { ok: true, data: { leadId: $json.id, score: $json.score, route: $json.route, message: $json.message } } }}"</span>
+  <span class="st">"httpMethod"</span>: <span class="st">"POST"</span>,              <span class="cm">// accepte les envois de données</span>
+  <span class="st">"path"</span>: <span class="st">"lead"</span>,                    <span class="cm">// l'adresse finira par /webhook/lead</span>
+  <span class="st">"authentication"</span>: <span class="st">"headerAuth"</span>,    <span class="cm">// exige la clé dans l'en-tête X-API-Key</span>
+  <span class="st">"responseMode"</span>: <span class="st">"responseNode"</span>,    <span class="cm">// la réponse sera faite par le nœud « Respond to Webhook »</span>
+  <span class="st">"options"</span>: {
+    <span class="st">"allowedOrigins"</span>: <span class="st">"https://mon-site.fr"</span>  <span class="cm">// seuls ces sites peuvent appeler (CORS)</span>
+  }
+}
+
+<span class="cm">// Nœud « Respond to Webhook » (le dernier bloc)</span>
+{
+  <span class="st">"respondWith"</span>: <span class="st">"json"</span>,
+  <span class="st">"responseBody"</span>: {                  <span class="cm">// le message renvoyé à l'interface</span>
+    <span class="st">"ok"</span>: <span class="kw">true</span>,
+    <span class="st">"data"</span>: {
+      <span class="st">"score"</span>: <span class="st">"{{ $json.score }}"</span>,     <span class="cm">// expressions : valeurs du bloc précédent</span>
+      <span class="st">"message"</span>: <span class="st">"{{ $json.message }}"</span>
+    }
   }
 }` },
-    claudemd: { cap: "Le fichier CLAUDE.md à la racine du dépôt : Claude Code le lit à chaque session et applique ces règles.", code:
-`<span class="kw"># Projet leads-app</span>
+    claudemd: { cap: "Un fichier texte placé à la racine du projet. Claude Code le lit au début de chaque session et respecte ces règles sans qu'on ait à les répéter.", code:
+`<span class="kw"># Mon projet : formulaire de prospects</span>
 
-<span class="pr">## Architecture</span>
-- Front Next.js (App Router) + Tailwind. Aucune logique métier dans le front.
-- Toute la logique vit dans des workflows n8n appelés par webhook.
-- Contrats d'API : <span class="st">docs/api-*.md</span> — source de vérité, à lire avant de coder.
+<span class="pr">## Comment le projet est organisé</span>
+- Pages en HTML, CSS et JavaScript simple.
+- Toute la logique (tri, IA, envoi Slack…) est dans n8n, pas dans la page.
+- Le contrat entre la page et n8n est dans <span class="st">docs/contrat.md</span> : le lire avant de coder.
 
-<span class="pr">## Règles d'appel à n8n</span>
-- Le navigateur appelle uniquement <span class="st">/api/*</span> ; seules les routes serveur appellent n8n.
-- URLs et clés dans <span class="st">.env</span> (<span class="st">N8N_WEBHOOK_URL</span>, <span class="st">N8N_API_KEY</span>), jamais en dur.
-- Réponses toujours au format <span class="st">{ ok, data, error }</span>.
-- Timeout 15 s ; au-delà, passer en mode asynchrone (202 + polling).
+<span class="pr">## Règles pour parler à n8n</span>
+- La page appelle uniquement <span class="st">/api/lead</span>, jamais n8n directement.
+- L'URL et la clé de n8n sont dans le fichier <span class="st">.env</span>, jamais écrites dans le code.
+- Toujours afficher trois états : envoi en cours, succès, erreur compréhensible.
+- Si n8n ne répond pas en 15 secondes, afficher une erreur.
 
-<span class="pr">## Vérifications avant commit</span>
-- <span class="st">npm run lint && npm run typecheck</span>
-- Tester chaque formulaire contre <span class="st">N8N_WEBHOOK_TEST_URL</span> avec <span class="st">fixtures/*.json</span>.` }
+<span class="pr">## Avant chaque commit</span>
+- Lancer <span class="st">npm run lint</span>.
+- Tester le formulaire avec l'URL de test de n8n.` }
   };
   const codeBtns = [...document.querySelectorAll('#codeTabs [data-file]')];
-  let curFile = 'client';
   function showFile(k) {
-    curFile = k;
     codeBtns.forEach(b => b.setAttribute('aria-selected', b.dataset.file === k));
     $('codeOut').innerHTML = files[k].code;
     $('codeCap').textContent = files[k].cap;
@@ -1055,14 +1402,14 @@ Prêt. Pensez à renseigner N8N_API_KEY chez votre hébergeur.`
   $('copyBtn').addEventListener('click', () => {
     const txt = $('codeOut').textContent;
     const done = () => { $('copyBtn').textContent = 'Copié'; setTimeout(() => $('copyBtn').textContent = 'Copier', 1600); };
-    try {
-      navigator.clipboard.writeText(txt).then(done, () => selectCode());
-    } catch (e) { selectCode(); }
-    function selectCode() {
+    const selectCode = () => {
       const r = document.createRange(); r.selectNodeContents($('codeOut'));
       const s = getSelection(); s.removeAllRanges(); s.addRange(r);
-      $('copyBtn').textContent = 'Sélectionné — Ctrl+C';
-    }
+      $('copyBtn').textContent = 'Sélectionné : Ctrl+C';
+    };
+    try { navigator.clipboard.writeText(txt).then(done, selectCode); } catch (e) { selectCode(); }
   });
+
+  wireTerms(document);
 })();
 </script>
