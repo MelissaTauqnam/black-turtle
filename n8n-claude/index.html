@@ -1,0 +1,1068 @@
+<title>Atelier n8n + Claude Code</title>
+<meta name="description" content="Comprendre les automatisations n8n et développer avec Claude Code des interfaces connectées en back à des scénarios n8n.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0E0918;
+    --bg-2: #140E22;
+    --surface: #1B1429;
+    --surface-2: #231A35;
+    --line: #2F2545;
+    --line-soft: #241C36;
+    --text: #F4F0FB;
+    --muted: #A99FBD;
+    --faint: #6F6588;
+    --pink: #EA4B71;
+    --orange: #FF9B3D;
+    --violet: #8B6CFF;
+    --green: #3CCB8C;
+    --amber: #F5B83D;
+    --grad: linear-gradient(95deg, #EA4B71 0%, #FF7A59 55%, #FF9B3D 100%);
+    --display: "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --radius: 14px;
+    --wrap: 1160px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--display);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; border-radius: 6px; }
+  code, pre, .mono { font-family: var(--mono); }
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding-inline: 20px; }
+  h1, h2, h3 { text-wrap: balance; margin: 0; line-height: 1.1; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(30px, 4.4vw, 48px); font-weight: 700; }
+  h3 { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+  p { margin: 0; }
+  .grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange);
+  }
+  .lede { color: var(--muted); font-size: 18px; max-width: 62ch; }
+  section { padding-block: 96px; position: relative; }
+  .sec-head { display: grid; gap: 16px; margin-bottom: 48px; max-width: 780px; }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; justify-content: center;
+    padding: 13px 22px; border-radius: 10px; font: 600 15px/1 var(--display);
+    text-decoration: none; cursor: pointer; border: 1px solid transparent; transition: transform .15s ease, background .2s ease, border-color .2s;
+  }
+  .btn-primary { background: var(--pink); color: #fff; }
+  .btn-primary:hover { background: #F2607F; transform: translateY(-1px); }
+  .btn-ghost { background: transparent; color: var(--text); border-color: var(--line); }
+  .btn-ghost:hover { border-color: var(--muted); }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50;
+    background: rgba(14, 9, 24, 0.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; text-decoration: none; letter-spacing: -0.01em; }
+  .brand-mark { width: 30px; height: 30px; }
+  .brand small { color: var(--muted); font-weight: 500; }
+  .nav-links { display: flex; gap: 28px; font-size: 15px; color: var(--muted); }
+  .nav-links a { text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav .btn { padding: 10px 16px; font-size: 14px; }
+  @media (max-width: 880px) { .nav-links { display: none; } }
+
+  /* ---------- Hero ---------- */
+  .hero { padding-block: 72px 40px; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; inset: -20% -10% auto -10%; height: 760px; pointer-events: none;
+    background:
+      radial-gradient(38% 45% at 22% 30%, rgba(234, 75, 113, 0.28), transparent 70%),
+      radial-gradient(40% 50% at 78% 20%, rgba(139, 108, 255, 0.28), transparent 70%),
+      radial-gradient(30% 40% at 55% 70%, rgba(255, 155, 61, 0.12), transparent 70%);
+    filter: blur(10px);
+  }
+  .hero .wrap { position: relative; }
+  .hero-copy { text-align: center; display: grid; justify-items: center; gap: 22px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px 6px 6px; border-radius: 999px;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--line); font-size: 14px; color: var(--muted);
+  }
+  .pill b { background: var(--grad); color: #fff; font-size: 12px; padding: 3px 9px; border-radius: 999px; font-weight: 700; }
+  .hero h1 { font-size: clamp(38px, 6.6vw, 76px); font-weight: 800; letter-spacing: -0.035em; max-width: 16ch; }
+  .hero .lede { text-align: center; font-size: clamp(17px, 2vw, 20px); }
+  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .hero-meta { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; color: var(--faint); font-size: 14px; }
+  .hero-meta span::before { content: "✓ "; color: var(--green); }
+
+  /* ---------- Canvas (workflow editor mock) ---------- */
+  .editor {
+    margin-top: 56px; border-radius: 18px; border: 1px solid var(--line);
+    background: var(--bg-2); box-shadow: 0 40px 120px -40px rgba(234, 75, 113, 0.35), 0 0 0 1px rgba(255,255,255,0.02) inset;
+    overflow: hidden;
+  }
+  .editor-bar {
+    display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-bottom: 1px solid var(--line);
+    background: var(--surface); font-size: 14px; flex-wrap: wrap;
+  }
+  .dots { display: flex; gap: 6px; }
+  .dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); display: block; }
+  .editor-title { font-weight: 600; }
+  .editor-title span { color: var(--faint); font-weight: 500; }
+  .editor-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .toggle { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; }
+  .toggle i { width: 30px; height: 17px; border-radius: 999px; background: var(--green); position: relative; display: block; }
+  .toggle i::after { content: ""; position: absolute; right: 2px; top: 2px; width: 13px; height: 13px; border-radius: 50%; background: #fff; }
+  .run-btn { background: var(--pink); color: #fff; border: 0; border-radius: 8px; padding: 7px 12px; font: 600 13px var(--display); cursor: pointer; }
+  .run-btn:hover { background: #F2607F; }
+  .editor-body { display: grid; grid-template-columns: minmax(0, 1fr) 320px; }
+  @media (max-width: 960px) { .editor-body { grid-template-columns: 1fr; } }
+  .canvas {
+    position: relative; overflow-x: auto; padding: 18px 10px;
+    background-color: var(--bg-2);
+    background-image: radial-gradient(rgba(255,255,255,0.09) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .canvas svg { display: block; width: 100%; min-width: 640px; height: auto; }
+  .n-box { fill: var(--surface-2); stroke: #4A3E63; stroke-width: 1.5; transition: stroke .2s, fill .2s; }
+  .node { cursor: pointer; }
+  .node:hover .n-box, .node:focus-visible .n-box { stroke: var(--muted); }
+  .node.is-selected .n-box { stroke: var(--orange); stroke-width: 2; }
+  .node.is-running .n-box { stroke: var(--pink); stroke-width: 2.5; }
+  .node.is-done .n-box { stroke: var(--green); }
+  .node:focus { outline: none; }
+  .n-label { fill: var(--text); font: 600 13px var(--display); text-anchor: middle; }
+  .n-sub { fill: var(--faint); font: 500 11px var(--display); text-anchor: middle; }
+  .n-glyph { fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .edge { fill: none; stroke: #5A4E73; stroke-width: 2; }
+  .edge-sub { fill: none; stroke: #5A4E73; stroke-width: 1.6; stroke-dasharray: 4 5; }
+  .port { fill: #5A4E73; }
+  .pulse { fill: var(--orange); }
+  .check { opacity: 0; transition: opacity .2s; }
+  .node.is-done .check { opacity: 1; }
+  .edge-tag { fill: var(--faint); font: 500 11px var(--mono); }
+
+  .inspector { border-left: 1px solid var(--line); background: var(--surface); display: flex; flex-direction: column; min-height: 100%; }
+  @media (max-width: 960px) { .inspector { border-left: 0; border-top: 1px solid var(--line); } }
+  .insp-head { padding: 16px 18px 12px; border-bottom: 1px solid var(--line); display: grid; gap: 4px; }
+  .insp-head .k { font-size: 12px; color: var(--faint); letter-spacing: .08em; text-transform: uppercase; font-weight: 600; }
+  .insp-head h3 { font-size: 17px; }
+  .insp-head p { color: var(--muted); font-size: 14px; line-height: 1.5; }
+  .insp-tabs { display: flex; gap: 4px; padding: 10px 14px 0; }
+  .insp-tabs button {
+    background: none; border: 0; color: var(--muted); font: 600 13px var(--display); padding: 6px 10px; border-radius: 7px; cursor: pointer;
+  }
+  .insp-tabs button[aria-selected="true"] { background: var(--surface-2); color: var(--text); }
+  .insp-json { margin: 10px 14px 16px; padding: 12px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line-soft); font-size: 12px; line-height: 1.55; overflow: auto; max-height: 260px; flex: 1; white-space: pre; color: #D8D0EA; }
+  .tok-k { color: #FF9EB5; } .tok-s { color: #9FE0BD; } .tok-n { color: #FFC47A; } .tok-b { color: #B7A4FF; }
+  .canvas-hint { position: absolute; left: 16px; bottom: 12px; font-size: 12px; color: var(--faint); }
+
+  /* ---------- Logos strip ---------- */
+  .strip { padding-block: 36px; border-block: 1px solid var(--line-soft); }
+  .strip .wrap { display: flex; flex-wrap: wrap; gap: 14px 34px; align-items: center; justify-content: center; color: var(--faint); font-weight: 700; font-size: 17px; }
+  .strip .lbl { font-weight: 500; font-size: 14px; color: var(--muted); width: 100%; text-align: center; }
+
+  /* ---------- Concepts ---------- */
+  .concepts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  @media (max-width: 900px) { .concepts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 580px) { .concepts { grid-template-columns: 1fr; } }
+  .concept { background: var(--bg); padding: 28px; display: grid; gap: 12px; align-content: start; transition: background .2s; }
+  .concept:hover { background: var(--bg-2); }
+  .c-ico { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: var(--surface-2); border: 1px solid var(--line); }
+  .c-ico svg { width: 20px; height: 20px; }
+  .concept p { color: var(--muted); font-size: 15px; }
+  .concept code { font-size: 13px; background: var(--surface-2); padding: 1px 6px; border-radius: 5px; color: #FFC47A; }
+
+  /* ---------- Split: code-or-ui ---------- */
+  .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+  @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
+  .checks { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 14px; }
+  .checks li { display: grid; grid-template-columns: 22px 1fr; gap: 12px; color: var(--muted); }
+  .checks li b { color: var(--text); font-weight: 600; }
+  .checks li::before { content: ""; width: 20px; height: 20px; margin-top: 3px; border-radius: 6px; background: rgba(60, 203, 140, 0.14) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3L15 7' fill='none' stroke='%233CCB8C' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat; }
+  .expr-card { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
+  .expr-card header { padding: 12px 16px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; gap: 10px; }
+  .expr-row { padding: 14px 16px; border-bottom: 1px solid var(--line-soft); display: grid; gap: 6px; }
+  .expr-row:last-child { border-bottom: 0; }
+  .expr-row .f { font-size: 12px; color: var(--faint); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+  .expr-row code { font-size: 13px; color: #D8D0EA; word-break: break-word; }
+  .expr-row code .b { color: var(--orange); }
+  .expr-row .out { font-size: 13px; color: var(--green); font-family: var(--mono); }
+
+  /* ---------- Architecture ---------- */
+  .arch-sec { background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 30%, var(--bg-2) 70%, var(--bg) 100%); }
+  .arch { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; position: relative; }
+  @media (max-width: 900px) { .arch { grid-template-columns: 1fr; gap: 0; } }
+  .lane { position: relative; padding: 0 14px; display: flex; flex-direction: column; gap: 12px; }
+  @media (max-width: 900px) { .lane { padding: 0 0 36px; } }
+  .lane-head { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--faint); }
+  .blk { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 16px; display: grid; gap: 8px; transition: border-color .25s, box-shadow .25s, transform .25s; }
+  .blk h3 { font-size: 16px; }
+  .blk p { color: var(--muted); font-size: 14px; line-height: 1.5; }
+  .blk .tag { justify-self: start; font: 500 11px var(--mono); padding: 3px 8px; border-radius: 6px; background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); }
+  .blk.hot { border-color: var(--pink); box-shadow: 0 0 0 4px rgba(234, 75, 113, 0.14); transform: translateY(-2px); }
+  .blk.ok { border-color: var(--green); }
+  .blk.claude .tag { color: #FFB38A; border-color: #5A3B36; }
+  .blk.n8n .tag { color: #FF9EB5; border-color: #5A2E40; }
+  .lane:not(:last-child)::after {
+    content: ""; position: absolute; right: -9px; top: 70px; width: 18px; height: 18px; z-index: 2;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M3 9h11M10 5l4 4-4 4' fill='none' stroke='%23A99FBD' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/18px no-repeat;
+  }
+  @media (max-width: 900px) { .lane:not(:last-child)::after { right: auto; left: 50%; top: auto; bottom: 9px; transform: translateX(-50%) rotate(90deg); } }
+
+  .demo { margin-top: 40px; display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 20px; }
+  @media (max-width: 900px) { .demo { grid-template-columns: 1fr; } }
+  .panel { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: 22px; }
+  .panel h3 { font-size: 17px; margin-bottom: 4px; }
+  .panel .sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .field { display: grid; gap: 6px; margin-bottom: 14px; }
+  .field label { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .field input, .field select, .field textarea {
+    width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 9px;
+    padding: 11px 12px; font: 400 15px var(--display);
+  }
+  .field textarea { resize: vertical; min-height: 76px; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--orange); }
+  .demo .btn { width: 100%; }
+  .demo .btn[disabled] { opacity: .6; cursor: progress; }
+  .console { background: #0A0612; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; min-height: 380px; }
+  .console header { display: flex; justify-content: space-between; align-items: center; padding: 11px 16px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--muted); gap: 10px; }
+  .status { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px; }
+  .status i { width: 8px; height: 8px; border-radius: 50%; background: var(--faint); display: block; }
+  .status.run i { background: var(--amber); box-shadow: 0 0 0 4px rgba(245, 184, 61, .15); }
+  .status.ok i { background: var(--green); }
+  .log { padding: 14px 16px; font: 12.5px/1.7 var(--mono); color: #CFC6E2; overflow: auto; flex: 1; margin: 0; white-space: pre-wrap; word-break: break-word; }
+  .log .t { color: var(--faint); }
+  .log .req { color: #FFB38A; }
+  .log .n8n { color: #FF9EB5; }
+  .log .ok { color: var(--green); }
+  .log .dim { color: var(--faint); }
+  .sim-note { font-size: 12px; color: var(--faint); padding: 10px 16px; border-top: 1px solid var(--line-soft); }
+
+  /* ---------- Steps ---------- */
+  .steps { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 40px; align-items: start; }
+  @media (max-width: 960px) { .steps { grid-template-columns: 1fr; } }
+  .step-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; counter-reset: s; }
+  .step-list button {
+    width: 100%; text-align: left; background: transparent; border: 1px solid transparent; color: var(--text);
+    border-radius: 12px; padding: 16px 18px; cursor: pointer; display: grid; grid-template-columns: 34px 1fr; gap: 14px; font-family: var(--display);
+    transition: background .2s, border-color .2s;
+  }
+  .step-list button:hover { background: var(--bg-2); }
+  .step-list button[aria-selected="true"] { background: var(--surface); border-color: var(--line); }
+  .step-num { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; font: 600 14px var(--mono); background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); }
+  .step-list button[aria-selected="true"] .step-num { background: var(--pink); color: #fff; border-color: var(--pink); }
+  .step-list strong { display: block; font-size: 16px; font-weight: 700; }
+  .step-list span.d { display: block; color: var(--muted); font-size: 14px; line-height: 1.5; margin-top: 3px; }
+
+  .term { border-radius: var(--radius); border: 1px solid var(--line); background: #0A0612; overflow: hidden; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 84px); }
+  .term header { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+  .term pre { margin: 0; padding: 18px; font-size: 13px; line-height: 1.7; color: #D8D0EA; overflow-x: auto; min-height: 380px; white-space: pre-wrap; word-break: break-word; }
+  .term .p { color: var(--orange); }
+  .term .u { color: var(--text); font-weight: 500; }
+  .term .tool { color: #B7A4FF; }
+  .term .ok { color: var(--green); }
+  .term .c { color: var(--faint); }
+
+  /* ---------- Code tabs ---------- */
+  .code { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #0A0612; }
+  .code-tabs { display: flex; gap: 2px; padding: 8px; background: var(--surface); border-bottom: 1px solid var(--line); overflow-x: auto; }
+  .code-tabs button { background: none; border: 0; color: var(--muted); font: 500 13px var(--mono); padding: 8px 12px; border-radius: 8px; cursor: pointer; white-space: nowrap; }
+  .code-tabs button[aria-selected="true"] { background: var(--surface-2); color: var(--text); }
+  .code-tabs .copy { margin-left: auto; font-family: var(--display); font-weight: 600; border: 1px solid var(--line); }
+  .code-tabs .copy:hover { color: var(--text); }
+  .code pre { margin: 0; padding: 20px; font-size: 13px; line-height: 1.7; color: #D8D0EA; overflow-x: auto; }
+  .code .kw { color: #FF9EB5; } .code .st { color: #9FE0BD; } .code .cm { color: var(--faint); } .code .fn { color: #FFC47A; } .code .pr { color: #B7A4FF; }
+  .code-cap { color: var(--muted); font-size: 14px; margin-top: 14px; }
+
+  /* ---------- Practices ---------- */
+  .practices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  @media (max-width: 900px) { .practices { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 580px) { .practices { grid-template-columns: 1fr; } }
+  .practice { border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; background: var(--bg-2); display: grid; gap: 10px; align-content: start; }
+  .practice .lvl { justify-self: start; font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 999px; letter-spacing: .02em; }
+  .lvl.must { background: rgba(234, 75, 113, .14); color: #FF8AA6; }
+  .lvl.should { background: rgba(245, 184, 61, .13); color: var(--amber); }
+  .practice p { color: var(--muted); font-size: 15px; }
+  .practice code { font-size: 12.5px; background: var(--surface-2); padding: 1px 6px; border-radius: 5px; color: #FFC47A; }
+
+  /* ---------- FAQ ---------- */
+  .faq { display: grid; gap: 10px; max-width: 860px; }
+  .faq details { border: 1px solid var(--line); border-radius: 12px; background: var(--bg-2); }
+  .faq summary { cursor: pointer; padding: 18px 20px; font-weight: 600; font-size: 17px; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; color: var(--orange); font-size: 22px; line-height: 1; transition: transform .2s; }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq details p { padding: 0 20px 20px; color: var(--muted); max-width: 70ch; }
+  .faq code { font-size: 13px; background: var(--surface-2); padding: 1px 6px; border-radius: 5px; color: #FFC47A; }
+
+  /* ---------- CTA / footer ---------- */
+  .cta {
+    border-radius: 22px; padding: clamp(36px, 6vw, 72px) clamp(22px, 5vw, 64px); text-align: center; display: grid; gap: 20px; justify-items: center;
+    background: radial-gradient(60% 90% at 50% 0%, rgba(234, 75, 113, .35), transparent 70%), radial-gradient(50% 80% at 100% 100%, rgba(139, 108, 255, .3), transparent 70%), var(--surface);
+    border: 1px solid var(--line);
+  }
+  .cta h2 { max-width: 20ch; }
+  footer { padding-block: 40px 56px; color: var(--faint); font-size: 14px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid var(--line-soft); padding-top: 28px; }
+</style>
+
+<!-- ============ NAV ============ -->
+<nav class="nav" aria-label="Navigation principale">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 30 30" aria-hidden="true">
+        <defs><linearGradient id="bm" x1="0" x2="1"><stop offset="0" stop-color="#EA4B71"/><stop offset="1" stop-color="#FF9B3D"/></linearGradient></defs>
+        <circle cx="6" cy="15" r="4" fill="url(#bm)"/>
+        <circle cx="24" cy="7" r="4" fill="url(#bm)"/>
+        <circle cx="24" cy="23" r="4" fill="url(#bm)"/>
+        <path d="M10 15 C16 15 15 7 20 7 M10 15 C16 15 15 23 20 23" fill="none" stroke="url(#bm)" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      Atelier <small>n8n + Claude Code</small>
+    </a>
+    <div class="nav-links">
+      <a href="#n8n">Comment marche n8n</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#claude-code">Dev avec Claude Code</a>
+      <a href="#code">Code</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a class="btn btn-primary" href="#architecture">Voir la démo</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-copy">
+      <span class="pill"><b>Guide</b> Automatisations + interfaces sur mesure</span>
+      <h1>Des automatisations <span class="grad-text">n8n</span> pilotées par des interfaces codées avec Claude Code</h1>
+      <p class="lede">n8n orchestre la logique métier en back : déclencheurs, IA, APIs, bases de données. Claude Code génère le front qui l'appelle. Voici comment les deux s'emboîtent, du premier nœud jusqu'à la mise en production.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#n8n">Comprendre n8n →</a>
+        <a class="btn btn-ghost" href="#claude-code">Le workflow Claude Code</a>
+      </div>
+      <div class="hero-meta"><span>Webhooks comme API</span><span>Agents IA</span><span>+400 intégrations</span><span>Auto-hébergeable</span></div>
+    </div>
+
+    <!-- Workflow editor mock -->
+    <div class="editor" role="region" aria-label="Exemple de workflow n8n interactif">
+      <div class="editor-bar">
+        <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="editor-title">Qualification de leads <span>/ Personnel</span></div>
+        <div class="editor-right">
+          <span class="toggle"><i aria-hidden="true"></i>Actif</span>
+          <button class="run-btn" id="heroRun" type="button">▶ Exécuter le workflow</button>
+        </div>
+      </div>
+      <div class="editor-body">
+        <div class="canvas">
+          <svg id="flow" viewBox="0 0 860 360" role="group" aria-label="Nœuds du workflow">
+            <!-- edges -->
+            <path id="e1" class="edge" d="M112 170 L190 170"/>
+            <path id="e2" class="edge" d="M262 170 L340 170"/>
+            <path id="e3" class="edge" d="M490 170 L570 170"/>
+            <path id="e4" class="edge" d="M642 170 C 690 170, 690 100, 740 100"/>
+            <path id="e5" class="edge" d="M642 170 C 690 170, 690 240, 740 240"/>
+            <path class="edge-sub" d="M370 206 L370 262"/>
+            <path class="edge-sub" d="M415 206 L415 262"/>
+            <path class="edge-sub" d="M460 206 L460 262"/>
+            <text class="edge-tag" x="676" y="118">true</text>
+            <text class="edge-tag" x="676" y="232">false</text>
+            <!-- ports -->
+            <g aria-hidden="true">
+              <circle class="port" cx="112" cy="170" r="4"/><circle class="port" cx="190" cy="170" r="4"/>
+              <circle class="port" cx="262" cy="170" r="4"/><circle class="port" cx="340" cy="170" r="4"/>
+              <circle class="port" cx="490" cy="170" r="4"/><circle class="port" cx="570" cy="170" r="4"/>
+              <circle class="port" cx="642" cy="170" r="4"/><circle class="port" cx="740" cy="100" r="4"/><circle class="port" cx="740" cy="240" r="4"/>
+            </g>
+            <!-- pulses -->
+            <g id="pulses" aria-hidden="true">
+              <circle class="pulse" r="4"><animateMotion dur="3.2s" repeatCount="indefinite" begin="0s"><mpath href="#e1"/></animateMotion></circle>
+              <circle class="pulse" r="4"><animateMotion dur="3.2s" repeatCount="indefinite" begin="0.5s"><mpath href="#e2"/></animateMotion></circle>
+              <circle class="pulse" r="4"><animateMotion dur="3.2s" repeatCount="indefinite" begin="1s"><mpath href="#e3"/></animateMotion></circle>
+              <circle class="pulse" r="4"><animateMotion dur="3.2s" repeatCount="indefinite" begin="1.5s"><mpath href="#e4"/></animateMotion></circle>
+              <circle class="pulse" r="4"><animateMotion dur="3.2s" repeatCount="indefinite" begin="1.9s"><mpath href="#e5"/></animateMotion></circle>
+            </g>
+
+            <!-- Webhook (trigger) -->
+            <g class="node" data-node="webhook" tabindex="0" role="button" aria-label="Nœud Webhook">
+              <path class="n-box" d="M76 134 H100 a12 12 0 0 1 12 12 V194 a12 12 0 0 1 -12 12 H76 a36 36 0 0 1 -36 -36 a36 36 0 0 1 36 -36 Z"/>
+              <path class="n-glyph" stroke="#EA4B71" d="M82 156 l-8 16 h10 l-6 14"/>
+              <text class="n-label" x="76" y="230">Webhook</text>
+              <text class="n-sub" x="76" y="246">POST /lead</text>
+              <circle class="check" cx="104" cy="142" r="7" fill="#3CCB8C"/>
+            </g>
+            <!-- Set / validate -->
+            <g class="node" data-node="set" tabindex="0" role="button" aria-label="Nœud Valider les données">
+              <rect class="n-box" x="190" y="134" width="72" height="72" rx="12"/>
+              <path class="n-glyph" stroke="#8B6CFF" d="M212 158 h28 M212 170 h20 M212 182 h24"/>
+              <text class="n-label" x="226" y="230">Valider</text>
+              <text class="n-sub" x="226" y="246">Edit Fields</text>
+              <circle class="check" cx="254" cy="142" r="7" fill="#3CCB8C"/>
+            </g>
+            <!-- AI Agent -->
+            <g class="node" data-node="agent" tabindex="0" role="button" aria-label="Nœud AI Agent">
+              <rect class="n-box" x="340" y="134" width="150" height="72" rx="12"/>
+              <path class="n-glyph" stroke="#FF9B3D" d="M366 158 v24 M354 170 h24 M358 162 l16 16 M374 162 l-16 16"/>
+              <text x="392" y="166" fill="#F4F0FB" font-family="Figtree, system-ui, sans-serif" font-weight="700" font-size="14">AI Agent</text>
+              <text x="392" y="184" fill="#6F6588" font-family="Figtree, system-ui, sans-serif" font-size="11">Tools Agent</text>
+              <circle class="check" cx="482" cy="142" r="7" fill="#3CCB8C"/>
+            </g>
+            <!-- sub nodes -->
+            <g aria-hidden="true">
+              <circle cx="370" cy="286" r="22" fill="#231A35" stroke="#4A3E63" stroke-width="1.5"/>
+              <text x="370" y="291" text-anchor="middle" fill="#FF9B3D" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600">A\</text>
+              <text class="n-sub" x="370" y="328">Claude</text>
+              <circle cx="415" cy="286" r="22" fill="#231A35" stroke="#4A3E63" stroke-width="1.5"/>
+              <path class="n-glyph" stroke="#8B6CFF" d="M406 280 h18 M406 286 h18 M406 292 h18" stroke-width="1.8"/>
+              <text class="n-sub" x="415" y="328">Mémoire</text>
+              <circle cx="460" cy="286" r="22" fill="#231A35" stroke="#4A3E63" stroke-width="1.5"/>
+              <text x="460" y="291" text-anchor="middle" fill="#3CCB8C" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">{ }</text>
+              <text class="n-sub" x="460" y="344">Outil CRM</text>
+            </g>
+            <!-- IF -->
+            <g class="node" data-node="if" tabindex="0" role="button" aria-label="Nœud If">
+              <rect class="n-box" x="570" y="134" width="72" height="72" rx="12"/>
+              <path class="n-glyph" stroke="#3CCB8C" d="M590 170 h12 l10 -12 h10 M602 170 l10 12 h10"/>
+              <text class="n-label" x="606" y="230">If</text>
+              <text class="n-sub" x="606" y="246">score ≥ 70</text>
+              <circle class="check" cx="634" cy="142" r="7" fill="#3CCB8C"/>
+            </g>
+            <!-- Slack -->
+            <g class="node" data-node="slack" tabindex="0" role="button" aria-label="Nœud Slack">
+              <rect class="n-box" x="740" y="64" width="72" height="72" rx="12"/>
+              <text x="776" y="109" text-anchor="middle" fill="#F5B83D" font-family="JetBrains Mono, monospace" font-size="28" font-weight="600">#</text>
+              <text class="n-label" x="776" y="158">Slack</text>
+              <circle class="check" cx="804" cy="72" r="7" fill="#3CCB8C"/>
+            </g>
+            <!-- Sheets -->
+            <g class="node" data-node="sheets" tabindex="0" role="button" aria-label="Nœud Google Sheets">
+              <rect class="n-box" x="740" y="204" width="72" height="72" rx="12"/>
+              <path class="n-glyph" stroke="#3CCB8C" stroke-width="1.8" d="M762 226 h28 v28 h-28 Z M762 235 h28 M762 245 h28 M774 226 v28"/>
+              <text class="n-label" x="776" y="298">Google Sheets</text>
+              <circle class="check" cx="804" cy="212" r="7" fill="#3CCB8C"/>
+            </g>
+          </svg>
+          <div class="canvas-hint">Cliquez sur un nœud pour inspecter ses données</div>
+        </div>
+        <aside class="inspector" aria-live="polite">
+          <div class="insp-head">
+            <span class="k" id="inspType">Déclencheur</span>
+            <h3 id="inspName">Webhook</h3>
+            <p id="inspDesc">—</p>
+          </div>
+          <div class="insp-tabs" role="tablist" aria-label="Données du nœud">
+            <button type="button" role="tab" id="tabIn" aria-selected="false" data-io="input">Input</button>
+            <button type="button" role="tab" id="tabOut" aria-selected="true" data-io="output">Output</button>
+          </div>
+          <pre class="insp-json" id="inspJson"></pre>
+        </aside>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="strip">
+  <div class="wrap">
+    <span class="lbl">Un scénario n8n parle à tout ce qui a une API</span>
+    <span>Gmail</span><span>Slack</span><span>HubSpot</span><span>Notion</span><span>Postgres</span><span>Stripe</span><span>Airtable</span><span>Claude</span><span>HTTP Request</span>
+  </div>
+</div>
+
+<!-- ============ HOW N8N WORKS ============ -->
+<section id="n8n">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Les bases de n8n</span>
+      <h2>Un workflow = un déclencheur, des nœuds, et des données JSON qui circulent</h2>
+      <p class="lede">n8n est un outil d'automatisation « low-code » : on assemble visuellement des nœuds, et on descend dans le code (JavaScript, Python, expressions) seulement quand c'est utile.</p>
+    </div>
+
+    <div class="concepts">
+      <article class="concept">
+        <div class="c-ico"><svg viewBox="0 0 20 20"><path d="M11 2 L5 11 h5 l-1 7 6-9 h-5 z" fill="none" stroke="#EA4B71" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+        <h3>Trigger</h3>
+        <p>Chaque workflow démarre par un déclencheur : <code>Webhook</code>, <code>Schedule</code> (cron), un événement d'app (nouvel email, nouvelle ligne…), un formulaire ou un chat.</p>
+      </article>
+      <article class="concept">
+        <div class="c-ico"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="6" height="6" rx="1.5" fill="none" stroke="#8B6CFF" stroke-width="1.8"/><rect x="11" y="11" width="6" height="6" rx="1.5" fill="none" stroke="#8B6CFF" stroke-width="1.8"/><path d="M9 6 h3 a2 2 0 0 1 2 2 v3" fill="none" stroke="#8B6CFF" stroke-width="1.8"/></svg></div>
+        <h3>Nœuds</h3>
+        <p>Chaque nœud fait une chose : appeler une API, transformer des données (<code>Edit Fields</code>, <code>Code</code>), router (<code>If</code>, <code>Switch</code>), fusionner (<code>Merge</code>), boucler.</p>
+      </article>
+      <article class="concept">
+        <div class="c-ico"><svg viewBox="0 0 20 20"><path d="M6 4 C3 4 4 10 2 10 C4 10 3 16 6 16 M14 4 C17 4 16 10 18 10 C16 10 17 16 14 16" fill="none" stroke="#FF9B3D" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <h3>Items JSON</h3>
+        <p>Entre deux nœuds circule une liste d'<em>items</em>. Chaque item est un objet <code>json</code>. Un nœud s'exécute une fois par item — 10 leads en entrée, 10 appels en sortie.</p>
+      </article>
+      <article class="concept">
+        <div class="c-ico"><svg viewBox="0 0 20 20"><path d="M4 6 l-2 4 2 4 M16 6 l2 4 -2 4 M12 4 l-4 12" fill="none" stroke="#3CCB8C" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <h3>Expressions</h3>
+        <p>Tout paramètre peut être dynamique : <code>{{ $json.email }}</code> lit l'item courant, <code>{{ $('Webhook').item.json.body }}</code> lit un nœud précédent.</p>
+      </article>
+      <article class="concept">
+        <div class="c-ico"><svg viewBox="0 0 20 20"><circle cx="10" cy="7" r="3.2" fill="none" stroke="#F5B83D" stroke-width="1.8"/><path d="M4 17 c0-3.5 3-5 6-5 s6 1.5 6 5" fill="none" stroke="#F5B83D" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <h3>Agents IA</h3>
+        <p>Le nœud <code>AI Agent</code> branche un modèle (Claude, etc.), une mémoire et des outils. L'agent décide lui-même quels outils appeler pour accomplir la tâche.</p>
+      </article>
+      <article class="concept">
+        <div class="c-ico"><svg viewBox="0 0 20 20"><path d="M3 15 V5 M3 15 h14 M6 12 l3-4 3 2 4-5" fill="none" stroke="#FF9EB5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Exécutions</h3>
+        <p>Chaque run est journalisé avec les données de chaque nœud. On rejoue, on débogue, on « épingle » des données de test. Un workflow d'erreur prévient en cas d'échec.</p>
+      </article>
+    </div>
+
+    <div class="split" style="margin-top: 72px;">
+      <div>
+        <span class="eyebrow">Le point clé pour le dev d'interfaces</span>
+        <h2 style="margin-top: 14px; font-size: clamp(26px, 3.4vw, 38px);">Un nœud Webhook transforme n'importe quel workflow en endpoint d'API</h2>
+        <ul class="checks">
+          <li><span><b>Une URL par workflow.</b> <code class="mono" style="font-size:13px">/webhook-test/…</code> pendant que vous testez dans l'éditeur, <code class="mono" style="font-size:13px">/webhook/…</code> une fois le workflow activé.</span></li>
+          <li><span><b>Vous choisissez la réponse.</b> Répondre tout de suite, à la fin du dernier nœud, ou via un nœud <code class="mono" style="font-size:13px">Respond to Webhook</code> qui renvoie exactement le JSON attendu par le front.</span></li>
+          <li><span><b>Sécurisable.</b> Authentification Header / Basic / JWT, origines CORS autorisées, méthode HTTP imposée.</span></li>
+        </ul>
+      </div>
+      <div class="expr-card" aria-label="Exemple d'expressions n8n">
+        <header><span>Paramètres du nœud « Slack »</span><span class="mono">Expression</span></header>
+        <div class="expr-row">
+          <span class="f">Canal</span>
+          <code>#sales-<span class="b">{{ $json.region.toLowerCase() }}</span></code>
+          <span class="out">→ #sales-idf</span>
+        </div>
+        <div class="expr-row">
+          <span class="f">Message</span>
+          <code>🔥 <span class="b">{{ $('Webhook').item.json.body.company }}</span> — score <span class="b">{{ $json.score }}</span>/100</code>
+          <span class="out">→ 🔥 Boulangerie Martin — score 86/100</span>
+        </div>
+        <div class="expr-row">
+          <span class="f">Relance prévue</span>
+          <code><span class="b">{{ $now.plus({ days: 2 }).toFormat('dd/MM') }}</span></code>
+          <span class="out">→ 25/09</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARCHITECTURE + DEMO ============ -->
+<section id="architecture" class="arch-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Architecture</span>
+      <h2>Le front parle HTTP, n8n fait le travail</h2>
+      <p class="lede">L'interface générée par Claude Code ne contient aucune logique métier sensible ni clé d'API tierce. Elle envoie une requête au webhook, le scénario n8n orchestre les services, puis renvoie un JSON propre.</p>
+    </div>
+
+    <div class="arch" id="arch">
+      <div class="lane">
+        <span class="lane-head">Interface</span>
+        <div class="blk claude" data-step="0">
+          <span class="tag">généré par Claude Code</span>
+          <h3>Formulaire / App web</h3>
+          <p>HTML, React, Next.js… Valide la saisie, affiche le chargement et le résultat.</p>
+        </div>
+      </div>
+      <div class="lane">
+        <span class="lane-head">Transport</span>
+        <div class="blk" data-step="1">
+          <span class="tag">HTTPS · JSON</span>
+          <h3>POST /webhook/lead</h3>
+          <p>En-tête <span class="mono" style="font-size:12px">X-API-Key</span>, corps JSON. Idéalement via une route serveur (proxy) pour ne pas exposer la clé.</p>
+        </div>
+      </div>
+      <div class="lane">
+        <span class="lane-head">Orchestration</span>
+        <div class="blk n8n" data-step="2">
+          <span class="tag">workflow n8n</span>
+          <h3>Scénario</h3>
+          <p>Validation → Agent IA → Condition → Actions. Journalisé à chaque exécution.</p>
+        </div>
+      </div>
+      <div class="lane">
+        <span class="lane-head">Services</span>
+        <div class="blk" data-step="3">
+          <span class="tag">APIs tierces</span>
+          <h3>CRM, IA, Slack, BDD</h3>
+          <p>Les identifiants restent dans le coffre de n8n (Credentials), jamais dans le front.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo">
+      <form class="panel" id="demoForm" novalidate>
+        <h3>Essayez le circuit complet</h3>
+        <p class="sub">Un exemple de formulaire tel que Claude Code pourrait le générer.</p>
+        <div class="field">
+          <label for="f-company">Entreprise</label>
+          <input id="f-company" name="company" value="Boulangerie Martin" required>
+        </div>
+        <div class="field">
+          <label for="f-email">Email</label>
+          <input id="f-email" name="email" type="email" value="claire@boulangerie-martin.fr" required>
+        </div>
+        <div class="field">
+          <label for="f-size">Taille</label>
+          <select id="f-size" name="size">
+            <option value="1-10">1 à 10 salariés</option>
+            <option value="11-50" selected>11 à 50 salariés</option>
+            <option value="51-250">51 à 250 salariés</option>
+            <option value="250+">Plus de 250</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-need">Besoin</label>
+          <textarea id="f-need" name="need">Automatiser la prise de commandes B2B et les relances de factures.</textarea>
+        </div>
+        <button class="btn btn-primary" id="demoBtn" type="submit">Envoyer au webhook</button>
+      </form>
+
+      <div class="console">
+        <header>
+          <span class="mono">Réseau &amp; exécution</span>
+          <span class="status" id="demoStatus"><i></i><span>en attente</span></span>
+        </header>
+        <pre class="log" id="demoLog"><span class="dim">// Soumettez le formulaire pour voir la requête partir,
+// le scénario n8n s'exécuter nœud par nœud,
+// puis la réponse JSON revenir vers l'interface.</span></pre>
+        <div class="sim-note">Simulation locale : aucune donnée n'est envoyée. En production, <span class="mono">fetch()</span> appelle l'URL de votre webhook n8n.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLAUDE CODE WORKFLOW ============ -->
+<section id="claude-code">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Développer avec Claude Code</span>
+      <h2>Du contrat d'API à l'interface en production, en cinq étapes</h2>
+      <p class="lede">Claude Code travaille dans votre terminal et votre dépôt. Donnez-lui le contrat du webhook, il écrit le front, le client HTTP, les états d'erreur — et peut même créer le workflow n8n via le serveur MCP de n8n.</p>
+    </div>
+
+    <div class="steps">
+      <ol class="step-list" role="tablist" aria-label="Étapes" id="stepList">
+        <li><button type="button" role="tab" aria-selected="true" data-step="0"><span class="step-num">1</span><span><strong>Construire le scénario n8n</strong><span class="d">Webhook → logique → Respond to Webhook. À la main dans l'éditeur, ou demandé à Claude Code via MCP.</span></span></button></li>
+        <li><button type="button" role="tab" aria-selected="false" data-step="1"><span class="step-num">2</span><span><strong>Figer le contrat d'API</strong><span class="d">Champs attendus, format de réponse, codes d'erreur. Écrit dans le dépôt, c'est la source de vérité.</span></span></button></li>
+        <li><button type="button" role="tab" aria-selected="false" data-step="2"><span class="step-num">3</span><span><strong>Générer l'interface</strong><span class="d">Un prompt précis : stack, design, états de chargement et d'erreur, accessibilité.</span></span></button></li>
+        <li><button type="button" role="tab" aria-selected="false" data-step="3"><span class="step-num">4</span><span><strong>Brancher et tester</strong><span class="d">URL de test, exécution dans n8n, lecture des logs d'exécution, corrections.</span></span></button></li>
+        <li><button type="button" role="tab" aria-selected="false" data-step="4"><span class="step-num">5</span><span><strong>Sécuriser et déployer</strong><span class="d">Proxy serveur, secrets en variables d'environnement, workflow activé, URL de production.</span></span></button></li>
+      </ol>
+      <div class="term" aria-live="polite">
+        <header><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div><span class="mono">~/projets/leads-app — claude</span></header>
+        <pre id="termOut"></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CODE ============ -->
+<section id="code" class="arch-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Sous le capot</span>
+      <h2>Les fichiers qui relient l'interface au scénario</h2>
+      <p class="lede">Quatre pièces suffisent : le client HTTP côté front, la route proxy côté serveur, la configuration du webhook dans n8n et un <span class="mono" style="font-size:15px">CLAUDE.md</span> qui fixe les règles pour Claude Code.</p>
+    </div>
+    <div class="code">
+      <div class="code-tabs" role="tablist" aria-label="Fichiers d'exemple" id="codeTabs">
+        <button type="button" role="tab" aria-selected="true" data-file="client">lib/leads.ts</button>
+        <button type="button" role="tab" aria-selected="false" data-file="proxy">app/api/lead/route.ts</button>
+        <button type="button" role="tab" aria-selected="false" data-file="webhook">n8n · Webhook</button>
+        <button type="button" role="tab" aria-selected="false" data-file="claudemd">CLAUDE.md</button>
+        <button type="button" class="copy" id="copyBtn">Copier</button>
+      </div>
+      <pre id="codeOut"></pre>
+    </div>
+    <p class="code-cap" id="codeCap"></p>
+  </div>
+</section>
+
+<!-- ============ PRACTICES ============ -->
+<section id="practices">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Bonnes pratiques</span>
+      <h2>Ce qui sépare une démo d'un outil en production</h2>
+    </div>
+    <div class="practices">
+      <article class="practice"><span class="lvl must">Indispensable</span><h3>Authentifier le webhook</h3><p>Activez <code>Header Auth</code> sur le nœud Webhook. Sans ça, n'importe qui connaissant l'URL peut déclencher le scénario.</p></article>
+      <article class="practice"><span class="lvl must">Indispensable</span><h3>Garder les secrets côté serveur</h3><p>Le navigateur appelle votre route <code>/api/lead</code>, qui ajoute la clé et appelle n8n. La clé n'apparaît jamais dans le JavaScript public.</p></article>
+      <article class="practice"><span class="lvl must">Indispensable</span><h3>Valider deux fois</h3><p>Côté front pour l'expérience, côté n8n (<code>If</code> ou <code>Code</code>) pour la sécurité. Répondez <code>400</code> avec un message clair si l'entrée est invalide.</p></article>
+      <article class="practice"><span class="lvl should">Recommandé</span><h3>Un format de réponse unique</h3><p>Toujours <code>{ ok, data, error }</code> via <code>Respond to Webhook</code>. Le front n'a qu'un seul cas à gérer.</p></article>
+      <article class="practice"><span class="lvl should">Recommandé</span><h3>Traitements longs en asynchrone</h3><p>Au-delà de quelques secondes, répondez <code>202</code> avec un identifiant, puis laissez le front interroger un second webhook de statut.</p></article>
+      <article class="practice"><span class="lvl should">Recommandé</span><h3>Workflow d'erreur</h3><p>Branchez un <code>Error Trigger</code> qui notifie Slack ou email : vous savez qu'un scénario a échoué avant l'utilisateur.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq" style="padding-top: 24px;">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">FAQ</span>
+      <h2>Questions fréquentes</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Pourquoi mettre la logique dans n8n plutôt que dans le code du front ?</summary>
+        <p>Parce que la logique métier change souvent et implique beaucoup d'intégrations. Dans n8n, elle est visible, modifiable sans redéployer l'interface, et chaque exécution est tracée. Le front reste simple : il envoie et affiche.</p>
+      </details>
+      <details>
+        <summary>Claude Code peut-il créer le workflow n8n lui-même ?</summary>
+        <p>Oui, si vous connectez le serveur MCP de votre instance n8n à Claude Code. Il peut alors rechercher des nœuds, créer et valider un workflow, l'exécuter en test et lire le résultat — puis écrire l'interface qui l'appelle, dans la même session.</p>
+      </details>
+      <details>
+        <summary>Quelle différence entre l'URL de test et l'URL de production ?</summary>
+        <p><code>/webhook-test/…</code> ne répond que lorsque vous cliquez sur « Listen for test event » dans l'éditeur, et affiche les données en direct. <code>/webhook/…</code> fonctionne en continu, une fois le workflow activé (publié).</p>
+      </details>
+      <details>
+        <summary>Et si le scénario prend 30 secondes ou plus ?</summary>
+        <p>Ne faites pas attendre le navigateur. Répondez immédiatement avec un identifiant de tâche, stockez l'état (Data Table n8n, base de données), et exposez un second webhook <code>GET /status?id=…</code> que l'interface interroge.</p>
+      </details>
+      <details>
+        <summary>n8n cloud ou auto-hébergé ?</summary>
+        <p>Les deux fonctionnent de la même façon pour les webhooks. L'auto-hébergement (Docker) donne le contrôle total des données ; le cloud évite la maintenance. Seule l'URL de base change dans vos variables d'environnement.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top: 24px;">
+  <div class="wrap">
+    <div class="cta">
+      <span class="eyebrow">Prochaine étape</span>
+      <h2>Votre premier duo interface + scénario en une après-midi</h2>
+      <p class="lede">Créez un workflow Webhook → Respond to Webhook, copiez son URL de test, et demandez à Claude Code : « construis un formulaire qui appelle ce webhook ».</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.webhook/" target="_blank" rel="noopener">Doc du nœud Webhook ↗</a>
+        <a class="btn btn-ghost" href="https://docs.claude.com/en/docs/claude-code/overview" target="_blank" rel="noopener">Doc Claude Code ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Atelier n8n + Claude Code — guide pédagogique.</span>
+    <span>Guide indépendant, non affilié à n8n GmbH. Design inspiré de n8n.io.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) { const p = document.getElementById('pulses'); if (p) p.remove(); }
+  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const sleep = ms => new Promise(r => setTimeout(r, reduce ? Math.min(ms, 60) : ms));
+
+  function highlightJSON(obj) {
+    return esc(JSON.stringify(obj, null, 2))
+      .replace(/(&quot;|")([^"]*?)\1(\s*:)/g, '<span class="tok-k">"$2"</span>$3')
+      .replace(/:\s"([^"]*)"/g, ': <span class="tok-s">"$1"</span>')
+      .replace(/:\s(-?\d+\.?\d*)/g, ': <span class="tok-n">$1</span>')
+      .replace(/:\s(true|false|null)/g, ': <span class="tok-b">$1</span>');
+  }
+
+  /* ---------- Node inspector ---------- */
+  const lead = { company: "Boulangerie Martin", email: "claire@boulangerie-martin.fr", size: "11-50", need: "Automatiser la prise de commandes B2B" };
+  const nodes = {
+    webhook: { type: "Déclencheur", name: "Webhook", desc: "Reçoit le POST envoyé par l'interface. Méthode POST, Header Auth, réponse via « Respond to Webhook ».",
+      input: { note: "Un trigger n'a pas d'entrée : il démarre l'exécution." },
+      output: [{ headers: { "content-type": "application/json", "x-api-key": "••••••" }, body: lead }] },
+    set: { type: "Transformation", name: "Valider (Edit Fields)", desc: "Normalise et ne garde que les champs utiles. Rejette l'item si l'email est vide.",
+      input: [{ body: lead }],
+      output: [{ company: lead.company, email: lead.email, size: lead.size, need: lead.need, receivedAt: "2026-09-23T09:14:02Z" }] },
+    agent: { type: "IA", name: "AI Agent", desc: "Claude analyse le besoin, interroge le CRM (outil) et renvoie un score structuré.",
+      input: [{ company: lead.company, size: lead.size, need: lead.need }],
+      output: [{ score: 86, segment: "PME", region: "IDF", summary: "Besoin clair d'automatisation B2B, taille compatible, forte intention.", nextAction: "Appel découverte" }] },
+    if: { type: "Logique", name: "If", desc: "Route l'item : score ≥ 70 vers Slack (branche true), sinon vers Google Sheets (branche false).",
+      input: [{ score: 86, segment: "PME" }],
+      output: { "true": [{ score: 86, segment: "PME", region: "IDF" }], "false": [] } },
+    slack: { type: "Action", name: "Slack", desc: "Prévient l'équipe commerciale dans #sales-idf avec le résumé de l'agent.",
+      input: [{ score: 86, region: "IDF", summary: "Besoin clair…" }],
+      output: [{ ok: true, channel: "C05SALESIDF", ts: "1790155242.001200" }] },
+    sheets: { type: "Action", name: "Google Sheets", desc: "Branche false : ajoute le lead à la feuille « À nourrir » pour une séquence email.",
+      input: [], output: [] }
+  };
+  let current = 'webhook', io = 'output';
+  const $ = id => document.getElementById(id);
+  function renderInspector() {
+    const n = nodes[current];
+    $('inspType').textContent = n.type;
+    $('inspName').textContent = n.name;
+    $('inspDesc').textContent = n.desc;
+    $('tabIn').setAttribute('aria-selected', io === 'input');
+    $('tabOut').setAttribute('aria-selected', io === 'output');
+    const data = n[io];
+    $('inspJson').innerHTML = (Array.isArray(data) && data.length === 0)
+      ? '<span class="tok-b">// Aucun item sur cette branche lors de cette exécution</span>'
+      : highlightJSON(data);
+    document.querySelectorAll('.node').forEach(g => g.classList.toggle('is-selected', g.dataset.node === current));
+  }
+  document.querySelectorAll('.node').forEach(g => {
+    const pick = () => { current = g.dataset.node; renderInspector(); };
+    g.addEventListener('click', pick);
+    g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+  });
+  $('tabIn').addEventListener('click', () => { io = 'input'; renderInspector(); });
+  $('tabOut').addEventListener('click', () => { io = 'output'; renderInspector(); });
+  renderInspector();
+
+  let heroBusy = false;
+  $('heroRun').addEventListener('click', async () => {
+    if (heroBusy) return; heroBusy = true;
+    const order = ['webhook', 'set', 'agent', 'if', 'slack'];
+    const els = Object.fromEntries([...document.querySelectorAll('.node')].map(g => [g.dataset.node, g]));
+    Object.values(els).forEach(g => g.classList.remove('is-done', 'is-running'));
+    for (const k of order) {
+      els[k].classList.add('is-running');
+      current = k; io = 'output'; renderInspector();
+      await sleep(k === 'agent' ? 1100 : 550);
+      els[k].classList.remove('is-running'); els[k].classList.add('is-done');
+    }
+    heroBusy = false;
+  });
+
+  /* ---------- Architecture demo ---------- */
+  const form = $('demoForm'), log = $('demoLog'), status = $('demoStatus');
+  const blks = [...document.querySelectorAll('#arch .blk')];
+  const t0 = () => performance.now();
+  function setStatus(cls, txt) { status.className = 'status ' + cls; status.lastElementChild.textContent = txt; }
+  function line(html) { log.innerHTML += (log.innerHTML ? '\n' : '') + html; log.scrollTop = log.scrollHeight; }
+  function lightUp(i) { blks.forEach((b, j) => { b.classList.toggle('hot', j === i); if (j < i) b.classList.add('ok'); }); }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const fd = Object.fromEntries(new FormData(form).entries());
+    if (!fd.company.trim() || !/^\S+@\S+\.\S+$/.test(fd.email)) {
+      setStatus('', 'erreur de saisie');
+      log.innerHTML = '<span class="req">✗ Validation front : renseignez une entreprise et un email valide avant l\'envoi.</span>';
+      return;
+    }
+    const btn = $('demoBtn'); btn.disabled = true; btn.textContent = 'Envoi…';
+    blks.forEach(b => b.classList.remove('ok', 'hot'));
+    log.innerHTML = '';
+    const start = t0();
+    const ts = () => '<span class="t">[' + String(Math.round(t0() - start)).padStart(4, ' ') + ' ms]</span> ';
+    setStatus('run', 'exécution');
+
+    lightUp(0);
+    line(ts() + '<span class="dim">interface</span> validation OK, état → <b>loading</b>');
+    await sleep(500);
+    lightUp(1);
+    line(ts() + '<span class="req">POST https://n8n.exemple.fr/webhook/lead</span>');
+    line('<span class="dim">        X-API-Key: ••••••  Content-Type: application/json</span>');
+    line('<span class="dim">        ' + esc(JSON.stringify({ company: fd.company, email: fd.email, size: fd.size })) + '</span>');
+    await sleep(650);
+    lightUp(2);
+    const score = { '1-10': 58, '11-50': 86, '51-250': 91, '250+': 74 }[fd.size] || 70;
+    const steps = [['Webhook', 'reçu 1 item'], ['Valider', 'champs normalisés'], ['AI Agent', 'Claude → score ' + score + '/100'], ['If', score >= 70 ? 'branche true' : 'branche false'], [score >= 70 ? 'Slack' : 'Google Sheets', score >= 70 ? 'message posté #sales' : 'ligne ajoutée'], ['Respond to Webhook', '200 JSON']];
+    for (const [n, r] of steps) {
+      await sleep(n === 'AI Agent' ? 900 : 320);
+      line(ts() + '<span class="n8n">n8n ▸ ' + esc(n) + '</span> ' + esc(r));
+    }
+    lightUp(3);
+    await sleep(500);
+    lightUp(1);
+    await sleep(350);
+    blks.forEach(b => { b.classList.remove('hot'); b.classList.add('ok'); });
+    const resp = { ok: true, data: { leadId: 'ld_' + Math.random().toString(36).slice(2, 8), score, route: score >= 70 ? 'commercial' : 'nurturing', message: score >= 70 ? 'Merci ! Un conseiller vous rappelle sous 24 h.' : 'Merci ! Vous recevrez notre guide par email.' } };
+    line(ts() + '<span class="ok">← 200 OK</span>');
+    line(highlightJSON(resp));
+    line(ts() + '<span class="dim">interface</span> état → <b>success</b>, message affiché');
+    setStatus('ok', 'terminé en ' + Math.round(t0() - start) + ' ms');
+    btn.disabled = false; btn.textContent = 'Renvoyer au webhook';
+  });
+
+  /* ---------- Claude Code terminal ---------- */
+  const term = [
+`<span class="p">❯</span> <span class="u">Crée un workflow n8n « Qualification de leads » :
+  Webhook POST /lead (Header Auth) → Edit Fields → AI Agent (Claude)
+  → If score ≥ 70 → Slack, sinon Google Sheets → Respond to Webhook.</span>
+
+<span class="tool">● n8n.search_nodes</span>(["webhook", "ai agent", "slack", "google sheets"])
+  <span class="c">⎿ 6 nœuds trouvés</span>
+<span class="tool">● n8n.create_workflow_from_code</span>(qualification-leads)
+  <span class="c">⎿ Workflow créé · 7 nœuds · inactif</span>
+<span class="tool">● n8n.validate_workflow</span>
+  <span class="c">⎿</span> <span class="ok">✓ Aucune erreur</span>
+
+Le workflow est prêt. Il reste à connecter les credentials Slack
+et Google Sheets dans n8n, puis à le tester.`,
+
+`<span class="p">❯</span> <span class="u">Documente le contrat du webhook dans docs/api-lead.md.</span>
+
+<span class="tool">● Write</span>(docs/api-lead.md)
+  <span class="c">⎿ 38 lignes</span>
+
+<span class="c">## POST /webhook/lead</span>
+<span class="c">Requête</span>  { company: string, email: string,
+            size: "1-10"|"11-50"|"51-250"|"250+", need?: string }
+<span class="c">200</span>      { ok: true,  data: { leadId, score, route, message } }
+<span class="c">400</span>      { ok: false, error: { code: "INVALID_INPUT", field } }
+<span class="c">401</span>      clé X-API-Key absente ou invalide
+
+<span class="ok">✓</span> Contrat ajouté. Je m'y référerai pour le front.`,
+
+`<span class="p">❯</span> <span class="u">Construis le formulaire de contact en Next.js + Tailwind en
+  respectant docs/api-lead.md. États : idle, loading, success,
+  error. Accessible au clavier, messages d'erreur par champ.</span>
+
+<span class="tool">● Read</span>(docs/api-lead.md)
+<span class="tool">● Write</span>(lib/leads.ts)              <span class="c">client typé + timeout</span>
+<span class="tool">● Write</span>(app/api/lead/route.ts)     <span class="c">proxy serveur</span>
+<span class="tool">● Write</span>(components/LeadForm.tsx)  <span class="c">formulaire + états</span>
+<span class="tool">● Edit</span>(app/page.tsx)
+<span class="tool">● Bash</span>(npm run lint && npm run typecheck)
+  <span class="c">⎿</span> <span class="ok">✓ 0 erreur</span>`,
+
+`<span class="p">❯</span> <span class="u">Teste le formulaire contre l'URL de test et vérifie
+  l'exécution côté n8n.</span>
+
+<span class="tool">● Bash</span>(curl -X POST $N8N_WEBHOOK_TEST_URL -H "X-API-Key: …" -d @fixtures/lead.json)
+  <span class="c">⎿</span> {"ok":true,"data":{"score":86,"route":"commercial",…}}
+<span class="tool">● n8n.search_workflow_executions</span>(qualification-leads, last: 1)
+  <span class="c">⎿ #4812 · success · 2,4 s</span>
+<span class="tool">● Bash</span>(curl … -d '{"company":""}')
+  <span class="c">⎿</span> 500 — <span class="p">le nœud If a planté sur un champ vide</span>
+<span class="tool">● n8n.update_workflow</span>  <span class="c">ajout d'une validation → 400 INVALID_INPUT</span>
+  <span class="c">⎿</span> <span class="ok">✓ 400 renvoyé proprement</span>`,
+
+`<span class="p">❯</span> <span class="u">Prépare la mise en production.</span>
+
+<span class="tool">● Edit</span>(.env.example)
+  <span class="c">+ N8N_WEBHOOK_URL=https://n8n.exemple.fr/webhook/lead</span>
+  <span class="c">+ N8N_API_KEY=</span>
+<span class="tool">● Grep</span>("N8N_API_KEY", "app/ components/")
+  <span class="c">⎿</span> <span class="ok">✓ uniquement dans app/api/lead/route.ts (serveur)</span>
+<span class="tool">● n8n.publish_workflow</span>(qualification-leads)
+  <span class="c">⎿</span> <span class="ok">✓ Actif · URL de production disponible</span>
+<span class="tool">● Bash</span>(git commit -m "feat: formulaire leads branché sur n8n")
+
+Prêt. Pensez à renseigner N8N_API_KEY chez votre hébergeur.`
+  ];
+  const stepBtns = [...document.querySelectorAll('#stepList button')];
+  function showStep(i) {
+    stepBtns.forEach((b, j) => b.setAttribute('aria-selected', i === j));
+    $('termOut').innerHTML = term[i];
+  }
+  stepBtns.forEach((b, i) => b.addEventListener('click', () => showStep(i)));
+  showStep(0);
+
+  /* ---------- Code tabs ---------- */
+  const files = {
+    client: { cap: "Client côté navigateur : il appelle votre propre route /api/lead, jamais n8n directement.", code:
+`<span class="kw">export type</span> <span class="pr">LeadInput</span> = { company: <span class="pr">string</span>; email: <span class="pr">string</span>; size: <span class="pr">string</span>; need?: <span class="pr">string</span> };
+<span class="kw">export type</span> <span class="pr">LeadResult</span> =
+  | { ok: <span class="kw">true</span>;  data: { leadId: <span class="pr">string</span>; score: <span class="pr">number</span>; route: <span class="pr">string</span>; message: <span class="pr">string</span> } }
+  | { ok: <span class="kw">false</span>; error: { code: <span class="pr">string</span>; field?: <span class="pr">string</span> } };
+
+<span class="kw">export async function</span> <span class="fn">submitLead</span>(input: <span class="pr">LeadInput</span>): <span class="pr">Promise</span>&lt;<span class="pr">LeadResult</span>&gt; {
+  <span class="kw">const</span> ctrl = <span class="kw">new</span> <span class="fn">AbortController</span>();
+  <span class="kw">const</span> timer = <span class="fn">setTimeout</span>(() =&gt; ctrl.<span class="fn">abort</span>(), <span class="pr">15_000</span>);
+  <span class="kw">try</span> {
+    <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="st">"/api/lead"</span>, {
+      method: <span class="st">"POST"</span>,
+      headers: { <span class="st">"Content-Type"</span>: <span class="st">"application/json"</span> },
+      body: <span class="pr">JSON</span>.<span class="fn">stringify</span>(input),
+      signal: ctrl.signal,
+    });
+    <span class="kw">return</span> (<span class="kw">await</span> res.<span class="fn">json</span>()) <span class="kw">as</span> <span class="pr">LeadResult</span>;
+  } <span class="kw">catch</span> {
+    <span class="kw">return</span> { ok: <span class="kw">false</span>, error: { code: <span class="st">"NETWORK"</span> } };
+  } <span class="kw">finally</span> {
+    <span class="fn">clearTimeout</span>(timer);
+  }
+}` },
+    proxy: { cap: "Route serveur : ajoute la clé secrète et relaie vers le webhook n8n. La clé ne quitte jamais le serveur.", code:
+`<span class="cm">// app/api/lead/route.ts — s'exécute côté serveur</span>
+<span class="kw">export async function</span> <span class="fn">POST</span>(req: <span class="pr">Request</span>) {
+  <span class="kw">const</span> body = <span class="kw">await</span> req.<span class="fn">json</span>();
+
+  <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(process.env.<span class="pr">N8N_WEBHOOK_URL</span>!, {
+    method: <span class="st">"POST"</span>,
+    headers: {
+      <span class="st">"Content-Type"</span>: <span class="st">"application/json"</span>,
+      <span class="st">"X-API-Key"</span>: process.env.<span class="pr">N8N_API_KEY</span>!,  <span class="cm">// Header Auth du nœud Webhook</span>
+    },
+    body: <span class="pr">JSON</span>.<span class="fn">stringify</span>(body),
+  });
+
+  <span class="kw">return new</span> <span class="fn">Response</span>(<span class="kw">await</span> res.<span class="fn">text</span>(), {
+    status: res.status,
+    headers: { <span class="st">"Content-Type"</span>: <span class="st">"application/json"</span> },
+  });
+}` },
+    webhook: { cap: "Extrait des paramètres du nœud Webhook et du nœud Respond to Webhook, tels qu'exportés en JSON depuis n8n.", code:
+`{
+  <span class="st">"name"</span>: <span class="st">"Webhook"</span>,
+  <span class="st">"type"</span>: <span class="st">"n8n-nodes-base.webhook"</span>,
+  <span class="st">"parameters"</span>: {
+    <span class="st">"httpMethod"</span>: <span class="st">"POST"</span>,
+    <span class="st">"path"</span>: <span class="st">"lead"</span>,
+    <span class="st">"authentication"</span>: <span class="st">"headerAuth"</span>,      <span class="cm">// credential : X-API-Key</span>
+    <span class="st">"responseMode"</span>: <span class="st">"responseNode"</span>,      <span class="cm">// la réponse vient de « Respond to Webhook »</span>
+    <span class="st">"options"</span>: { <span class="st">"allowedOrigins"</span>: <span class="st">"https://app.exemple.fr"</span> }
+  }
+},
+{
+  <span class="st">"name"</span>: <span class="st">"Respond to Webhook"</span>,
+  <span class="st">"type"</span>: <span class="st">"n8n-nodes-base.respondToWebhook"</span>,
+  <span class="st">"parameters"</span>: {
+    <span class="st">"respondWith"</span>: <span class="st">"json"</span>,
+    <span class="st">"responseBody"</span>: <span class="st">"={{ { ok: true, data: { leadId: $json.id, score: $json.score, route: $json.route, message: $json.message } } }}"</span>
+  }
+}` },
+    claudemd: { cap: "Le fichier CLAUDE.md à la racine du dépôt : Claude Code le lit à chaque session et applique ces règles.", code:
+`<span class="kw"># Projet leads-app</span>
+
+<span class="pr">## Architecture</span>
+- Front Next.js (App Router) + Tailwind. Aucune logique métier dans le front.
+- Toute la logique vit dans des workflows n8n appelés par webhook.
+- Contrats d'API : <span class="st">docs/api-*.md</span> — source de vérité, à lire avant de coder.
+
+<span class="pr">## Règles d'appel à n8n</span>
+- Le navigateur appelle uniquement <span class="st">/api/*</span> ; seules les routes serveur appellent n8n.
+- URLs et clés dans <span class="st">.env</span> (<span class="st">N8N_WEBHOOK_URL</span>, <span class="st">N8N_API_KEY</span>), jamais en dur.
+- Réponses toujours au format <span class="st">{ ok, data, error }</span>.
+- Timeout 15 s ; au-delà, passer en mode asynchrone (202 + polling).
+
+<span class="pr">## Vérifications avant commit</span>
+- <span class="st">npm run lint && npm run typecheck</span>
+- Tester chaque formulaire contre <span class="st">N8N_WEBHOOK_TEST_URL</span> avec <span class="st">fixtures/*.json</span>.` }
+  };
+  const codeBtns = [...document.querySelectorAll('#codeTabs [data-file]')];
+  let curFile = 'client';
+  function showFile(k) {
+    curFile = k;
+    codeBtns.forEach(b => b.setAttribute('aria-selected', b.dataset.file === k));
+    $('codeOut').innerHTML = files[k].code;
+    $('codeCap').textContent = files[k].cap;
+  }
+  codeBtns.forEach(b => b.addEventListener('click', () => showFile(b.dataset.file)));
+  showFile('client');
+  $('copyBtn').addEventListener('click', () => {
+    const txt = $('codeOut').textContent;
+    const done = () => { $('copyBtn').textContent = 'Copié'; setTimeout(() => $('copyBtn').textContent = 'Copier', 1600); };
+    try {
+      navigator.clipboard.writeText(txt).then(done, () => selectCode());
+    } catch (e) { selectCode(); }
+    function selectCode() {
+      const r = document.createRange(); r.selectNodeContents($('codeOut'));
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+      $('copyBtn').textContent = 'Sélectionné — Ctrl+C';
+    }
+  });
+})();
+</script>
