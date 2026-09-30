@@ -594,17 +594,24 @@ function loadAPI() {
   });
   return apiP;
 }
+function showServeHelp() {
+  const ph = $('#placeholder'); ph.classList.remove('hidden');
+  ph.innerHTML = '<div style="padding:20px;max-width:440px"><div class="big">🔌</div><p><b>YouTube error 153</b> — YouTube refuses to play videos in a page opened by double-click (file://).</p><p>Serve the folder locally, then open <code>http://localhost:8000/thai-clips.html</code>:</p><p><code>python3 -m http.server 8000</code></p></div>';
+}
 function createPlayer(vid, start, autoplay) {
   return new Promise(res => {
     $('#placeholder').classList.add('hidden');
     curVid = vid;
     player = new YT.Player('yt', {
       videoId: vid,
-      playerVars: { playsinline: 1, rel: 0, start: Math.floor(start), autoplay: autoplay ? 1 : 0, cc_load_policy: 0, iv_load_policy: 3 },
+      playerVars: { origin: location.protocol.startsWith('http') ? location.origin : undefined, playsinline: 1, rel: 0, start: Math.floor(start), autoplay: autoplay ? 1 : 0, cc_load_policy: 0, iv_load_policy: 3 },
       events: {
         onReady: () => { player.setPlaybackRate(+$('#rateSel').value); res(); },
         onStateChange: e => { if (e.data === 1 && clip) clip.armed = true; },
-        onError: () => toast("This video can't be played here (embedding blocked or invalid URL)"),
+        onError: e => {
+          if (e.data === 153 || location.protocol === 'file:') showServeHelp();
+          else toast(e.data === 101 || e.data === 150 ? 'The owner of this video blocks embedding' : "This video can't be played here (invalid URL?)");
+        },
       },
     });
   });
