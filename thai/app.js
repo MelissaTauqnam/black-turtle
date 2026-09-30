@@ -1,7 +1,7 @@
 'use strict';
 /* ============================================================
-   Thai Clips — apprendre des phrases thaï par la scène + le son
-   Aucun backend : tout est stocké dans localStorage.
+   Thai Clips — learn Thai phrases through the scene + the sound
+   No backend: everything is stored in localStorage.
    ============================================================ */
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -15,7 +15,7 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
 const KEY = 'thai-clips-v1';
 const DAILY_GOAL = 20;
 const MAX_BOX = 5;
-const INTERVALS = [0, 5 * 60e3, 864e5, 3 * 864e5, 7 * 864e5, 21 * 864e5]; // par boîte
+const INTERVALS = [0, 5 * 60e3, 864e5, 3 * 864e5, 7 * 864e5, 21 * 864e5]; // per box
 const EMOJIS = ['🍜','🚕','☕','😂','🙏','🏖️','🛵','🍹','🎉','😋','🤔','❤️','🏠','💸','🕒','🌧️','🐘','🥭','🛍️','👋'];
 
 const defaults = { videos: {}, deck: [], xp: 0, streak: 0, lastDay: '', today: { day: '', n: 0, goalHit: false }, mute: false, blind: false, hideTh: false, phon: true, cur: null };
@@ -117,7 +117,7 @@ function loadAPI() {
     window.onYouTubeIframeAPIReady = res;
     const s = document.createElement('script');
     s.src = 'https://www.youtube.com/iframe_api';
-    s.onerror = () => toast('Impossible de charger YouTube (réseau ?)');
+    s.onerror = () => toast('Could not load YouTube (network?)');
     document.head.appendChild(s);
   });
   return apiP;
@@ -132,7 +132,7 @@ function createPlayer(vid, start, autoplay) {
       events: {
         onReady: () => { player.setPlaybackRate(+$('#rateSel').value); res(); },
         onStateChange: e => { if (e.data === 1 && clip) clip.armed = true; },
-        onError: () => toast('Cette vidéo ne peut pas être lue ici (intégration bloquée ou URL invalide)'),
+        onError: () => toast("This video can't be played here (embedding blocked or invalid URL)"),
       },
     });
   });
@@ -157,7 +157,7 @@ async function playClip(vid, s, e, { loop = false, onEnd = null } = {}) {
 function tickClip() {
   if (!clip || !player || !player.getCurrentTime) return;
   const t = player.getCurrentTime();
-  if (clip.armed && (t < clip.s - 1.5 || t > clip.e + 2)) return stopClip(); // l'utilisateur a navigué ailleurs
+  if (clip.armed && (t < clip.s - 1.5 || t > clip.e + 2)) return stopClip(); // user seeked elsewhere
   if (t >= clip.e - .05 && (clip.armed || t > clip.s + .5)) {
     if (clip.loop) { player.seekTo(clip.s, true); return; }
     const cb = clip.onEnd; player.pauseVideo(); stopClip(); cb && cb();
@@ -181,7 +181,7 @@ function parseTranscript(raw) {
       const t = ls.slice(i + 1).join(' ').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
       if (t) out.push({ s: toSec(m[1]), e: toSec(m[2]), t });
     }
-  } else {                                         // copie de la transcription YouTube
+  } else {                                         // pasted YouTube transcript
     let cur = null;
     for (const l of raw.split('\n').map(s => s.trim())) {
       const m = l.match(/^((?:\d{1,2}:)?\d{1,2}:\d{2})(?:\s+(.*))?$/);
@@ -190,7 +190,7 @@ function parseTranscript(raw) {
     }
     if (cur && cur.t) out.push(cur);
   }
-  out = out.filter((x, i) => !(i && x.t === out[i - 1].t));   // doublons des sous-titres auto
+  out = out.filter((x, i) => !(i && x.t === out[i - 1].t));   // duplicates from auto-captions
   out.forEach((x, i) => {
     const nx = out[i + 1];
     if (x.e == null || x.e <= x.s) x.e = nx ? Math.min(nx.s, x.s + 10) : x.s + 5;
@@ -240,8 +240,8 @@ const cur = () => S.videos[S.cur];
 
 async function loadUrl(raw) {
   const id = ytId(raw);
-  if (!id) return toast('URL YouTube non reconnue 🤔');
-  if (!S.videos[id]) S.videos[id] = { id, title: 'Vidéo ' + id, lines: [] };
+  if (!id) return toast('YouTube URL not recognised 🤔');
+  if (!S.videos[id]) S.videos[id] = { id, title: 'Video ' + id, lines: [] };
   S.cur = id; save();
   renderWatch(); switchTab('watch');
   await openVideo(id);
@@ -261,15 +261,15 @@ function renderWatch() {
   $('#importBox').classList.toggle('hidden', !!has || !v);
   $('#watchTools').classList.toggle('hidden', !has);
   const box = $('#lines');
-  if (!v) { box.innerHTML = '<div class="empty">Charge une vidéo pour voir sa transcription ici.</div>'; return; }
+  if (!v) { box.innerHTML = '<div class="empty">Load a video to see its transcript here.</div>'; return; }
   box.innerHTML = v.lines.map((l, i) => `
     <div class="line" data-i="${i}">
       <span class="tm">${fmt(l.s)}</span>
       <span class="tx"><span class="th">${esc(l.t)}</span><span class="ph">${esc(Phon.convert(l.t))}</span></span>
       <span class="acts">
-        <button class="ib" data-a="play" title="Écouter">▶</button>
-        <button class="ib" data-a="loop" title="Boucle">🔁</button>
-        <button class="ib ${inDeck(v.id, l.s) ? 'on' : ''}" data-a="star" title="Garder cette phrase">⭐</button>
+        <button class="ib" data-a="play" title="Listen">▶</button>
+        <button class="ib" data-a="loop" title="Loop">🔁</button>
+        <button class="ib ${inDeck(v.id, l.s) ? 'on' : ''}" data-a="star" title="Keep this phrase">⭐</button>
       </span>
     </div>`).join('');
   renderStats();
@@ -294,15 +294,15 @@ $('#hideTh').onchange = e => { S.hideTh = e.target.checked; save(); $('#lines').
 $('#starAll').onclick = () => {
   const v = cur(); let n = 0;
   v.lines.forEach(l => { if (addCard(v.id, l.s, l.e, l.t)) n++; });
-  toast(`⭐ ${n} phrases ajoutées`); renderWatch();
+  toast(`⭐ ${n} phrases added`); renderWatch();
 };
 $('#trReplace').onclick = () => { $('#importBox').classList.remove('hidden'); $('#importBox').scrollIntoView({ behavior: 'smooth' }); };
 $('#trLoad').onclick = () => {
-  const v = cur(); if (!v) return toast("Charge d'abord une vidéo");
+  const v = cur(); if (!v) return toast("Load a video first");
   const lines = parseTranscript($('#trText').value);
-  if (!lines.length) return toast('Aucune ligne détectée — vérifie le format');
+  if (!lines.length) return toast('No lines detected — check the format');
   v.lines = lines; save(); $('#trText').value = '';
-  toast(`✅ ${lines.length} lignes importées`); renderWatch();
+  toast(`✅ ${lines.length} lines imported`); renderWatch();
 };
 $('#trFile').onchange = e => {
   const f = e.target.files[0]; if (!f) return;
@@ -312,21 +312,21 @@ $('#trSample').onclick = () => {
   $('#trText').value = `0:03\nสวัสดีครับ วันนี้อากาศดีมาก\n0:06\nไปกินข้าวกันไหม\n0:09\nอร่อยมากเลย ขอบคุณนะครับ\n0:13\nเท่าไหร่ครับ\n0:16\nแพงไปหน่อย ลดได้ไหม`;
 };
 
-/* capture manuel */
+/* manual capture */
 $('#captureBtn').onclick = () => {
-  const v = cur(); if (!v || !player) return toast("Charge d'abord une vidéo");
+  const v = cur(); if (!v || !player) return toast("Load a video first");
   const t = curTime();
   let line = v.lines.find(l => t >= l.s && t < l.e) || v.lines.filter(l => l.s <= t).pop();
-  if (line) { addCard(v.id, line.s, line.e, line.t); toast('⚡ Phrase capturée !'); }
+  if (line) { addCard(v.id, line.s, line.e, line.t); toast('⚡ Phrase captured!'); }
   else {
-    const txt = prompt('Phrase entendue (en thaï) :'); if (!txt) return;
+    const txt = prompt('Phrase you heard (in Thai):'); if (!txt) return;
     const s = Math.max(0, t - 3);
-    addCard(v.id, s, t + 2, txt.trim()); toast('⚡ Phrase capturée !');
+    addCard(v.id, s, t + 2, txt.trim()); toast('⚡ Phrase captured!');
   }
   const [x, y] = centerOf($('#captureBtn')); burst(x, y, 14); sfx.ok(2); renderWatch();
 };
 
-/* surlignage de la ligne active */
+/* highlight the active line */
 setInterval(() => {
   if (!$('#tab-watch').classList.contains('active') || !player || !cur() || !player.getCurrentTime) return;
   const t = curTime(), v = cur();
@@ -338,7 +338,7 @@ setInterval(() => {
   }
 }, 250);
 
-/* contrôles du lecteur */
+/* player controls */
 $('#blindBtn').onclick = () => { S.blind = !S.blind; save(); renderWatch(); };
 $('#rateSel').onchange = e => { if (player && player.setPlaybackRate) player.setPlaybackRate(+e.target.value); };
 
@@ -347,22 +347,22 @@ $('#rateSel').onchange = e => { if (player && player.setPlaybackRate) player.set
    ============================================================ */
 function renderDeck() {
   const box = $('#deckList');
-  if (!S.deck.length) { box.innerHTML = '<div class="empty">Aucune phrase pour l\'instant.<br>Clique sur ⭐ dans la transcription ou sur ⚡ Capturer pendant la vidéo.</div>'; return; }
+  if (!S.deck.length) { box.innerHTML = '<div class="empty">No phrases yet.<br>Click ⭐ in the transcript or ⚡ Capture while watching.</div>'; return; }
   const groups = {};
   S.deck.forEach(c => (groups[c.vid] = groups[c.vid] || []).push(c));
   box.innerHTML = Object.entries(groups).map(([vid, cards]) => `
     <div class="vgroup"><h4>${esc(S.videos[vid]?.title || vid)}</h4>
     ${cards.sort((a, b) => a.s - b.s).map(c => `
       <div class="dcard" data-id="${esc(c.id)}">
-        <button class="emo" title="Ton ancre visuelle (clic = changer)">${c.emoji}</button>
+        <button class="emo" title="Your visual anchor (click to change)">${c.emoji}</button>
         <div class="mid">
           <div class="th">${esc(c.t)}</div>
-          <input class="phin" placeholder="${esc(Phon.convert(c.t))}" value="${esc(c.ph || '')}" title="Phonétique (auto — modifie-la si elle est fausse)">
-          <input class="note" placeholder="Mon indice perso (image mentale, situation…)" value="${esc(c.note)}">
+          <input class="phin" placeholder="${esc(Phon.convert(c.t))}" value="${esc(c.ph || '')}" title="Phonetics (auto — edit it if it's wrong)">
+          <input class="note" placeholder="My own hint (mental image, situation…)" value="${esc(c.note)}">
           <div class="boxes">${[1, 2, 3, 4, 5].map(i => `<i class="${c.box >= i ? 'f' : ''}"></i>`).join('')}</div>
         </div>
-        <button class="ib" data-a="play" title="Écouter">▶</button>
-        <button class="ib" data-a="del" title="Supprimer">🗑</button>
+        <button class="ib" data-a="play" title="Listen">▶</button>
+        <button class="ib" data-a="del" title="Delete">🗑</button>
       </div>`).join('')}
     </div>`).join('');
 }
@@ -393,10 +393,10 @@ let nextTimer = null;
 
 function renderPlayHome() {
   const due = dueCards().length, tot = S.deck.length;
-  $('#playTitle').textContent = tot ? (due ? `${due} phrase${due > 1 ? 's' : ''} à réviser` : 'Tout est à jour 🎉') : 'Ajoute d\'abord des phrases';
-  $('#playSub').textContent = tot ? (due ? 'Session de 10 phrases max — vise le combo !' : 'Tu peux quand même t\'entraîner en mode libre.') : 'Va dans « Regarder » et étoile tes phrases préférées.';
+  $('#playTitle').textContent = tot ? (due ? `${due} phrase${due > 1 ? 's' : ''} to review` : 'All caught up 🎉') : 'Add some phrases first';
+  $('#playSub').textContent = tot ? (due ? 'Sessions of up to 10 phrases — go for the combo!' : 'You can still practise in free mode.') : 'Go to “Watch” and star your favourite phrases.';
   $('#startBtn').disabled = !tot;
-  $('#startBtn').textContent = due || !tot ? 'C\'est parti !' : 'Mode libre';
+  $('#startBtn').textContent = due || !tot ? 'Let\'s go!' : 'Free mode';
   $('#playHome').classList.remove('hidden'); $('#quiz').classList.add('hidden');
 }
 
@@ -440,8 +440,8 @@ function head() {
   </div>`;
 }
 const replayBtns = c => `<div class="replay">
-  <button class="btn ghost" id="rp">🔊 Réécouter</button>
-  <button class="btn ghost" id="rps">🐢 Lent</button>
+  <button class="btn ghost" id="rp">🔊 Replay</button>
+  <button class="btn ghost" id="rps">🐢 Slow</button>
 </div>`;
 function bindReplay(c) {
   const go = rate => { if (player && player.setPlaybackRate) player.setPlaybackRate(rate); playClip(c.vid, c.s, c.e); if (player && player.setPlaybackRate) setTimeout(() => player.setPlaybackRate(rate), 300); };
@@ -458,8 +458,8 @@ function nextQ() {
   const box = $('#quiz');
   if (mode === 'listen') {
     const opts = shuffle([c.t, ...distractorTexts(c, 3)]);
-    box.innerHTML = head() + `<div class="qcard"><div class="qtype">🎧 Scène</div>
-      <div class="qprompt">Regarde, écoute… quelle phrase entends-tu ?</div>
+    box.innerHTML = head() + `<div class="qcard"><div class="qtype">🎧 Scene</div>
+      <div class="qprompt">Watch, listen… which phrase do you hear?</div>
       ${replayBtns(c)}
       <div class="choices">${opts.map(o => `<button class="choice" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>
       <div id="fb"></div></div>`;
@@ -473,8 +473,8 @@ function nextQ() {
     const k = shuffle(ws.map((w, i) => i).filter(i => ws[i].length >= 2))[0] ?? 0;
     const target = ws[k];
     const opts = shuffle([target, ...distractorWords(c, ws, 3)]);
-    box.innerHTML = head() + `<div class="qcard"><div class="qtype">🧩 Mot manquant</div>
-      <div class="qprompt">Écoute et complète la phrase</div>
+    box.innerHTML = head() + `<div class="qcard"><div class="qtype">🧩 Missing word</div>
+      <div class="qprompt">Listen and complete the phrase</div>
       ${replayBtns(c)}
       <div class="cloze">${ws.map((w, i) => i === k ? '<span class="blank" id="blank">&nbsp;?&nbsp;</span>' : `<span>${esc(w)}</span>`).join('')}</div>
       <div class="wchoices">${opts.map(o => `<button class="chip" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>
@@ -488,8 +488,8 @@ function nextQ() {
     });
   } else {
     const bank = shuffle(ws.map((w, i) => ({ w, i })));
-    box.innerHTML = head() + `<div class="qcard"><div class="qtype">🏗️ Reconstruction</div>
-      <div class="qprompt">Écoute et remets les mots dans l'ordre</div>
+    box.innerHTML = head() + `<div class="qcard"><div class="qtype">🏗️ Rebuild</div>
+      <div class="qprompt">Listen and put the words back in order</div>
       ${replayBtns(c)}
       <div class="slots" id="slots"></div>
       <div class="wchoices" id="bank">${bank.map(b => `<button class="chip" data-i="${b.i}">${esc(b.w)}</button>`).join('')}</div>
@@ -534,17 +534,17 @@ function answer(c, ok, anchorEl) {
     if (first) { Q.retried.add(c.id); Q.queue.push(c); Q.total++; }
   }
   S.today.n++;
-  if (S.today.n >= DAILY_GOAL && !S.today.goalHit) { S.today.goalHit = true; toast('🎯 Objectif du jour atteint !'); burst(innerWidth / 2, innerHeight / 2, 50); addXP(50); }
+  if (S.today.n >= DAILY_GOAL && !S.today.goalHit) { S.today.goalHit = true; toast('🎯 Daily goal reached!'); burst(innerWidth / 2, innerHeight / 2, 50); addXP(50); }
   save(); renderStats(); bump($('#stDaily'));
   const cm = $('#combo'); if (cm) { cm.textContent = Q.combo > 1 ? '🔥 ×' + Q.combo : ''; bump(cm); }
   $('.qbar i').style.width = Math.min(100, Q.done / Q.total * 100) + '%';
 
-  // feedback : on révèle le thaï + l'indice perso, et on rejoue la scène (son + image)
+  // feedback : reveal the Thai + personal hint, and replay the scene (sound + picture)
   $('#fb').innerHTML = `<div class="fb ${ok ? 'ok' : 'ko'}">
-    <div class="verdict">${ok ? '✅ Bravo ! +' + gain + ' XP' : '❌ Pas grave, on la revoit'}</div>
+    <div class="verdict">${ok ? '✅ Nice! +' + gain + ' XP' : '❌ No worries, we will see it again'}</div>
     <div class="th">${esc(c.t)}</div>
     <div class="ph">${esc(phOf(c.t, c))}</div>
-    <div class="anchor">${c.emoji} ${esc(c.note || 'Ancre : retiens la scène que tu viens de voir')}</div>
+    <div class="anchor">${c.emoji} ${esc(c.note || 'Anchor: remember the scene you just saw')}</div>
     <button class="btn primary" id="nx">Suivant →</button></div>`;
   Q.i++;
   $('#nx').onclick = () => { clearTimeout(nextTimer); nextQ(); };
@@ -560,13 +560,13 @@ function endSession() {
   sfx.level(); burst(innerWidth / 2, innerHeight / 2.5, 60);
   $('#quiz').innerHTML = `<div class="qcard summary">
     <div class="stars">${[1, 2, 3].map(i => `<span style="animation-delay:${i * .18}s">${i <= stars ? '⭐' : '☆'}</span>`).join('')}</div>
-    <h3>Session terminée !</h3>
+    <h3>Session complete!</h3>
     <div class="grid">
-      <div><b>+${Q.xp}</b>XP</div><div><b>×${Q.best}</b>Meilleur combo</div><div><b>🔥${S.streak}</b>Jours d'affilée</div>
+      <div><b>+${Q.xp}</b>XP</div><div><b>×${Q.best}</b>Best combo</div><div><b>🔥${S.streak}</b>Day streak</div>
     </div>
     <div class="row" style="justify-content:center">
-      <button class="btn primary" id="again">Encore une session</button>
-      <button class="btn ghost" id="toWatch">Retourner à la vidéo</button>
+      <button class="btn primary" id="again">Another session</button>
+      <button class="btn ghost" id="toWatch">Back to the video</button>
     </div></div>`;
   $('#again').onclick = () => { renderPlayHome(); $('#startBtn').click(); };
   $('#toWatch').onclick = () => switchTab('watch');

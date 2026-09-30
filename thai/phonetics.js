@@ -1,12 +1,12 @@
 'use strict';
 /* ============================================================
-   Thai → phonétique (romanisation avec tons), 100 % côté navigateur.
-   Règles approchées : voyelles longues doublées (aa, ii, uu, ee, oo),
+   Thai → phonetics (romanisation with tones), 100% in the browser.
+   Approximate rules: long vowels doubled (aa, ii, uu, ee, oo),
    ue = ɯ, aw = ɔ, oe = ɤ.
-   Tons : ˋ grave (bas)  ˆ circonflexe (descendant)  ˊ aigu (haut)  ˇ caron (montant), rien = moyen.
+   Tones: ˋ grave (low)  ˆ circumflex (falling)  ˊ acute (high)  ˇ caron (rising), none = mid.
    ============================================================ */
 const Phon = (() => {
-  // consonne : [initiale, finale, classe]  (H haute, M moyenne, L basse)
+  // consonant: [initial, final, class]  (H high, M mid, L low)
   const C = {
     'ก':['k','k','M'],'ข':['kh','k','H'],'ฃ':['kh','k','H'],'ค':['kh','k','L'],'ฅ':['kh','k','L'],'ฆ':['kh','k','L'],'ง':['ng','ng','L'],
     'จ':['j','t','M'],'ฉ':['ch','','H'],'ช':['ch','t','L'],'ซ':['s','t','L'],'ฌ':['ch','','L'],'ญ':['y','n','L'],
@@ -25,7 +25,7 @@ const Phon = (() => {
   const isC = ch => ch !== undefined && C[ch] !== undefined;
   const isVowelish = ch => ch !== undefined && VOWELISH.includes(ch);
 
-  // exceptions très courantes (orthographe irrégulière)
+  // very common exceptions (irregular spelling)
   const EXC = {
     'สวัสดี':'sà-wàt-dii','ครับ':'kháp','คะ':'khá','ค่ะ':'khâ','ขอบคุณ':'khàwp-khun','ขอโทษ':'khǎw-thôot','ไม่':'mâi','ใช่':'châi',
     'ไม่ใช่':'mâi châi','อะไร':'à-rai','ทำไม':'tham-mai','อย่างไร':'yàang-rai','เป็น':'bpen','เมื่อ':'mûea','ได้':'dâi','ให้':'hâi',
@@ -43,14 +43,14 @@ const Phon = (() => {
     let c1 = cs[i++];
     let init = C[c1][0], cls = C[c1][2];
 
-    // consonne muette qui « mène » (ห / อ) ou groupe consonantique
+    // leading silent consonant (ห / อ) or consonant cluster
     const n = cs[i];
     if (c1 === 'ห' && isC(n) && 'งญนมยรลว'.includes(n) && !(n === 'ว' && false)) { c1 = n; init = C[n][0]; cls = 'H'; i++; }
     else if (c1 === 'อ' && n === 'ย' && (VOWELISH.includes(cs[i + 1]) )) { init = 'y'; cls = 'M'; i++; }
     else if (c1 === 'ท' && n === 'ร' && (isVowelish(cs[i + 1]) )) { init = 's'; cls = 'L'; i++; }
     else if (CLUSTER1.includes(c1) && isC(n) && 'รลว'.includes(n) && isVowelish(cs[i + 1]) && !(n === 'ล' && c1 === 'ต')) { init += C[n][0]; i++; }
 
-    // marques de voyelle / de ton
+    // vowel / tone marks
     let vm = '', tm = '';
     while (cs[i] && (VMARK.includes(cs[i]) || TMARK.includes(cs[i]))) { if (TMARK.includes(cs[i])) tm = cs[i]; else vm += cs[i]; i++; }
     const has = ch => cs[i] === ch;
@@ -86,7 +86,7 @@ const Phon = (() => {
       else if (has('ว') && !isVowelish(cs[i + 1])) { v = 'ua'; i++; }
     }
 
-    // consonne finale ?
+    // final consonant?
     let fin = tailFinal;
     if (!fin) {
       const f = cs[i], f2 = cs[i + 1];
@@ -95,12 +95,12 @@ const Phon = (() => {
     if (lead === 'เ' && v === 'ee' && fin === 'i') v = 'oe';   // เลย → loei
     if (v === null) v = fin ? 'o' : 'a';
     if (v === 'o' || v === 'a') short = true;
-    // la finale y/w modifie l'écriture de la voyelle
+    // final y/w changes how the vowel is written
     let finR = fin;
     if (fin === 'i') finR = 'i';
     if (fin === 'w') finR = /i$/.test(v) ? 'u' : 'o';
 
-    // ton
+    // tone
     const dead = ['k', 't', 'p'].includes(fin) || (!fin && short && !live);
     let tone = '';
     if (tm === '่') tone = cls === 'L' ? 'fall' : 'low';
@@ -110,14 +110,14 @@ const Phon = (() => {
     else if (dead) tone = cls === 'L' ? (short ? 'high' : 'fall') : 'low';
     else tone = cls === 'H' ? 'rise' : '';
     const MK = { low: '̀', fall: '̂', high: '́', rise: '̌', '': '' };
-    // le ton se pose sur la première lettre de la voyelle
+    // the tone mark goes on the first letter of the vowel
     const vt = v[0] + MK[tone] + v.slice(1);
     return { rom: init + vt + finR, next: i };
   }
 
   function word(w) {
     if (EXC[w]) return EXC[w].normalize('NFC');
-    // consonnes muettes (์) : retirer « consonne (+ voyelle) + ์ »
+    // silent letters (์): drop “consonant (+ vowel) + ์”
     const clean = [];
     const src = [...w];
     for (let k = 0; k < src.length; k++) {
