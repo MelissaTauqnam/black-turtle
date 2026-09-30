@@ -89,9 +89,10 @@ textarea:focus{outline:none;border-color:var(--pri)}
 .line:hover{border-color:var(--line)}
 .line.active{border-color:var(--pri);background:#2b2560;box-shadow:0 0 0 4px #7c5cff33}
 .line .tm{font-size:12px;color:var(--mut);font-weight:800;min-width:42px;font-variant-numeric:tabular-nums}
-.line .th{flex:1;font-family:var(--th);font-size:19px;line-height:1.5;transition:filter .2s}
-.hide-th .line .th{filter:blur(7px)}
-.hide-th .line:hover .th,.hide-th .line.rev .th,.hide-th .line.active .th{filter:none}
+.line .tx{flex:1;min-width:0;transition:filter .2s}
+.line .th{display:block;font-family:var(--th);font-size:19px;line-height:1.5}
+.hide-th .line .tx{filter:blur(7px)}
+.hide-th .line:hover .tx,.hide-th .line.rev .tx,.hide-th .line.active .tx{filter:none}
 .line .acts{display:flex;gap:4px}
 .ib{background:#0004;border:0;border-radius:10px;width:34px;height:34px;cursor:pointer;font-size:15px;color:var(--tx)}
 .ib:hover{background:var(--pri)}
@@ -168,3 +169,11 @@ textarea:focus{outline:none;border-color:var(--pri)}
   .pcontrols .accent{margin-left:0}
   .hint{display:none}
 }
+
+/* phonétique */
+.ph{display:block;color:var(--gold);font-size:14px;font-weight:700;letter-spacing:.01em;margin-top:1px}
+.fb .ph{font-size:17px;margin-top:2px}
+.no-ph .ph,.no-ph .phin{display:none}
+.dcard input.phin{width:100%;background:transparent;border:0;border-bottom:1px dashed var(--line);color:var(--gold);font:inherit;font-weight:700;font-size:14px;padding:2px 0;margin-top:2px}
+.dcard input.phin::placeholder{color:var(--gold);opacity:.8}
+.dcard input.phin:focus{outline:none;border-color:var(--pri)}

@@ -18,7 +18,7 @@ const MAX_BOX = 5;
 const INTERVALS = [0, 5 * 60e3, 864e5, 3 * 864e5, 7 * 864e5, 21 * 864e5]; // par boîte
 const EMOJIS = ['🍜','🚕','☕','😂','🙏','🏖️','🛵','🍹','🎉','😋','🤔','❤️','🏠','💸','🕒','🌧️','🐘','🥭','🛍️','👋'];
 
-const defaults = { videos: {}, deck: [], xp: 0, streak: 0, lastDay: '', today: { day: '', n: 0, goalHit: false }, mute: false, blind: false, hideTh: false, cur: null };
+const defaults = { videos: {}, deck: [], xp: 0, streak: 0, lastDay: '', today: { day: '', n: 0, goalHit: false }, mute: false, blind: false, hideTh: false, phon: true, cur: null };
 let S = defaults;
 try { S = Object.assign({}, defaults, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch {}
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
@@ -215,6 +215,7 @@ function words(text) {
 }
 
 /* ---------------- deck / SRS ---------------- */
+const phOf = (t, c) => (c && c.ph) || Phon.convert(t);
 const cardId = (vid, s) => `${vid}@${Math.round(s * 10)}`;
 const inDeck = (vid, s) => S.deck.some(c => c.id === cardId(vid, s));
 const dueCards = () => S.deck.filter(c => c.due <= Date.now());
@@ -228,6 +229,9 @@ function gradeCard(c, ok) {
   else { c.box = Math.max(0, c.box - 2); c.ko++; c.due = 0; }
   save();
 }
+
+function applyPhon() { document.body.classList.toggle('no-ph', !S.phon); $('#phonBtn').classList.toggle('on', S.phon); }
+$('#phonBtn').onclick = () => { S.phon = !S.phon; save(); applyPhon(); };
 
 /* ============================================================
    WATCH tab
@@ -251,6 +255,7 @@ function renderWatch() {
   $('#blindBtn').classList.toggle('on', S.blind);
   $('#mask').classList.toggle('hidden', !S.blind);
   $('#hideTh').checked = S.hideTh;
+  applyPhon();
   $('#lines').classList.toggle('hide-th', S.hideTh);
   const has = v && v.lines.length;
   $('#importBox').classList.toggle('hidden', !!has || !v);
@@ -260,7 +265,7 @@ function renderWatch() {
   box.innerHTML = v.lines.map((l, i) => `
     <div class="line" data-i="${i}">
       <span class="tm">${fmt(l.s)}</span>
-      <span class="th">${esc(l.t)}</span>
+      <span class="tx"><span class="th">${esc(l.t)}</span><span class="ph">${esc(Phon.convert(l.t))}</span></span>
       <span class="acts">
         <button class="ib" data-a="play" title="Écouter">▶</button>
         <button class="ib" data-a="loop" title="Boucle">🔁</button>
@@ -352,6 +357,7 @@ function renderDeck() {
         <button class="emo" title="Ton ancre visuelle (clic = changer)">${c.emoji}</button>
         <div class="mid">
           <div class="th">${esc(c.t)}</div>
+          <input class="phin" placeholder="${esc(Phon.convert(c.t))}" value="${esc(c.ph || '')}" title="Phonétique (auto — modifie-la si elle est fausse)">
           <input class="note" placeholder="Mon indice perso (image mentale, situation…)" value="${esc(c.note)}">
           <div class="boxes">${[1, 2, 3, 4, 5].map(i => `<i class="${c.box >= i ? 'f' : ''}"></i>`).join('')}</div>
         </div>
@@ -372,8 +378,11 @@ $('#deckList').addEventListener('click', e => {
   if (a === 'del') { S.deck = S.deck.filter(x => x !== c); save(); renderDeck(); renderStats(); }
 });
 $('#deckList').addEventListener('input', e => {
-  if (!e.target.classList.contains('note')) return;
-  const c = S.deck.find(x => x.id === e.target.closest('.dcard').dataset.id); c.note = e.target.value; save();
+  const cl = e.target.classList;
+  if (!cl.contains('note') && !cl.contains('phin')) return;
+  const c = S.deck.find(x => x.id === e.target.closest('.dcard').dataset.id);
+  if (cl.contains('note')) c.note = e.target.value; else c.ph = e.target.value.trim();
+  save();
 });
 
 /* ============================================================
@@ -534,6 +543,7 @@ function answer(c, ok, anchorEl) {
   $('#fb').innerHTML = `<div class="fb ${ok ? 'ok' : 'ko'}">
     <div class="verdict">${ok ? '✅ Bravo ! +' + gain + ' XP' : '❌ Pas grave, on la revoit'}</div>
     <div class="th">${esc(c.t)}</div>
+    <div class="ph">${esc(phOf(c.t, c))}</div>
     <div class="anchor">${c.emoji} ${esc(c.note || 'Ancre : retiens la scène que tu viens de voir')}</div>
     <button class="btn primary" id="nx">Suivant →</button></div>`;
   Q.i++;
