@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ภาษาไทย · Thai Clips</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="brand"><span class="brand-th">ไทย</span><span class="brand-t">Clips</span></div>
+
+  <form id="urlForm" class="urlbar" autocomplete="off">
+    <input id="urlInput" type="text" placeholder="Colle ici l'URL d'une vidéo YouTube en thaï…" aria-label="URL YouTube">
+    <button class="btn primary" type="submit">Charger ▶</button>
+  </form>
+
+  <div class="stats">
+    <div class="stat" title="Jours d'affilée"><span class="ico">🔥</span><b id="stStreak">0</b></div>
+    <div class="stat lvl" title="Niveau / XP">
+      <span class="ico">⭐</span><b id="stLevel">1</b>
+      <div class="xpbar"><i id="stXpFill"></i></div>
+    </div>
+    <div class="stat" title="Objectif du jour"><span class="ico">🎯</span><b id="stDaily">0/20</b></div>
+    <button id="muteBtn" class="btn ghost sq" title="Son">🔊</button>
+  </div>
+</header>
+
+<main class="app">
+  <!-- ============ STAGE (vidéo) ============ -->
+  <section class="stage">
+    <div class="player-card">
+      <div class="ratio">
+        <div id="yt"></div>
+        <div id="placeholder" class="placeholder">
+          <div class="big">🎬</div>
+          <p>Colle une URL YouTube pour commencer</p>
+        </div>
+        <div id="mask" class="mask hidden"><span>🎧</span><p>Écoute seule</p></div>
+      </div>
+      <div class="pcontrols">
+        <button class="btn ghost" id="blindBtn" title="Cache l'image pour t'entraîner à l'oreille">🎧 Écoute seule</button>
+        <label class="sel">Vitesse
+          <select id="rateSel">
+            <option value="0.5">0.5×</option>
+            <option value="0.75">0.75×</option>
+            <option value="1" selected>1×</option>
+          </select>
+        </label>
+        <button class="btn accent" id="captureBtn" title="Sauvegarder la phrase à cet instant">⚡ Capturer</button>
+      </div>
+      <div id="vtitle" class="vtitle"></div>
+    </div>
+    <p class="hint">Astuce : pas de traduction ici. Tu retiens la phrase avec <b>la scène</b>, <b>le son</b> et <b>ton propre indice</b>.</p>
+  </section>
+
+  <!-- ============ PANEL ============ -->
+  <section class="panel">
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="watch">👀 Regarder</button>
+      <button class="tab" data-tab="deck">🗂️ Mes phrases <span id="deckCount" class="pill">0</span></button>
+      <button class="tab" data-tab="play">🎮 Jouer <span id="dueCount" class="pill hot">0</span></button>
+    </nav>
+
+    <!-- WATCH -->
+    <div id="tab-watch" class="tabpane active">
+      <div id="importBox" class="card">
+        <h3>1 · Importer les sous-titres thaï</h3>
+        <ol class="steps">
+          <li>Sur YouTube : <b>… Description → « Afficher la transcription »</b>, sélectionne tout et copie.</li>
+          <li>Colle-le ci-dessous (ou charge un fichier <code>.srt</code> / <code>.vtt</code>).</li>
+        </ol>
+        <textarea id="trText" rows="6" placeholder="0:03&#10;สวัสดีครับ วันนี้อากาศดีมาก&#10;0:06&#10;ไปกินข้าวกันไหม"></textarea>
+        <div class="row">
+          <button class="btn primary" id="trLoad">Charger la transcription</button>
+          <label class="btn ghost filebtn">📂 Fichier<input type="file" id="trFile" accept=".srt,.vtt,.txt" hidden></label>
+          <button class="btn ghost" id="trSample" title="Exemple pour tester le format">Exemple</button>
+        </div>
+        <p class="hint small">Sans transcription ? Regarde la vidéo et utilise <b>⚡ Capturer</b> pour noter une phrase à l'instant T.</p>
+      </div>
+
+      <div id="watchTools" class="row tools hidden">
+        <label class="switch"><input type="checkbox" id="hideTh"><span>Masquer le thaï (écoute d'abord)</span></label>
+        <button class="btn ghost small" id="trReplace">Remplacer la transcription</button>
+        <button class="btn ghost small" id="starAll">⭐ Tout ajouter</button>
+      </div>
+      <div id="lines" class="lines"></div>
+    </div>
+
+    <!-- DECK -->
+    <div id="tab-deck" class="tabpane">
+      <div id="deckList"></div>
+    </div>
+
+    <!-- PLAY -->
+    <div id="tab-play" class="tabpane">
+      <div id="playHome" class="card center">
+        <div class="big">🧠</div>
+        <h3 id="playTitle">Prêt à jouer ?</h3>
+        <p id="playSub" class="muted"></p>
+        <button class="btn primary xl" id="startBtn">C'est parti !</button>
+        <ul class="modes">
+          <li><b>🎧 Scène</b> — tu écoutes, tu retrouves la phrase</li>
+          <li><b>🧩 Mot manquant</b> — tu complètes à l'oreille</li>
+          <li><b>🏗️ Reconstruction</b> — tu remets les mots dans l'ordre</li>
+        </ul>
+      </div>
+      <div id="quiz" class="hidden"></div>
+    </div>
+  </section>
+</main>
+
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
