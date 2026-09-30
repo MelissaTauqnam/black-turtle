@@ -157,8 +157,10 @@ const Phon = (() => {
     for (const p of parts) {
       if (!p.trim()) continue;
       if (p === 'ๆ') { if (out.length) out[out.length - 1] += '-' + last; continue; }
-      last = /[฀-๿]/.test(p) ? word(p) : p;
-      out.push(last);
+      const rep = p.length > 1 && p.endsWith('ๆ');
+      const base = rep ? p.slice(0, -1) : p;
+      last = /[\u0E00-\u0E7F]/.test(base) ? word(base) : base;
+      out.push(rep ? last + '-' + last : last);
     }
     const r = out.join(' ').replace(/\s+([?!.,])/g, '$1');
     memo.set(text, r);
