@@ -1,18 +1,19 @@
 'use strict';
 /* ============================================================
-   Thai → phonetics (romanisation with tones), 100% in the browser.
-   Approximate rules: long vowels doubled (aa, ii, uu, ee, oo),
-   ue = ɯ, aw = ɔ, oe = ɤ.
-   Tones: ˋ grave (low)  ˆ circumflex (falling)  ˊ acute (high)  ˇ caron (rising), none = mid.
+   Thai → phonetics, following the teacher's notation used in the course PDFs:
+     consonants  ก g · ข ค k · จ j · ฉ ช ch · ต dt · ป bp · ท ถ t · พ ผ p · ด d · บ b · ห h
+     vowels      long doubled: aa ii uu ee oo ɛɛ ɔɔ əə ʉʉ · short: a i u e o ɛ ɔ ə ʉ · ia ʉa ua ai ao
+     tones       ˋ low · ˆ falling · ˊ high · ˇ rising · none = mid
+     words are written solid (wanníi); a hyphen marks a glottal stop (sa-àat).
    ============================================================ */
 const Phon = (() => {
   // consonant: [initial, final, class]  (H high, M mid, L low)
   const C = {
-    'ก':['k','k','M'],'ข':['kh','k','H'],'ฃ':['kh','k','H'],'ค':['kh','k','L'],'ฅ':['kh','k','L'],'ฆ':['kh','k','L'],'ง':['ng','ng','L'],
+    'ก':['g','k','M'],'ข':['k','k','H'],'ฃ':['k','k','H'],'ค':['k','k','L'],'ฅ':['k','k','L'],'ฆ':['k','k','L'],'ง':['ng','ng','L'],
     'จ':['j','t','M'],'ฉ':['ch','','H'],'ช':['ch','t','L'],'ซ':['s','t','L'],'ฌ':['ch','','L'],'ญ':['y','n','L'],
-    'ฎ':['d','t','M'],'ฏ':['dt','t','M'],'ฐ':['th','t','H'],'ฑ':['th','t','L'],'ฒ':['th','t','L'],'ณ':['n','n','L'],
-    'ด':['d','t','M'],'ต':['dt','t','M'],'ถ':['th','t','H'],'ท':['th','t','L'],'ธ':['th','t','L'],'น':['n','n','L'],
-    'บ':['b','p','M'],'ป':['bp','p','M'],'ผ':['ph','','H'],'ฝ':['f','','H'],'พ':['ph','p','L'],'ฟ':['f','p','L'],'ภ':['ph','p','L'],
+    'ฎ':['d','t','M'],'ฏ':['dt','t','M'],'ฐ':['t','t','H'],'ฑ':['t','t','L'],'ฒ':['t','t','L'],'ณ':['n','n','L'],
+    'ด':['d','t','M'],'ต':['dt','t','M'],'ถ':['t','t','H'],'ท':['t','t','L'],'ธ':['t','t','L'],'น':['n','n','L'],
+    'บ':['b','p','M'],'ป':['bp','p','M'],'ผ':['p','','H'],'ฝ':['f','','H'],'พ':['p','p','L'],'ฟ':['f','p','L'],'ภ':['p','p','L'],
     'ม':['m','m','L'],'ย':['y','i','L'],'ร':['r','n','L'],'ล':['l','n','L'],'ว':['w','w','L'],
     'ศ':['s','t','H'],'ษ':['s','t','H'],'ส':['s','t','H'],'ห':['h','','H'],'ฬ':['l','n','L'],'อ':['','','M'],'ฮ':['h','','L'],
   };
@@ -27,13 +28,13 @@ const Phon = (() => {
 
   // very common exceptions (irregular spelling)
   const EXC = {
-    'สวัสดี':'sà-wàt-dii','ครับ':'kháp','คะ':'khá','ค่ะ':'khâ','ขอบคุณ':'khàwp-khun','ขอโทษ':'khǎw-thôot','ไม่':'mâi','ใช่':'châi',
-    'ไม่ใช่':'mâi châi','อะไร':'à-rai','ทำไม':'tham-mai','อย่างไร':'yàang-rai','เป็น':'bpen','เมื่อ':'mûea','ได้':'dâi','ให้':'hâi',
-    'ที่':'thîi','ผม':'phǒm','ฉัน':'chǎn','คุณ':'khun','เขา':'khǎo','เรา':'rao','มัน':'man','นี่':'nîi','นั่น':'nân','โน่น':'nôon',
-    'อร่อย':'à-ròi','สบาย':'sà-baai','ประเทศ':'bprà-thêet','ภาษา':'phaa-sǎa','ไทย':'thai','วัน':'wan','เวลา':'wee-laa','ตลาด':'dtà-làat',
-    'สนุก':'sà-nùk','สะดวก':'sà-dùak','ผู้หญิง':'phûu-yǐng','ผู้ชาย':'phûu-chaai','พรุ่งนี้':'phrûng-níi','เท่าไหร่':'thâo-rài','เท่าไร':'thâo-rai',
-    'หรือ':'rǔue','จริง':'jing','จริงๆ':'jing jing','ก็':'gâw','แล้ว':'láeo','และ':'lá',
-    'ห้องน้ำ':'hâwng-náam','กรุงเทพ':'grung-thêep','กรุงเทพฯ':'grung-thêep',
+    'สวัสดี':'sawàtdii','ครับ':'kráp','คะ':'ká','ค่ะ':'kâ','ขอบคุณ':'kɔ̀ɔpkun','ขอโทษ':'kɔ̌ɔtôot','ไม่':'mâi','ใช่':'châi',
+    'ไม่ใช่':'mâi châi','อะไร':'arai','ทำไม':'tammai','อย่างไร':'yàangrai','เป็น':'bpen','เมื่อ':'mʉ̂a','ได้':'dâai','ให้':'hâi',
+    'ที่':'tîi','ผม':'pǒm','ฉัน':'chán','คุณ':'kun','เขา':'káo','เรา':'rao','มัน':'man','นี่':'nîi','นั่น':'nân','โน่น':'nôon',
+    'อร่อย':'arɔ̀i','สบาย':'sabaai','ประเทศ':'bpratêet','ภาษา':'paasǎa','ไทย':'tai','วัน':'wan','เวลา':'weelaa','ตลาด':'dtalàat',
+    'สนุก':'sanùk','สะดวก':'sadùak','ผู้หญิง':'pûuyǐng','ผู้ชาย':'pûuchaai','พรุ่งนี้':'prûngníi','เท่าไหร่':'tâorài','เท่าไร':'tâorai',
+    'หรือ':'rʉ̌ʉ','จริง':'jing','จริงๆ':'jing jing','ก็':'gɔ̂ɔ','แล้ว':'lɛ́ɛo','และ':'lɛ́','ห้องน้ำ':'hɔ̂ɔngnáam','กรุงเทพ':'grungtêep',
+    'กรุงเทพฯ':'grungtêep','เก่ง':'gèng','เยอะ':'yə́','โรงพยาบาล':'roongpayaabaan','ความสะอาด':'kwaamsa-àat','ยังไง':'yangngai','อาหาร':'aahǎan','คอมพิวเตอร์':'kɔmpíudtə̂ə',
   };
 
   function syllable(cs, i) {
@@ -58,31 +59,31 @@ const Phon = (() => {
 
     if (lead === 'เ') {
       if (vm === 'ี' && has('ย')) { v = 'ia'; i++; }
-      else if (vm === 'ื' && has('อ')) { v = 'uea'; i++; }
-      else if (vm === 'ิ') v = 'oe';
+      else if (vm === 'ื' && has('อ')) { v = 'ʉa'; i++; }
+      else if (vm === 'ิ') v = 'əə';
       else if (vm === '็') { v = 'e'; short = true; }
-      else if (!vm && has('า')) { i++; if (has('ะ')) { i++; v = 'aw'; short = true; } else { v = 'ao'; live = true; } }
-      else if (!vm && has('อ') && !isVowelish(cs[i + 1])) { v = 'oe'; i++; }
+      else if (!vm && has('า')) { i++; if (has('ะ')) { i++; v = 'ɔ'; short = true; } else { v = 'ao'; live = true; } }
+      else if (!vm && has('อ') && !isVowelish(cs[i + 1])) { v = 'əə'; i++; }
       else if (!vm && has('ะ')) { v = 'e'; short = true; i++; }
       else v = 'ee';
-    } else if (lead === 'แ') { v = 'ae'; if (has('ะ')) { short = true; i++; } }
+    } else if (lead === 'แ') { v = 'ɛɛ'; if (has('ะ')) { v = 'ɛ'; short = true; i++; } }
     else if (lead === 'โ') { v = 'oo'; if (has('ะ')) { v = 'o'; short = true; i++; } }
     else if (lead === 'ไ' || lead === 'ใ') { v = 'ai'; live = true; }
     else {
       if (vm === 'ั' && has('ว') && !isVowelish(cs[i + 1])) { v = 'ua'; i++; }
       else if (vm === 'ั') { v = 'a'; short = true; }
-      else if (vm === 'ื') { v = 'ue'; if (has('อ')) i++; }
+      else if (vm === 'ื') { v = 'ʉʉ'; if (has('อ')) i++; }
       else if (vm === 'ิ') { v = 'i'; short = true; }
       else if (vm === 'ี') v = 'ii';
-      else if (vm === 'ึ') { v = 'ue'; short = true; }
+      else if (vm === 'ึ') { v = 'ʉ'; short = true; }
       else if (vm === 'ุ') { v = 'u'; short = true; }
       else if (vm === 'ู') v = 'uu';
-      else if (vm === '็' && has('อ')) { v = 'aw'; short = true; i++; }
+      else if (vm === '็' && has('อ')) { v = 'ɔ'; short = true; i++; }
       else if (has('ะ')) { v = 'a'; short = true; i++; }
       else if (has('า')) { v = 'aa'; i++; if (has('ะ')) { v = 'a'; short = true; i++; } }
       else if (has('ำ')) { v = 'a'; short = true; tailFinal = 'm'; i++; }
       else if (cs[i] === 'ร' && cs[i + 1] === 'ร') { v = 'a'; short = true; i += 2; if (!(isC(cs[i]) && (!isC(cs[i + 1]) || LEAD.includes(cs[i + 1]) || cs[i + 1] === undefined))) tailFinal = 'n'; }
-      else if (has('อ') && !isVowelish(cs[i + 1])) { v = 'aw'; i++; }
+      else if (has('อ') && !isVowelish(cs[i + 1])) { v = 'ɔɔ'; i++; }
       else if (has('ว') && !isVowelish(cs[i + 1])) { v = 'ua'; i++; }
     }
 
@@ -92,7 +93,7 @@ const Phon = (() => {
       const f = cs[i], f2 = cs[i + 1];
       if (isC(f) && C[f][1] !== '' && (f2 === undefined || isC(f2) || LEAD.includes(f2))) { fin = C[f][1]; i++; }
     }
-    if (lead === 'เ' && v === 'ee' && fin === 'i') v = 'oe';   // เลย → loei
+    if (lead === 'เ' && v === 'ee' && fin === 'i') v = 'əə';   // เลย → loei
     if (v === null) v = fin ? 'o' : 'a';
     if (v === 'o' || v === 'a') short = true;
     // final y/w changes how the vowel is written
@@ -112,7 +113,7 @@ const Phon = (() => {
     const MK = { low: '̀', fall: '̂', high: '́', rise: '̌', '': '' };
     // the tone mark goes on the first letter of the vowel
     const vt = v[0] + MK[tone] + v.slice(1);
-    return { rom: init + vt + finR, next: i };
+    return { rom: init + vt + finR, plain: init + v + finR, weak: v === 'a' && !fin && short, next: i };
   }
 
   function word(w) {
@@ -132,10 +133,18 @@ const Phon = (() => {
       if (ch >= '๐' && ch <= '๙') { out.push(String(ch.charCodeAt(0) - 0x0E50)); i++; continue; }
       if (ch === 'ๆ') { i++; continue; }
       const s = syllable(clean, i);
-      if (s && s.next > i) { out.push(s.rom); i = s.next; }
-      else { out.push(ch); i++; }
+      if (s && s.next > i) { out.push(s); i = s.next; }
+      else { out.push({ rom: ch, plain: ch }); i++; }
     }
-    return out.join('-').normalize('NFC');
+    // unstressed short open « a » syllables inside a word carry no tone mark (sabaai, arai…)
+    // words are written solid; a hyphen marks a glottal stop before a vowel (sa-àat)
+    let r = '';
+    out.forEach((sy, k) => {
+      const t = (k < out.length - 1 && sy.weak) ? sy.plain : sy.rom;
+      const startsVowel = /^[aeiouɛɔəʉ]/.test(t.normalize('NFD')[0] || '');
+      r += (k && startsVowel ? '-' : '') + t;
+    });
+    return r.normalize('NFC');
   }
 
   const seg = (typeof Intl !== 'undefined' && Intl.Segmenter) ? new Intl.Segmenter('th', { granularity: 'word' }) : null;
@@ -147,7 +156,7 @@ const Phon = (() => {
     let last = '';
     for (const p of parts) {
       if (!p.trim()) continue;
-      if (p === 'ๆ') { out.push(last); continue; }
+      if (p === 'ๆ') { if (out.length) out[out.length - 1] += '-' + last; continue; }
       last = /[฀-๿]/.test(p) ? word(p) : p;
       out.push(last);
     }
