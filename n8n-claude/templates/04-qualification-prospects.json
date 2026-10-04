@@ -1,0 +1,468 @@
+{
+  "name": "Atelier · 04 · Qualification de prospects par l'IA",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 📘 Recette 04 · Qualifier vos prospects avec l'IA\n\n**Objectif :** votre site envoie chaque demande de contact à n8n. Claude lui donne une **note de 0 à 100**. Les bons prospects sont annoncés sur **Slack**, les autres rangés dans **Google Sheets**. L'interface reçoit une réponse personnalisée.\n\n**Comptes à connecter :** Anthropic + Slack + Google Sheets. ⏱ 30 minutes.\n\n### ▶ Étape 1 · Tester sans rien connecter… presque\nDes données d'exemple sont épinglées sur le Webhook. Connectez seulement **Modèle Claude** (clé API Anthropic), puis **Test workflow** : regardez la note donnée par l'IA dans **Analyse IA**.\n\n### ▶ Étape 2 · Connecter Slack et Google Sheets\n- **Prévenir l'équipe** : connectez Slack, choisissez le canal.\n- **Ajouter à la liste de suivi** : connectez Google, choisissez un tableur avec les colonnes **Entreprise · Email · Score · Résumé**.\n\n### ▶ Étape 3 · Ajuster le seuil\nDans **Score ≥ 70 ?**, changez 70 selon votre exigence.\n\n### ▶ Étape 4 · Brancher votre site\nRetirez l'épingle du Webhook, activez le workflow, et donnez la **Production URL** à Claude Code (voir la note 🤖).\n\n🔐 Avant la mise en ligne : Webhook → *Authentication* → **Header Auth** pour protéger l'adresse.\n",
+        "height": 900,
+        "width": 560,
+        "color": 4
+      },
+      "id": "08d294dc-3be3-51dd-961b-338eba8e1443",
+      "name": "Note tuto",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ① Entrée\nReçoit : entreprise, email, taille, besoin.\n",
+        "height": 200,
+        "width": 240
+      },
+      "id": "7687c864-e9c1-5654-b0d8-710c183913fc",
+      "name": "Note n1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ② Nettoyage\nRetire les espaces, met l'email en minuscules.\n",
+        "height": 200,
+        "width": 240
+      },
+      "id": "165acbd0-a542-5604-8975-aa06ead9cfd2",
+      "name": "Note n2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        240,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ③ L'IA note\nLe **Structured Output Parser** force Claude à répondre dans un format fixe : score, résumé, action.\n",
+        "height": 200,
+        "width": 300
+      },
+      "id": "4b78e142-5566-516b-a2b7-62f9453f0877",
+      "name": "Note n3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        500,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ④ Aiguillage\nOui → Slack · Non → tableur. Puis une seule réponse à l'interface.\n",
+        "height": 200,
+        "width": 560
+      },
+      "id": "3efea061-a433-56dc-bba6-a27834e465fa",
+      "name": "Note n4",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        840,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🤖 L'interface avec Claude Code\n> Crée une page de contact (HTML + CSS + JavaScript, sans framework) avec les champs entreprise, email, taille (1-10, 11-50, 51-250, 250+) et besoin. À l'envoi, fais un POST JSON vers PRODUCTION_URL. Pendant l'attente, affiche « Analyse en cours… ». Puis affiche le champ \"message\" de la réponse. Si l'envoi échoue, affiche une erreur claire. Design sobre, accessible au clavier.\n",
+        "height": 260,
+        "width": 760,
+        "color": 5
+      },
+      "id": "3e851698-913a-5f25-bb88-caae87dce623",
+      "name": "Note bonus",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "prospect",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "75bfb344-01c6-5d1c-966f-b7e112a18eee",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        400
+      ],
+      "webhookId": "e20361cc-c755-5fa9-98bc-02241b59dbb3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2d210a4c-b8f2-5717-ba49-bb7c1f94721b",
+              "name": "entreprise",
+              "value": "={{ ($json.body.entreprise || '').trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "575fd9d6-7dc1-53dc-9e6c-d147f7d5c66a",
+              "name": "email",
+              "value": "={{ ($json.body.email || '').trim().toLowerCase() }}",
+              "type": "string"
+            },
+            {
+              "id": "5ee5f3bd-cafb-54cc-8da0-bcc580806dde",
+              "name": "taille",
+              "value": "={{ $json.body.taille }}",
+              "type": "string"
+            },
+            {
+              "id": "b0c0dba6-3765-5b0a-a323-536484741513",
+              "name": "besoin",
+              "value": "={{ $json.body.besoin }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "571bbe16-c3f5-5506-9afe-4fc7e3c36200",
+      "name": "Nettoyer les données",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        260,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "hasOutputParser": true,
+        "text": "=Tu qualifies des prospects pour une agence d'automatisation.\n\nEntreprise : {{ $json.entreprise }}\nTaille : {{ $json.taille }} salariés\nBesoin exprimé : {{ $json.besoin }}\n\nDonne un score de 0 à 100 (100 = besoin clair, budget probable, urgence), un résumé d'une phrase et la prochaine action conseillée."
+      },
+      "id": "c2dd97e1-2d69-56b8-a8a6-a03267b1b71b",
+      "name": "Analyse IA",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        540,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-5-20250929",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {}
+      },
+      "id": "f68602b9-eaea-5f6b-905c-64bd1a41c67d",
+      "name": "Modèle Claude",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        480,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"score\": 86,\n  \"resume\": \"Besoin clair d'automatiser les commandes, taille adaptée.\",\n  \"prochaineAction\": \"Appeler sous 24 h\"\n}"
+      },
+      "id": "a2bd27ff-bbf7-5543-ab25-8728446de7c9",
+      "name": "Format de réponse",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        680,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f8ba224c-21fa-5564-bb5b-0818e04cb77d",
+              "leftValue": "={{ $json.output.score }}",
+              "rightValue": 70,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "id": "2fc859cf-6abd-5871-bd73-8eefa07a4163",
+      "name": "Score ≥ 70 ?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "#ventes",
+          "mode": "name"
+        },
+        "text": "=🔥 Nouveau prospect chaud : *{{ $('Nettoyer les données').item.json.entreprise }}* ({{ $json.output.score }}/100)\n{{ $json.output.resume }}\n👉 {{ $json.output.prochaineAction }} · {{ $('Nettoyer les données').item.json.email }}",
+        "otherOptions": {}
+      },
+      "id": "aa00d14f-5713-543e-85c1-2cc1a4434afe",
+      "name": "Prévenir l'équipe",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1140,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Entreprise": "={{ $('Nettoyer les données').item.json.entreprise }}",
+            "Email": "={{ $('Nettoyer les données').item.json.email }}",
+            "Score": "={{ $json.output.score }}",
+            "Résumé": "={{ $json.output.resume }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Entreprise",
+              "displayName": "Entreprise",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Score",
+              "displayName": "Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Résumé",
+              "displayName": "Résumé",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8cdb2919-a251-5733-9ca3-c03c8440cf04",
+      "name": "Ajouter à la liste de suivi",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1140,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"ok\": true,\n  \"score\": {{ $('Analyse IA').item.json.output.score }},\n  \"message\": \"{{ $('Analyse IA').item.json.output.score >= 70 ? 'Merci ! Un conseiller vous rappelle sous 24 h.' : 'Merci ! Vous allez recevoir nos ressources par email.' }}\"\n}",
+        "options": {}
+      },
+      "id": "7c4edd1b-8abd-582c-ad49-9b7072b477f1",
+      "name": "Répondre à l'interface",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1400,
+        400
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Nettoyer les données",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nettoyer les données": {
+      "main": [
+        [
+          {
+            "node": "Analyse IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyse IA": {
+      "main": [
+        [
+          {
+            "node": "Score ≥ 70 ?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Score ≥ 70 ?": {
+      "main": [
+        [
+          {
+            "node": "Prévenir l'équipe",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ajouter à la liste de suivi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prévenir l'équipe": {
+      "main": [
+        [
+          {
+            "node": "Répondre à l'interface",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ajouter à la liste de suivi": {
+      "main": [
+        [
+          {
+            "node": "Répondre à l'interface",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Modèle Claude": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Analyse IA",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format de réponse": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Analyse IA",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "content-type": "application/json"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "entreprise": "  Boulangerie Martin ",
+            "email": "Claire@Boulangerie-Martin.fr",
+            "taille": "11-50",
+            "besoin": "Automatiser la prise de commandes des entreprises clientes et les relances de factures."
+          }
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

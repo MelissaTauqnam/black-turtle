@@ -1,0 +1,268 @@
+{
+  "name": "Atelier · 03 · Veille quotidienne résumée par l'IA",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 📘 Recette 03 · Votre revue de presse par l'IA\n\n**Objectif :** chaque matin à 8 h, n8n lit un flux d'actualités, demande à Claude d'en faire un résumé clair, et vous l'envoie par email.\n\n**Comptes à connecter :** Anthropic (Claude) + Gmail. ⏱ 15 minutes.\n\n### ▶ Étape 1 · Choisir votre source\nDans **Lire les actualités**, remplacez l'adresse par le flux RSS de votre choix (un blog, un média, une veille Google Alerts…). Astuce : cherchez « nom du site + RSS ».\n\n### ▶ Étape 2 · Connecter Claude\nOuvrez **Modèle Claude** → *Credential* → **Create new** → collez votre clé API Anthropic (console.anthropic.com).\n\n### ▶ Étape 3 · Connecter Gmail et mettre votre adresse\nOuvrez **Envoyer le résumé**, connectez Gmail et remplacez `vous@exemple.fr`.\n\n### ▶ Étape 4 · Tester\nCliquez sur **Test workflow**. Vous recevez le résumé dans la minute ✅\n\n### ▶ Étape 5 · Activer\nActivez le workflow : il tournera seul chaque matin. Changez l'heure dans **Chaque matin à 8 h**.\n",
+        "height": 780,
+        "width": 560,
+        "color": 4
+      },
+      "id": "590b4410-4538-5c6c-aa1f-e1ccad365a9c",
+      "name": "Note tuto",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ① Le réveil\nUn déclencheur **planifié** : pas besoin d'action humaine.\n",
+        "height": 200,
+        "width": 240
+      },
+      "id": "fbb93772-c14e-5471-88aa-25809f48929d",
+      "name": "Note n1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ② Lire + garder les 5 premiers\nChaque article devient un **item**.\n",
+        "height": 200,
+        "width": 500
+      },
+      "id": "21d9969e-d9a0-5848-921a-c6329f15bc47",
+      "name": "Note n2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        240,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ③ Tout rassembler\nUn petit bout de code colle les 5 articles en un seul texte.\n",
+        "height": 200,
+        "width": 240
+      },
+      "id": "b285cc73-197a-50b7-90ba-a1cb3697e550",
+      "name": "Note n3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        760,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ④ L'IA résume\nModifiez la consigne (le *prompt*) pour changer le ton ou la longueur.\n",
+        "height": 200,
+        "width": 280
+      },
+      "id": "48f57249-5747-57bd-8818-7758831b7e2e",
+      "name": "Note n4",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "73df7cec-eaa5-5124-9bc7-572514230932",
+      "name": "Chaque matin à 8 h",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://blog.n8n.io/rss/",
+        "options": {}
+      },
+      "id": "29bb5c20-1ddc-58d2-a52d-12e202bd9eae",
+      "name": "Lire les actualités",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        260,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "maxItems": 5
+      },
+      "id": "b93477b9-cd7e-5fe0-9cca-f36fa3db02f9",
+      "name": "Garder les 5 derniers",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        520,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Colle tous les articles reçus en un seul texte pour l'IA\nconst articles = $input.all().map((item, i) =>\n  `${i + 1}. ${item.json.title}\\n${item.json.contentSnippet || ''}\\nLien : ${item.json.link}`\n);\nreturn [{ json: { articles: articles.join('\\n\\n') } }];"
+      },
+      "id": "234b8a01-dcdb-575b-9406-4ee3f24a14df",
+      "name": "Rassembler les articles",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        780,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Tu es un assistant de veille. Voici les derniers articles :\n\n{{ $json.articles }}\n\nRédige en français un résumé clair pour une personne pressée : 1 phrase d'introduction, puis une puce par article (2 lignes maximum) avec son lien. Termine par « À retenir aujourd'hui : » et une seule phrase."
+      },
+      "id": "918190b5-2631-552a-a769-c764652ea878",
+      "name": "Résumer avec Claude",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        1060,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-5-20250929",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {}
+      },
+      "id": "b6ed63d3-f043-5308-8d5f-3accc68e0378",
+      "name": "Modèle Claude",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        1060,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "vous@exemple.fr",
+        "subject": "=Votre veille du {{ $now.toFormat('dd/MM') }}",
+        "emailType": "text",
+        "message": "={{ $json.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "dfd69922-5194-55fe-8351-7c421f146b3e",
+      "name": "Envoyer le résumé",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1400,
+        400
+      ]
+    }
+  ],
+  "connections": {
+    "Chaque matin à 8 h": {
+      "main": [
+        [
+          {
+            "node": "Lire les actualités",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lire les actualités": {
+      "main": [
+        [
+          {
+            "node": "Garder les 5 derniers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Garder les 5 derniers": {
+      "main": [
+        [
+          {
+            "node": "Rassembler les articles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rassembler les articles": {
+      "main": [
+        [
+          {
+            "node": "Résumer avec Claude",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Résumer avec Claude": {
+      "main": [
+        [
+          {
+            "node": "Envoyer le résumé",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Modèle Claude": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Résumer avec Claude",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

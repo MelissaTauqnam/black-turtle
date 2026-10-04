@@ -1,0 +1,271 @@
+{
+  "name": "Atelier · 06 · Tri automatique des emails par l'IA",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 📘 Recette 06 · Une boîte mail qui se trie toute seule\n\n**Objectif :** toutes les 10 minutes, n8n regarde vos nouveaux emails non lus. Claude les classe (facture, client, prospect, newsletter) et n8n leur ajoute le **libellé Gmail** correspondant.\n\n**Comptes à connecter :** Gmail + Anthropic. ⏱ 25 minutes.\n\n### ▶ Étape 1 · Créer les libellés dans Gmail\nDans Gmail, créez 4 libellés : **Factures**, **Clients**, **Prospects**, **Newsletters**.\n\n### ▶ Étape 2 · Connecter les comptes\n- **Nouveaux emails** : connectez Gmail.\n- **Modèle Claude** : collez votre clé API Anthropic.\n- Les 4 blocs **Libellé …** : choisissez le même compte Gmail, puis le libellé correspondant dans la liste **Label Names or IDs**.\n\n### ▶ Étape 3 · Adapter les catégories\nDans **Classer l'email**, modifiez les descriptions des catégories : plus elles sont précises, mieux l'IA classe.\n\n### ▶ Étape 4 · Tester puis activer\nEnvoyez-vous un email de test, cliquez sur **Test workflow**, vérifiez le libellé dans Gmail ✅ Puis activez.\n\nℹ️ Les emails qui ne correspondent à aucune catégorie sortent par **Other** et ne sont pas modifiés.\n",
+        "height": 860,
+        "width": 560,
+        "color": 4
+      },
+      "id": "a86dadcd-f26b-5e31-a956-198233728479",
+      "name": "Note tuto",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ① Relève du courrier\nToutes les 10 min, emails **non lus** uniquement.\n",
+        "height": 200,
+        "width": 240
+      },
+      "id": "e38e09e0-bb79-5608-a065-d3070adecce2",
+      "name": "Note n1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ② Le classement\nLe **Text Classifier** envoie chaque email vers la sortie de sa catégorie.\n",
+        "height": 200,
+        "width": 320
+      },
+      "id": "428c34dd-d26c-5794-91b0-335adb4fd27b",
+      "name": "Note n2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        240,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ③ Le rangement\nChaque sortie ajoute un libellé Gmail.\n",
+        "height": 160,
+        "width": 260
+      },
+      "id": "2bf583c6-8414-588e-9ba5-05eb011867ff",
+      "name": "Note n3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        620,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 10,
+              "unit": "minutes"
+            }
+          ]
+        },
+        "simple": true,
+        "filters": {
+          "readStatus": "unread"
+        },
+        "options": {}
+      },
+      "id": "ddb42790-f5be-5c2d-9538-cc4debce1b72",
+      "name": "Nouveaux emails",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "inputText": "=Expéditeur : {{ $json.From }}\nObjet : {{ $json.Subject }}\nExtrait : {{ $json.snippet }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Facture",
+              "description": "Factures, reçus, relances de paiement, devis à payer"
+            },
+            {
+              "category": "Client",
+              "description": "Message d'un client existant : question, suivi de commande, réclamation"
+            },
+            {
+              "category": "Prospect",
+              "description": "Nouvelle demande de devis, d'information ou de rendez-vous"
+            },
+            {
+              "category": "Newsletter",
+              "description": "Newsletters, promotions, notifications automatiques"
+            }
+          ]
+        },
+        "options": {
+          "fallback": "other"
+        }
+      },
+      "id": "b059f244-1201-5850-8e8f-778f8811d0be",
+      "name": "Classer l'email",
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        300,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-5-20250929",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {}
+      },
+      "id": "a2be8367-3e88-5c2b-89f9-3c292e1c23db",
+      "name": "Modèle Claude",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        300,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": []
+      },
+      "id": "41491092-97f0-58f2-88b6-2655ac308310",
+      "name": "Libellé Factures",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        680,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": []
+      },
+      "id": "d1340111-c0d4-52b6-a9bd-f83b2ea3a607",
+      "name": "Libellé Clients",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        680,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": []
+      },
+      "id": "1700ecfc-2980-5e16-84b9-067170de1fbb",
+      "name": "Libellé Prospects",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        680,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": []
+      },
+      "id": "83710088-9a18-53c3-baaa-920ea20a18e7",
+      "name": "Libellé Newsletters",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        680,
+        680
+      ]
+    }
+  ],
+  "connections": {
+    "Classer l'email": {
+      "main": [
+        [
+          {
+            "node": "Libellé Factures",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Libellé Clients",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Libellé Prospects",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Libellé Newsletters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nouveaux emails": {
+      "main": [
+        [
+          {
+            "node": "Classer l'email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Modèle Claude": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Classer l'email",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

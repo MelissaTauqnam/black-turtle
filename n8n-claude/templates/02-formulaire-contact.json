@@ -1,0 +1,190 @@
+{
+  "name": "Atelier · 02 · Formulaire de contact → Google Sheets + email",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 📘 Recette 02 · Formulaire de contact automatique\n\n**Objectif :** un formulaire en ligne (hébergé par n8n) dont chaque réponse est **rangée dans Google Sheets** et vous est **envoyée par email**.\n\n**Comptes à connecter :** Google (Sheets + Gmail). ⏱ 20 minutes.\n\n### ▶ Étape 1 · Préparer le tableur\nCréez un Google Sheets avec, en ligne 1, les colonnes : **Nom · Email · Message · submittedAt**.\n\n### ▶ Étape 2 · Connecter Google\nDouble-cliquez sur **Ranger dans Google Sheets** → *Credential* → **Create new** → *Sign in with Google*. Choisissez ensuite votre document et sa feuille dans les listes.\nFaites de même pour **M'envoyer un email** (compte Gmail).\n\n### ▶ Étape 3 · Votre adresse\nDans **M'envoyer un email**, remplacez `vous@exemple.fr` par votre adresse.\n\n### ▶ Étape 4 · Tester\nOuvrez **Formulaire de contact** → **Test step** : le formulaire s'ouvre dans un onglet. Remplissez-le. Vérifiez votre tableur et votre boîte mail ✅\n\n### ▶ Étape 5 · Publier\nActivez le workflow, puis partagez la **Production URL** du formulaire (site, signature d'email, QR code…).\n",
+        "height": 820,
+        "width": 560,
+        "color": 4
+      },
+      "id": "49f977a1-cdad-5c96-8d9b-6dcea8378192",
+      "name": "Note tuto",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ① Le formulaire\nn8n l'héberge pour vous. Ajoutez ou retirez des champs dans **Form Elements**.\n",
+        "height": 200,
+        "width": 240
+      },
+      "id": "5a7a4be1-741b-5b5b-86ea-35b74b88d32d",
+      "name": "Note n1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ② Le tableur\n**Map Automatically** : chaque champ va dans la colonne du même nom.\n",
+        "height": 200,
+        "width": 240
+      },
+      "id": "e6d72123-96bf-5930-aa42-9e61ce3dd66f",
+      "name": "Note n2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        240,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ③ L'alerte\nLes `{{ }}` insèrent les réponses dans l'email.\n",
+        "height": 200,
+        "width": 240
+      },
+      "id": "fe3ec920-1ebe-50ee-84cf-22471a360eb5",
+      "name": "Note n3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        500,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "formTitle": "Contactez-nous",
+        "formDescription": "Laissez-nous un message, nous vous répondons sous 24 h.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Nom",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Message",
+              "fieldType": "textarea",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "path": "contact",
+          "buttonLabel": "Envoyer",
+          "respondWithOptions": {
+            "values": {
+              "respondWith": "text",
+              "formSubmittedText": "Merci ! Nous revenons vers vous très vite."
+            }
+          }
+        }
+      },
+      "id": "ae7b8bb2-163d-52b6-93bd-31f301493993",
+      "name": "Formulaire de contact",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        400
+      ],
+      "webhookId": "39b35c82-2955-51d8-96f8-6afbd6636cda"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "74cf24c1-86bd-5d23-a176-c978242db9a6",
+      "name": "Ranger dans Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        260,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "vous@exemple.fr",
+        "subject": "=Nouveau message de {{ $('Formulaire de contact').item.json.Nom }}",
+        "emailType": "text",
+        "message": "=Nom : {{ $('Formulaire de contact').item.json.Nom }}\nEmail : {{ $('Formulaire de contact').item.json.Email }}\n\nMessage :\n{{ $('Formulaire de contact').item.json.Message }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "b1f06d44-6ba5-5873-b872-12c82ab2bb3b",
+      "name": "M'envoyer un email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        520,
+        400
+      ]
+    }
+  ],
+  "connections": {
+    "Formulaire de contact": {
+      "main": [
+        [
+          {
+            "node": "Ranger dans Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ranger dans Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "M'envoyer un email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

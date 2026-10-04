@@ -1,0 +1,192 @@
+{
+  "name": "Atelier · 01 · Mon premier webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 📘 Recette 01 · Mon premier webhook\n\n**Objectif :** comprendre comment un workflow reçoit des données et répond. Aucun compte à connecter : tout marche tout de suite.\n\n**Ce que fait ce workflow**\n1. **Webhook** : une adresse web qui attend des données (la « sonnette »).\n2. **Préparer la réponse** : fabrique un message de bienvenue avec le prénom reçu.\n3. **Répondre** : renvoie ce message à celui qui a sonné.\n\n### ▶ Étape 1 · Le lancer une première fois\nCliquez sur **Test workflow** (en bas). Des données d'exemple sont déjà « épinglées » sur le Webhook (prénom : Claire). Chaque bloc passe au vert ✅. Double-cliquez sur **Préparer la réponse** pour voir ce qui entre (à gauche) et ce qui sort (à droite).\n\n### ▶ Étape 2 · L'appeler pour de vrai\n1. Ouvrez le bloc **Webhook**, cliquez sur l'icône 📌 pour retirer les données épinglées.\n2. Copiez la **Test URL**, puis cliquez sur **Listen for test event**.\n3. Dans un terminal, collez (en remplaçant l'URL) :\n`curl -X POST URL_DE_TEST -H \"Content-Type: application/json\" -d '{\"prenom\":\"Alex\"}'`\n4. La réponse s'affiche : `{\"ok\": true, \"message\": \"Bonjour Alex ! …\"}` 🎉\n\n### ▶ Étape 3 · Le rendre permanent\nActivez le workflow (interrupteur **Active** en haut à droite). Utilisez alors la **Production URL** : elle marche en continu, sans cliquer sur « Listen ».\n\n💡 Bloqué ? Relisez la fiche de la recette 01 sur la page Atelier n8n + Claude Code.\n",
+        "height": 860,
+        "width": 560,
+        "color": 4
+      },
+      "id": "a73a3409-bc32-5a24-9ae4-477a362a6ded",
+      "name": "Note tuto",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ① La sonnette\nMéthode **POST** = « je vous envoie des données ».\nLe chemin **bonjour** termine l'adresse : …/webhook/bonjour\n",
+        "height": 220,
+        "width": 240
+      },
+      "id": "7a34df40-b47a-5165-88fd-6031e4aa23e0",
+      "name": "Note n1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ② L'expression\n`{{ $json.body.prenom }}` = « le prénom reçu dans le corps de la requête ».\n",
+        "height": 220,
+        "width": 240
+      },
+      "id": "73b8ebf7-131e-5ec2-8eb3-c0044f80bd30",
+      "name": "Note n2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        240,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ③ La réponse\nRenvoie un JSON que n'importe quelle interface peut lire.\n",
+        "height": 220,
+        "width": 240
+      },
+      "id": "e103aa65-80f3-52e2-ba9f-ad6781d81a5e",
+      "name": "Note n3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        500,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🤖 Bonus · L'interface avec Claude Code\nOuvrez Claude Code dans un dossier vide et écrivez :\n\n> Crée une page index.html avec un champ « Prénom » et un bouton. Au clic, envoie {\"prenom\": …} en POST (JSON) à cette URL : COLLEZ_VOTRE_PRODUCTION_URL. Affiche le champ \"message\" de la réponse en grand, et un message d'erreur clair si l'envoi échoue.\n\nOuvrez index.html dans votre navigateur : votre première interface parle à n8n !\n",
+        "height": 300,
+        "width": 760,
+        "color": 5
+      },
+      "id": "1db3dcb6-fac8-5e59-bd03-fc54b2ebc405",
+      "name": "Note bonus",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "bonjour",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "6d34727d-30bd-547d-b57f-42aac1818da9",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        400
+      ],
+      "webhookId": "f8b7b0f4-d26d-5f12-b5f3-26d12a513ad1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f2525008-7133-512f-926c-fce76b58a6d0",
+              "name": "message",
+              "value": "=Bonjour {{ $json.body.prenom }} ! Votre premier workflow n8n fonctionne 🎉",
+              "type": "string"
+            },
+            {
+              "id": "3023af67-0514-513a-a847-aef8a6216b0b",
+              "name": "recuLe",
+              "value": "={{ $now.toFormat('dd/MM/yyyy HH:mm') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5a4be193-2552-502f-a243-aaefab9e0c4c",
+      "name": "Préparer la réponse",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        260,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"ok\": true,\n  \"message\": \"{{ $json.message }}\",\n  \"recuLe\": \"{{ $json.recuLe }}\"\n}",
+        "options": {}
+      },
+      "id": "af31fe90-1fa3-5492-9f52-b84cf3e8fef8",
+      "name": "Répondre",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        520,
+        400
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Préparer la réponse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Préparer la réponse": {
+      "main": [
+        [
+          {
+            "node": "Répondre",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "content-type": "application/json"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "prenom": "Claire"
+          }
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}
